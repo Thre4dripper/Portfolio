@@ -4,8 +4,9 @@ import { TIMELINE, MAXZ, GATE_CAM, ERAS, BUDDY, RAIL_ITEMS, SITE } from '../data
 import { computeEra, applyTheme, eraW } from './era';
 import { initSky } from './sky';
 import {
-  initBoardy, createTermPlayer, initCastle, initQBlock,
-  createBootPlayer, initViewSource, initShipIt, createCrashShower, initCrashButtons, initApiDemo,
+  initBoardy, initCastle, initQBlock, initCompile, initDeploy, createQuestsReveal,
+  initMiniOS, createProctorStarter, initTools, initMigrate, createAgentChat,
+  initEditorTabs, initRackPower,
 } from './setpieces';
 import { loadGithub, initSkillPanel } from './github';
 
@@ -15,57 +16,18 @@ const flat = document.getElementById('flat')!;
 const nodes = [...document.querySelectorAll<HTMLElement>('#world > .node')];
 const sky = initSky(document.getElementById('sky') as HTMLCanvasElement);
 
-/* ================= camera / input: stop-by-stop paging ================= */
+/* ================= camera / input: smooth flight ================= */
 let cam = 0;
 let target = 0;
 let scrolled = false;
 const clampT = (v: number) => Math.max(-120, Math.min(MAXZ + 120, v));
 
-/* One wheel gesture = one stop, like turning pages. Drag stays free-form
-   and settles on the nearest stop when released. */
-const STOPS = RAIL_ITEMS.map((it) => it.zCam);
-let stopIdx = 0;
-function goStop(i: number) {
-  stopIdx = Math.max(0, Math.min(STOPS.length - 1, i));
-  target = STOPS[stopIdx];
-  scrolled = true;
-}
-function nearestStopIdx(z: number) {
-  let bi = 0;
-  let bd = Infinity;
-  STOPS.forEach((s, i) => {
-    const d = Math.abs(s - z);
-    if (d < bd) {
-      bd = d;
-      bi = i;
-    }
-  });
-  return bi;
-}
-
-let wheelAcc = 0;
-let lastWheelT = 0;
-let wheelArmed = true;
 addEventListener(
   'wheel',
   (e) => {
-    const now = performance.now();
-    /* a step disarms the wheel; only a genuine pause in events re-arms it —
-       trackpad momentum tails keep arriving <300ms apart and can never
-       double-step, no matter how long the camera takes to arrive */
-    if (now - lastWheelT > 300) {
-      wheelArmed = true;
-      wheelAcc = 0;
-    }
-    lastWheelT = now;
-    if (!wheelArmed || flat.classList.contains('open')) return;
-    if (Math.abs(target - cam) > 260) return;
-    wheelAcc += e.deltaY * (e.deltaMode === 1 ? 24 : 1);
-    if (Math.abs(wheelAcc) > 60) {
-      goStop(stopIdx + Math.sign(wheelAcc));
-      wheelAcc = 0;
-      wheelArmed = false;
-    }
+    if (flat.classList.contains('open')) return;
+    target = clampT(target + e.deltaY * (e.deltaMode === 1 ? 24 : 1.4));
+    scrolled = true;
   },
   { passive: true },
 );
@@ -73,7 +35,7 @@ addEventListener(
 let dragging = false;
 let lastY = 0;
 stage.addEventListener('pointerdown', (e) => {
-  if ((e.target as HTMLElement).closest('#boardy,#qblock,a,button')) return;
+  if ((e.target as HTMLElement).closest('#boardy,#qblock,a,button,canvas')) return;
   dragging = true;
   lastY = e.clientY;
 });
@@ -83,22 +45,18 @@ addEventListener('pointermove', (e) => {
   lastY = e.clientY;
   scrolled = true;
 });
-addEventListener('pointerup', () => {
-  if (!dragging) return;
-  dragging = false;
-  goStop(nearestStopIdx(target));
-});
+addEventListener('pointerup', () => (dragging = false));
 
 addEventListener('keydown', (e) => {
   if (flat.classList.contains('open')) return;
-  if (['ArrowDown', 'PageDown', ' '].includes(e.key)) {
-    goStop(stopIdx + 1);
+  const step = { ArrowDown: 420, PageDown: 950, ' ': 950, ArrowUp: -420, PageUp: -950 }[e.key];
+  if (step) {
+    target = clampT(target + step);
+    scrolled = true;
     e.preventDefault();
-  } else if (['ArrowUp', 'PageUp'].includes(e.key)) {
-    goStop(stopIdx - 1);
-    e.preventDefault();
-  } else if (e.key === 'Home') goStop(0);
-  else if (e.key === 'End') goStop(STOPS.length - 1);
+  }
+  if (e.key === 'Home') target = 0;
+  if (e.key === 'End') target = MAXZ;
 });
 
 /* ================= dock / skills ================= */
@@ -120,21 +78,27 @@ function collect(list: string[]) {
 
 /* ================= rail ================= */
 const railBtns = [...document.querySelectorAll<HTMLButtonElement>('#rail button')];
-railBtns.forEach((b, i) => {
-  b.onclick = () => goStop(i);
+railBtns.forEach((b) => {
+  b.onclick = () => {
+    target = Number(b.dataset.z);
+    scrolled = true;
+  };
 });
 
 /* ================= set pieces ================= */
 initBoardy();
 initQBlock();
-initViewSource();
-initShipIt();
-initCrashButtons();
-initApiDemo();
+initCompile();
+initDeploy();
+initMiniOS();
+initMigrate();
+initEditorTabs();
+initRackPower();
 initSkillPanel(SITE.githubUser);
-const playTerm = createTermPlayer();
-const playBoot = createBootPlayer();
-const showCrash = createCrashShower();
+const playTools = initTools();
+const revealQuests = createQuestsReveal();
+const startProctor = createProctorStarter();
+const playAgentChat = createAgentChat();
 const castle = initCastle();
 
 /* ================= rocket co-pilot ================= */
@@ -188,7 +152,11 @@ function frame(t: number) {
   sky.draw(t, cam);
 
   /* rail current */
-  railBtns.forEach((b, i) => b.classList.toggle('cur', i === stopIdx));
+  let cur = 0;
+  RAIL_ITEMS.forEach((it, i) => {
+    if (cam > it.zCam - 480) cur = i;
+  });
+  railBtns.forEach((b, i) => b.classList.toggle('cur', i === cur));
 
   /* nodes */
   nodes.forEach((n) => {
@@ -207,17 +175,20 @@ function frame(t: number) {
       n.style.transform = `translate(-50%,-50%) translate3d(var(--dx,0px),var(--dy,0px),${rel.toFixed(1)}px)`;
   });
 
-  /* triggers */
+  /* triggers — fire while the scene is flying in, so everything is already
+     alive by the time it fills the screen */
   TIMELINE.forEach((it) => {
     const rel = cam - it.zCam;
     if (it.type === 'repos' && rel > -2800) loadGithub();
-    if (it.type === 'journeys' && rel > -650) journeysEl?.classList.add('lit');
+    if (it.type === 'journeys' && rel > -1200) journeysEl?.classList.add('lit');
     if (it.type !== 'ch') return;
     if (rel > -320) collect(it.skills);
-    if (rel > -700 && it.set === 'term') playTerm();
-    if (rel > -700 && it.set === 'boot') playBoot();
-    if (rel > -500 && it.set === 'crash') showCrash();
-    if (rel > -700 && it.set === 'castle' && castle) castle.classList.add('built');
+    if (rel <= -1300) return;
+    if (it.set === 'tools') playTools();
+    if (it.set === 'quests') revealQuests();
+    if (it.set === 'proctor') startProctor();
+    if (it.set === 'agent') playAgentChat();
+    if (it.set === 'castle' && castle) castle.classList.add('built');
   });
   for (let i = 0; i < ERAS.length; i++) {
     if (!eraSaid[i] && cam > GATE_CAM[i] + 120) {
