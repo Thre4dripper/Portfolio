@@ -47,6 +47,8 @@ export type TimelineItem =
     }
   | { type: 'fact'; n: number }
   | { type: 'block' }
+  | { type: 'blog' }
+  | { type: 'repos' }
   | { type: 'end' };
 
 export const SPACING: Record<TimelineItem['type'], number> = {
@@ -55,6 +57,8 @@ export const SPACING: Record<TimelineItem['type'], number> = {
   ch: 950,
   fact: 560,
   block: 520,
+  blog: 1250,
+  repos: 1500,
   end: 0,
 };
 
@@ -123,6 +127,8 @@ const RAW_TIMELINE: TimelineItem[] = [
   { type: 'fact', n: 6 },
   { type: 'fact', n: 7 },
   { type: 'gate', era: 4 },
+  { type: 'blog' },
+  { type: 'repos' },
   { type: 'end' },
 ];
 
@@ -148,15 +154,30 @@ export const GATE_CAM: number[] = ERAS.map(
 /** Every skill in timeline order — powers the dock, constellation and flat mode. */
 export const ALL_SKILLS: string[] = TIMELINE.flatMap((it) => (it.type === 'ch' ? it.skills : []));
 
-export const CROW = {
-  start: "caw. i'm your co-pilot — scroll, i'll keep up.",
-  fast: 'caw?! easy on the throttle.',
+/** Stops shown in the chapter rail (and used for scroll snapping). */
+export const RAIL_ITEMS = TIMELINE.filter(
+  (it) => it.type === 'intro' || it.type === 'ch' || it.type === 'blog' || it.type === 'repos' || it.type === 'end',
+);
+
+export function railLabel(it: PositionedItem): string {
+  switch (it.type) {
+    case 'ch': return `${it.yr} · ${it.t}`;
+    case 'blog': return 'Field reports';
+    case 'repos': return 'Mission control';
+    case 'end': return 'Today';
+    default: return 'Start';
+  }
+}
+
+export const BUDDY = {
+  start: "beep — co-pilot online. scroll to fly, i'll match your thrust.",
+  fast: 'whoa! easy on the thrusters.',
   eras: [
     'act one: a kid, a keyboard, a spark.',
-    'the grind era. i watched him fill notebooks with trees.',
+    'the grind era. he filled whole notebooks with trees.',
     'builder mode — this is where shipping became a habit.',
-    'my favorite act. he built a castle just so i could fly in it.',
-    'end of the line. he replies fast, promise.',
+    'worldmaker era. he builds places, not just pages.',
+    'final act — live telemetry ahead. he replies fast, promise.',
   ],
 };
 
@@ -176,6 +197,9 @@ export const SITE = {
     'Full stack web & Android developer building tools, worlds, and the servers they run on. ' +
     'Kotlin, TypeScript, React, Node.js, Three.js — told as a flight through five acts.',
   github: 'https://github.com/Thre4dripper',
+  githubUser: 'Thre4dripper',
   linkedin: 'https://www.linkedin.com/in/thre4dripper/',
+  blog: 'https://blogs.ijlalahmad.dev',
+  blogRss: 'https://blogs.ijlalahmad.dev/rss.xml',
   email: 'hello@example.com', // TODO: put your real email here
 };

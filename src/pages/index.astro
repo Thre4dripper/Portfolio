@@ -3,14 +3,18 @@ import Base from '../layouts/Base.astro';
 import World from '../components/World.astro';
 import Overlays from '../components/Overlays.astro';
 import FlatMode from '../components/FlatMode.astro';
+import { fetchPosts } from '../lib/blog';
+import { SITE } from '../data/portfolio';
+
+const posts = await fetchPosts(SITE.blogRss, 3);
 ---
 
 <Base>
   <canvas id="sky" aria-hidden="true"></canvas>
 
-  <World />
+  <World posts={posts} />
   <Overlays />
-  <FlatMode />
+  <FlatMode posts={posts} />
 
   <!-- No JS? Show the plain version, hide the flight chrome. -->
   <noscript>
