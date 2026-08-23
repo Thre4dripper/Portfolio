@@ -12,36 +12,51 @@ const flat = document.getElementById('flat')!;
 const nodes = [...document.querySelectorAll<HTMLElement>('#world > .node')];
 const sky = initSky(document.getElementById('sky') as HTMLCanvasElement);
 
-/* ================= camera / input ================= */
+/* ================= camera / input: stop-by-stop paging ================= */
 let cam = 0;
 let target = 0;
 let scrolled = false;
-let lastInput = 0;
 const clampT = (v: number) => Math.max(-120, Math.min(MAXZ + 120, v));
 
-/* Camera glides to the nearest stop once input goes quiet — cards land centered. */
-const SNAP_Z = TIMELINE.filter((it) => it.type !== 'fact' && it.type !== 'block').map((it) => it.zCam);
-function magnet(t: number) {
-  if (dragging || t - lastInput < 320) return;
-  let nearest = SNAP_Z[0];
-  let best = Infinity;
-  for (const z of SNAP_Z) {
-    const d = Math.abs(z - target);
-    if (d < best) {
-      best = d;
-      nearest = z;
+/* One wheel gesture = one stop, like turning pages. Drag stays free-form
+   and settles on the nearest stop when released. */
+const STOPS = RAIL_ITEMS.map((it) => it.zCam);
+let stopIdx = 0;
+function goStop(i: number) {
+  stopIdx = Math.max(0, Math.min(STOPS.length - 1, i));
+  target = STOPS[stopIdx];
+  scrolled = true;
+}
+function nearestStopIdx(z: number) {
+  let bi = 0;
+  let bd = Infinity;
+  STOPS.forEach((s, i) => {
+    const d = Math.abs(s - z);
+    if (d < bd) {
+      bd = d;
+      bi = i;
     }
-  }
-  if (best > 1 && best < 460) target += (nearest - target) * 0.16;
+  });
+  return bi;
 }
 
+let wheelAcc = 0;
+let lastWheelT = 0;
+let wheelLock = 0;
 addEventListener(
   'wheel',
   (e) => {
     if (flat.classList.contains('open')) return;
-    target = clampT(target + e.deltaY * (e.deltaMode === 1 ? 24 : 1.4));
-    scrolled = true;
-    lastInput = performance.now();
+    const now = performance.now();
+    if (now < wheelLock) return;
+    if (now - lastWheelT > 240) wheelAcc = 0;
+    lastWheelT = now;
+    wheelAcc += e.deltaY * (e.deltaMode === 1 ? 24 : 1);
+    if (Math.abs(wheelAcc) > 60) {
+      goStop(stopIdx + Math.sign(wheelAcc));
+      wheelAcc = 0;
+      wheelLock = now + 550;
+    }
   },
   { passive: true },
 );
@@ -58,21 +73,23 @@ addEventListener('pointermove', (e) => {
   target = clampT(target + (lastY - e.clientY) * 4.2);
   lastY = e.clientY;
   scrolled = true;
-  lastInput = performance.now();
 });
-addEventListener('pointerup', () => (dragging = false));
+addEventListener('pointerup', () => {
+  if (!dragging) return;
+  dragging = false;
+  goStop(nearestStopIdx(target));
+});
 
 addEventListener('keydown', (e) => {
   if (flat.classList.contains('open')) return;
-  const step = { ArrowDown: 420, PageDown: 950, ' ': 950, ArrowUp: -420, PageUp: -950 }[e.key];
-  if (step) {
-    target = clampT(target + step);
-    scrolled = true;
-    lastInput = performance.now();
+  if (['ArrowDown', 'PageDown', ' '].includes(e.key)) {
+    goStop(stopIdx + 1);
     e.preventDefault();
-  }
-  if (e.key === 'Home') target = 0;
-  if (e.key === 'End') target = MAXZ;
+  } else if (['ArrowUp', 'PageUp'].includes(e.key)) {
+    goStop(stopIdx - 1);
+    e.preventDefault();
+  } else if (e.key === 'Home') goStop(0);
+  else if (e.key === 'End') goStop(STOPS.length - 1);
 });
 
 /* ================= dock / skills ================= */
@@ -92,12 +109,8 @@ function collect(list: string[]) {
 
 /* ================= rail ================= */
 const railBtns = [...document.querySelectorAll<HTMLButtonElement>('#rail button')];
-railBtns.forEach((b) => {
-  b.onclick = () => {
-    target = Number(b.dataset.z);
-    scrolled = true;
-    lastInput = performance.now();
-  };
+railBtns.forEach((b, i) => {
+  b.onclick = () => goStop(i);
 });
 
 /* ================= set pieces ================= */
@@ -127,6 +140,11 @@ const bot = document.getElementById('bot')!;
 const train = document.getElementById('train')!;
 const satDrift = document.getElementById('sat-drift')!;
 
+/* ================= edge scenery ================= */
+const edgeGroups = [...document.querySelectorAll<HTMLElement>('#edges .edge-era')];
+const pokers = edgeGroups.map((g) => [...g.querySelectorAll<HTMLElement>('.poke')]);
+const journeysEl = document.querySelector('.journeys');
+
 /* ================= boring mode ================= */
 const skipBtn = document.getElementById('skip')!;
 function setFlat(open: boolean) {
@@ -145,7 +163,6 @@ const finale = document.querySelector('.finale')!;
 let litDone = false;
 
 function frame(t: number) {
-  magnet(t);
   const vel = target - cam;
   cam += vel * 0.105;
   computeEra(cam);
@@ -153,17 +170,13 @@ function frame(t: number) {
   sky.draw(t, cam);
 
   /* rail current */
-  let cur = 0;
-  RAIL_ITEMS.forEach((it, i) => {
-    if (cam > it.zCam - 480) cur = i;
-  });
-  railBtns.forEach((b, i) => b.classList.toggle('cur', i === cur));
+  railBtns.forEach((b, i) => b.classList.toggle('cur', i === stopIdx));
 
   /* nodes */
   nodes.forEach((n) => {
     const rel = parseFloat(n.dataset.z!) + cam;
     /* big headline nodes fade in late so they don't shine through each other */
-    const [nearEdge, farEdge] = n.dataset.near ? [-900, -1600] : [-1500, -2600];
+    const [nearEdge, farEdge] = n.dataset.near ? [-700, -1250] : [-1500, -2600];
     let op;
     if (rel > 240) op = 0;
     else if (rel > 90) op = (240 - rel) / 150;
@@ -180,6 +193,7 @@ function frame(t: number) {
   TIMELINE.forEach((it) => {
     const rel = cam - it.zCam;
     if (it.type === 'repos' && rel > -2800) loadGithub();
+    if (it.type === 'journeys' && rel > -650) journeysEl?.classList.add('lit');
     if (it.type !== 'ch') return;
     if (rel > -320) collect(it.skills);
     if (rel > -700 && it.set === 'term') playTerm();
@@ -216,6 +230,18 @@ function frame(t: number) {
   }
   train.style.opacity = (eraW[1] * 0.9).toFixed(2);
   satDrift.style.opacity = (eraW[4] * 0.9).toFixed(2);
+
+  /* edge scenery — cross-fade by era, parallax by progress through the era */
+  edgeGroups.forEach((g, i) => {
+    const w = eraW[i];
+    g.style.opacity = (w * 0.9).toFixed(2);
+    if (w <= 0.02) return;
+    const prog = cam - GATE_CAM[i];
+    for (const p of pokers[i]) {
+      const off = Math.max(-340, Math.min(340, prog * parseFloat(p.dataset.p!)));
+      p.style.translate = p.dataset.ax === 'x' ? `${off.toFixed(1)}px 0` : `0 ${off.toFixed(1)}px`;
+    }
+  });
 
   hint2.style.opacity = scrolled ? '0' : '1';
   requestAnimationFrame(frame);

@@ -252,6 +252,43 @@ button{font-family:inherit;cursor:pointer}
 .bn-all:hover{color:var(--washi);border-color:var(--washi)}
 .bn-fallback{color:var(--moon);font-size:15px;margin-bottom:6px}
 
+/* ---------- edge scenery: era set dressing poking in from the borders ---------- */
+#edges{position:fixed;inset:0;z-index:2;pointer-events:none;overflow:hidden}
+.edge-era{position:absolute;inset:0;opacity:0;will-change:opacity}
+.edge-era[data-era="0"]{color:#F49FB6}
+.edge-era[data-era="1"]{color:#7FB4FF}
+.edge-era[data-era="2"]{color:#4FE0B0}
+.edge-era[data-era="3"]{color:#F2A93B}
+.edge-era[data-era="4"]{color:#FFC66E}
+.poke{position:absolute;opacity:.5;will-change:translate}
+.poke svg{display:block;filter:drop-shadow(0 0 10px rgba(0,0,0,.45))}
+.poke .blinker{animation:blink 1.4s steps(1) infinite}
+.jbrace{font-family:var(--font-mono);font-size:230px;font-weight:600;line-height:.9;opacity:.28}
+.ringworld{width:46vw;height:46vw;border-radius:50%;border:2px solid currentColor;opacity:.3;
+  box-shadow:0 0 80px -16px currentColor,inset 0 0 80px -30px currentColor}
+.pulse1{animation:fadepulse 2.4s infinite}
+.pulse2{animation:fadepulse 2.4s 1.2s infinite}
+@keyframes fadepulse{0%,100%{opacity:.1}50%{opacity:.9}}
+
+/* ---------- journey log (transit map) ---------- */
+.journeys{width:min(94vw,800px);text-align:center}
+.journeys h2{font-family:var(--font-display);font-weight:800;
+  font-size:clamp(26px,4.6vw,40px);letter-spacing:-.01em;margin:8px 0 6px}
+.jmap{width:100%;max-width:780px;height:auto;margin-top:4px;overflow:visible}
+.jl-path{fill:none;stroke:var(--lc);stroke-width:4.5;stroke-linecap:round;stroke-linejoin:round;opacity:.9}
+.jl-name{fill:var(--lc);font-family:var(--font-mono);font-size:11.5px;letter-spacing:.28em}
+.js-c{fill:#0B0E1A;stroke:var(--lc);stroke-width:3.5;transition:stroke-width .15s}
+.jstn:hover .js-c{stroke-width:5.5}
+.js-yr{fill:var(--washi);font-family:var(--font-mono);font-size:11px;font-weight:600;text-anchor:middle}
+.js-lb{fill:var(--moon);font-family:var(--font-mono);font-size:10.5px;text-anchor:middle;transition:fill .15s}
+.jstn:hover .js-lb{fill:var(--washi)}
+.jhint{font-family:var(--font-mono);font-size:11px;color:var(--moon);letter-spacing:.15em;margin-top:2px}
+.journeys .jl-path{stroke-dasharray:900;stroke-dashoffset:900}
+.journeys.lit .jl-path{animation:draw 1.3s ease forwards}
+.journeys .jstn,.journeys .jl-name{opacity:0}
+.journeys.lit .jstn{animation:fadein .5s ease var(--d,0s) forwards}
+.journeys.lit .jl-name{animation:fadein .7s .25s ease forwards}
+
 /* ---------- mission control (live GitHub orbits) ---------- */
 .obsv{width:min(92vw,640px);text-align:center}
 .obsv-sub{color:var(--moon);font-size:14.5px;margin:-8px 0 4px}
@@ -325,4 +362,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
   #bubble{right:80px;bottom:164px;font-size:12px;max-width:180px}
   #train{width:150px}
   .sat{display:none}
+  .poke svg{max-width:34vw;height:auto}
+  .jbrace{font-size:120px}
+  .ringworld{width:70vw;height:70vw}
 }

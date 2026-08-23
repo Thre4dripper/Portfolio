@@ -3,16 +3,22 @@ import Base from '../layouts/Base.astro';
 import World from '../components/World.astro';
 import Overlays from '../components/Overlays.astro';
 import FlatMode from '../components/FlatMode.astro';
+import Edges from '../components/Edges.astro';
 import { fetchPosts } from '../lib/blog';
+import { fetchGhStory } from '../lib/github-story';
 import { SITE } from '../data/portfolio';
 
-const posts = await fetchPosts(SITE.blogRss, 3);
+const [posts, ghStory] = await Promise.all([
+  fetchPosts(SITE.blogRss),
+  fetchGhStory(SITE.githubUser),
+]);
 ---
 
 <Base>
   <canvas id="sky" aria-hidden="true"></canvas>
 
-  <World posts={posts} />
+  <World posts={posts} ghStory={ghStory} />
+  <Edges />
   <Overlays />
   <FlatMode posts={posts} />
 

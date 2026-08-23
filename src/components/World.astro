@@ -5,13 +5,63 @@
  * Horizontal/vertical offsets are emitted as --dx/--dy custom properties in
  * viewport units — the CSS equivalent of the old innerWidth math.
  */
-import { TIMELINE, ERAS, NOTES, ALL_SKILLS, GATE_CAM, SITE } from '../data/portfolio';
+import { TIMELINE, ERAS, NOTES, ALL_SKILLS, GATE_CAM, SITE, LINKEDIN_MILESTONES } from '../data/portfolio';
 import type { BlogPost } from '../lib/blog';
+import type { GhStory } from '../lib/github-story';
 
 interface Props {
   posts: BlogPost[];
+  ghStory: GhStory | null;
 }
-const { posts } = Astro.props;
+const { posts, ghStory } = Astro.props;
+
+/* ---------- journey log: subway-map data ---------- */
+interface Station {
+  yr: string;
+  label: string;
+  title?: string;
+  img?: string;
+}
+const short = (s: string, n: number) => (s.length > n ? s.slice(0, n - 1) + '…' : s);
+const postYear = (p: BlogPost) => `’${p.date.slice(-2)}`;
+
+const ghStations: Station[] = ghStory
+  ? [
+      { yr: `’${String(ghStory.joinedYear).slice(-2)}`, label: 'joined GitHub' },
+      {
+        yr: `’${String(ghStory.firstRepo.year).slice(-2)}`,
+        label: short(ghStory.firstRepo.name, 15),
+        title: `first repo: ${ghStory.firstRepo.name}`,
+      },
+      ...ghStory.orgs.map((o) => ({ yr: '', label: short(o.login, 14), img: o.avatar_url, title: `org: ${o.login}` })),
+      { yr: 'now', label: `${ghStory.publicRepos} repos · ★${ghStory.totalStars}` },
+    ]
+  : [
+      { yr: '’21', label: 'joined GitHub' },
+      { yr: 'now', label: 'building in public' },
+    ];
+
+const blogStations: Station[] =
+  posts.length > 0
+    ? [
+        { yr: postYear(posts[posts.length - 1]), label: 'first field report', title: posts[posts.length - 1].title },
+        ...(posts.length > 2 ? [{ yr: '', label: `${posts.length} reports later` }] : []),
+        { yr: postYear(posts[0]), label: 'latest report', title: posts[0].title },
+      ]
+    : [{ yr: 'now', label: 'blogs.ijlalahmad.dev' }];
+
+const liStations: Station[] = LINKEDIN_MILESTONES.map((m) => ({ yr: `’${m.yr.slice(-2)}`, label: m.label }));
+
+const JLINES = [
+  { name: 'GITHUB', color: '#4FE0B0', y: 74, stations: ghStations },
+  { name: 'BLOG', color: '#7FB4FF', y: 164, stations: blogStations },
+  { name: 'LINKEDIN', color: '#F49FB6', y: 254, stations: liStations },
+];
+/* Stagger each line's stations horizontally so labels never stack between lines. */
+const stationX = (i: number, n: number, li: number) =>
+  n === 1 ? 420 : 140 + li * 44 + (i * (520 - li * 24)) / (n - 1);
+/* GitHub labels ride above the line, LinkedIn below, blog alternates. */
+const labelAbove = (i: number, li: number) => (li === 0 ? true : li === 2 ? false : i % 2 === 0);
 
 const ASCII_TREE = `        (8)
        /   \\
@@ -151,6 +201,51 @@ const satellites = (idx: number, zCam: number) => {
                 ?
               </button>
             </div>
+          );
+
+        if (item.type === 'journeys')
+          return (
+            <section class="node journeys" data-z={z} data-near="1" style={style} aria-label="Career journey map">
+              <div class="bn-eyebrow">THE JOURNEY LOG · THREE LINES, ONE STORY</div>
+              <h2>Transit map of a career</h2>
+              <svg
+                class="jmap"
+                viewBox="0 0 780 320"
+                role="img"
+                aria-label="Timeline of GitHub, blog and LinkedIn milestones as a transit map"
+              >
+                {JLINES.map((l, li) => (
+                  <g class="jline" style={`--lc:${l.color}`}>
+                    <path class="jl-path" d={`M 18 ${l.y + 30} L 50 ${l.y} H 762`} style={`animation-delay:${li * 0.25}s`} />
+                    <text class="jl-name" x="20" y={l.y + 44}>{l.name}</text>
+                    {l.stations.map((s, i) => {
+                      const x = stationX(i, l.stations.length, li);
+                      const above = labelAbove(i, li);
+                      const clipId = `jclip-${li}-${i}`;
+                      return (
+                        <g class="jstn" style={`--d:${(0.5 + li * 0.25 + i * 0.16).toFixed(2)}s`} transform={`translate(${x.toFixed(0)} ${l.y})`}>
+                          <title>{s.title ?? `${s.yr} ${s.label}`.trim()}</title>
+                          {s.img ? (
+                            <>
+                              <clipPath id={clipId}>
+                                <circle r="10" />
+                              </clipPath>
+                              <circle class="js-c" r="12" />
+                              <image href={`${s.img}&s=48`} x="-10" y="-10" width="20" height="20" clip-path={`url(#${clipId})`} />
+                            </>
+                          ) : (
+                            <circle class="js-c" r="7" />
+                          )}
+                          <text class="js-yr" y={above ? -20 : 30}>{s.yr}</text>
+                          <text class="js-lb" y={above ? -34 : 44}>{s.label}</text>
+                        </g>
+                      );
+                    })}
+                  </g>
+                ))}
+              </svg>
+              <p class="jhint">hover a station for the fine print</p>
+            </section>
           );
 
         if (item.type === 'blog')
