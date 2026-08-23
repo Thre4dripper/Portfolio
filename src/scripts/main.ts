@@ -1,10 +1,13 @@
 /* Flight runtime: camera + input, node animation, HUD wiring, rocket co-pilot.
    The DOM is fully server-rendered — this script only brings it to life. */
-import { TIMELINE, MAXZ, GATE_CAM, ERAS, BUDDY, RAIL_ITEMS } from '../data/portfolio';
+import { TIMELINE, MAXZ, GATE_CAM, ERAS, BUDDY, RAIL_ITEMS, SITE } from '../data/portfolio';
 import { computeEra, applyTheme, eraW } from './era';
 import { initSky } from './sky';
-import { initBoardy, createTermPlayer, initCastle, initQBlock } from './setpieces';
-import { loadGithub } from './github';
+import {
+  initBoardy, createTermPlayer, initCastle, initQBlock,
+  createBootPlayer, initViewSource, initShipIt, createCrashShower, initCrashButtons, initApiDemo,
+} from './setpieces';
+import { loadGithub, initSkillPanel } from './github';
 
 /* ================= elements ================= */
 const stage = document.getElementById('stage')!;
@@ -42,20 +45,26 @@ function nearestStopIdx(z: number) {
 
 let wheelAcc = 0;
 let lastWheelT = 0;
-let wheelLock = 0;
+let wheelArmed = true;
 addEventListener(
   'wheel',
   (e) => {
-    if (flat.classList.contains('open')) return;
     const now = performance.now();
-    if (now < wheelLock) return;
-    if (now - lastWheelT > 240) wheelAcc = 0;
+    /* a step disarms the wheel; only a genuine pause in events re-arms it —
+       trackpad momentum tails keep arriving <300ms apart and can never
+       double-step, no matter how long the camera takes to arrive */
+    if (now - lastWheelT > 300) {
+      wheelArmed = true;
+      wheelAcc = 0;
+    }
     lastWheelT = now;
+    if (!wheelArmed || flat.classList.contains('open')) return;
+    if (Math.abs(target - cam) > 260) return;
     wheelAcc += e.deltaY * (e.deltaMode === 1 ? 24 : 1);
     if (Math.abs(wheelAcc) > 60) {
       goStop(stopIdx + Math.sign(wheelAcc));
       wheelAcc = 0;
-      wheelLock = now + 550;
+      wheelArmed = false;
     }
   },
   { passive: true },
@@ -101,8 +110,10 @@ function collect(list: string[]) {
     if (collected.has(s)) continue;
     collected.add(s);
     dockLbl.hidden = false;
-    const tag = document.createElement('span');
+    const tag = document.createElement('button');
     tag.textContent = s;
+    tag.dataset.skill = s;
+    tag.title = `repos using ${s} →`;
     dockTags.appendChild(tag);
   }
 }
@@ -116,7 +127,14 @@ railBtns.forEach((b, i) => {
 /* ================= set pieces ================= */
 initBoardy();
 initQBlock();
+initViewSource();
+initShipIt();
+initCrashButtons();
+initApiDemo();
+initSkillPanel(SITE.githubUser);
 const playTerm = createTermPlayer();
+const playBoot = createBootPlayer();
+const showCrash = createCrashShower();
 const castle = initCastle();
 
 /* ================= rocket co-pilot ================= */
@@ -176,7 +194,7 @@ function frame(t: number) {
   nodes.forEach((n) => {
     const rel = parseFloat(n.dataset.z!) + cam;
     /* big headline nodes fade in late so they don't shine through each other */
-    const [nearEdge, farEdge] = n.dataset.near ? [-700, -1250] : [-1500, -2600];
+    const [nearEdge, farEdge] = n.dataset.near ? [-650, -1100] : [-1100, -1800];
     let op;
     if (rel > 240) op = 0;
     else if (rel > 90) op = (240 - rel) / 150;
@@ -197,6 +215,8 @@ function frame(t: number) {
     if (it.type !== 'ch') return;
     if (rel > -320) collect(it.skills);
     if (rel > -700 && it.set === 'term') playTerm();
+    if (rel > -700 && it.set === 'boot') playBoot();
+    if (rel > -500 && it.set === 'crash') showCrash();
     if (rel > -700 && it.set === 'castle' && castle) castle.classList.add('built');
   });
   for (let i = 0; i < ERAS.length; i++) {

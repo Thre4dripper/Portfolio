@@ -23,7 +23,7 @@ interface Station {
   img?: string;
 }
 const short = (s: string, n: number) => (s.length > n ? s.slice(0, n - 1) + '…' : s);
-const postYear = (p: BlogPost) => `’${p.date.slice(-2)}`;
+const postYear = (p: BlogPost) => `’${p.year.slice(-2)}`;
 
 const ghStations: Station[] = ghStory
   ? [
@@ -71,7 +71,7 @@ const ASCII_TREE = `        (8)
        / \\    /        look like this
      (4) (7)(13)`;
 
-/** Constellation points — same deterministic pseudo-random layout as before. */
+/** Constellation points — deterministic pseudo-random layout, height grows with the list. */
 const points = ALL_SKILLS.map((s, i) => {
   const gx = i % 5;
   const gy = Math.floor(i / 5);
@@ -81,6 +81,7 @@ const points = ALL_SKILLS.map((s, i) => {
     y: 58 + gy * 88 + Math.cos(i * 78.233) * 20,
   };
 });
+const constH = 58 + (Math.ceil(ALL_SKILLS.length / 5) - 1) * 88 + 50;
 
 const offset = (idx: number, item: (typeof TIMELINE)[number]) => {
   if (item.type === 'fact') {
@@ -174,7 +175,7 @@ const satellites = (idx: number, zCam: number) => {
         if (item.type === 'gate') {
           const era = ERAS[item.era];
           return (
-            <div class="node gate" data-z={z} style={`${style};color:${era.acc}`}>
+            <div class="node gate" data-z={z} data-near="1" style={`${style};color:${era.acc}`}>
               <div class="rule" />
               <h2>{era.name}</h2>
               <small>{era.sub}</small>
@@ -303,7 +304,7 @@ const satellites = (idx: number, zCam: number) => {
                 <em>one constellation.</em>
               </h2>
               <p>Each skill was picked up somewhere on this flight. Here's the whole sky.</p>
-              <svg id="constellation" viewBox="0 0 640 470" role="img" aria-label="Constellation of skills">
+              <svg id="constellation" viewBox={`0 0 640 ${constH}`} role="img" aria-label="Constellation of skills">
                 {points.slice(0, -1).map((p, i) => (
                   <line
                     class="c-line"
@@ -332,9 +333,9 @@ const satellites = (idx: number, zCam: number) => {
             </div>
           );
 
-        /* chapter card */
+        /* chapter — a washi card by default, or a themed window frame */
         return (
-          <article class="node card" data-z={z} style={style}>
+          <article class={`node card${item.frame ? ` win win-${item.frame}` : ''}`} data-z={z} style={style}>
             {satellites(item.idx, item.zCam).map((s) => (
               <span
                 class="sat"
@@ -344,10 +345,66 @@ const satellites = (idx: number, zCam: number) => {
                 {s.svg ? <i set:html={s.svg} /> : <i class="sat-txt">{s.text}</i>}
               </span>
             ))}
+            {item.frame === 'terminal' && (
+              <div class="fr-bar dark"><i /><i /><i /><span class="fr-url">bash — 80×24</span></div>
+            )}
+            {item.frame === 'browser' && (
+              <div class="fr-bar">
+                <i /><i /><i />
+                <span class="fr-url">ijlal.dev/first-page.html</span>
+                <button class="fr-btn" id="viewsrc-btn">view source</button>
+              </div>
+            )}
+            {item.frame === 'editor' && (
+              <div class="fr-tabs"><span class="on">api.ts</span><span>schema.sql</span><span>compose.yml</span></div>
+            )}
+            {item.frame === 'phone' && <div class="ph-notch" />}
             <div class="yr">{item.yr}</div>
             <h2>{item.t}</h2>
             <p>{item.body}</p>
+            {item.set === 'boot' && (
+              <div class="term boot"><span class="ps1">$</span> <span id="boot-out" /></div>
+            )}
+            {item.set === 'viewsrc' && (
+              <div class="mini-web" id="mini-web">
+                <div class="mw-render" id="mw-render">
+                  <h4>~ welcome to my homepage ~</h4>
+                  <p>under construction 🚧 since 2018</p>
+                  <span class="mw-marquee"><span>thanks for visiting!! sign my guestbook!!</span></span>
+                </div>
+                <pre class="mw-src" id="mw-src" hidden>{`<html>
+  <body bgcolor="black">
+    <h4>~ welcome to my homepage ~</h4>
+    <p>under construction 🚧 since 2018</p>
+    <marquee>thanks for visiting!!</marquee>
+  </body> <!-- how does any of this work?? -->
+</html>`}</pre>
+              </div>
+            )}
             {item.set === 'ascii' && <div class="ascii">{ASCII_TREE}</div>}
+            {item.set === 'shipit' && (
+              <div class="ship-wrap">
+                <button class="shipit" id="shipit">SHIP IT 🚀</button>
+                <span class="ship-status" id="ship-status" role="status" />
+              </div>
+            )}
+            {item.set === 'crash' && (
+              <div class="app-scr" id="app-scr">
+                <div class="app-bar">MyFirstApp</div>
+                <div class="app-row" /><div class="app-row w60" /><div class="app-row w80" />
+                <div class="crash" id="crash" hidden>
+                  <p>Unfortunately, MyFirstApp has stopped.</p>
+                  <div><button id="crash-report">REPORT</button><button id="crash-restart">RESTART</button></div>
+                </div>
+                <div class="app-toast" id="app-toast" hidden />
+              </div>
+            )}
+            {item.set === 'api' && (
+              <div class="api-demo">
+                <button class="api-get" id="api-btn"><b>GET</b> /api/chai</button>
+                <pre class="api-out" id="api-out" hidden />
+              </div>
+            )}
             {item.set === 'draw' && (
               <div class="draw-wrap">
                 <canvas id="boardy" width="700" height="260" />
@@ -360,7 +417,7 @@ const satellites = (idx: number, zCam: number) => {
               </div>
             )}
             {item.set === 'castle' && (
-              <div class="castle" id="castle">
+              <div class="castle" id="castle" title="click to rebuild">
                 <span class="glow" />
               </div>
             )}
@@ -372,7 +429,11 @@ const satellites = (idx: number, zCam: number) => {
                 <div><span class="led" style="animation-delay:1.9s" />uptime-kuma<b>watching the watchers</b></div>
               </div>
             )}
-            <div class="tags">{item.skills.map((s) => <span>{s}</span>)}</div>
+            <div class="tags">
+              {item.skills.map((s) => (
+                <button class="skill-tag" data-skill={s} title={`repos using ${s} →`}>{s}</button>
+              ))}
+            </div>
             {item.link && (
               <a class="peek" href={item.link[0]} target="_blank" rel="noopener">
                 {item.link[1]}
