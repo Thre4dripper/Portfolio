@@ -174,15 +174,16 @@ button{font-family:inherit;cursor:pointer}
   font-family:var(--font-mono);font-size:11px;color:var(--moon);letter-spacing:.15em;
   transition:opacity .6s}
 
-/* ---------- crow companion ---------- */
-#crow{position:fixed;right:74px;bottom:104px;z-index:6;width:96px;pointer-events:none;
+/* ---------- rocket co-pilot ---------- */
+#buddy{position:fixed;right:78px;bottom:104px;z-index:6;width:62px;pointer-events:none;
   transition:transform .25s ease-out;filter:drop-shadow(0 0 14px var(--accent))}
-#crow .bobber{animation:crowbob 3.2s ease-in-out infinite}
-@keyframes crowbob{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
-#crow svg{display:block;width:100%;height:auto}
-#crow .wing{transform-origin:58px 46px;animation:flap var(--flapdur,.95s) ease-in-out infinite}
-@keyframes flap{0%,100%{transform:rotate(10deg)}50%{transform:rotate(-42deg)}}
-#crow.fast .wing{animation-duration:.32s}
+#buddy .bobber{animation:buddybob 3.2s ease-in-out infinite}
+@keyframes buddybob{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+#buddy svg{display:block;width:100%;height:auto;overflow:visible}
+#buddy .flame{transform-origin:45px 108px;animation:burn .5s ease-in-out infinite alternate}
+@keyframes burn{from{transform:scaleY(.7) scaleX(.85)}to{transform:scaleY(1.1)}}
+#buddy.fast .flame{animation:burnfast .14s ease-in-out infinite alternate}
+@keyframes burnfast{from{transform:scaleY(1.25) scaleX(1.05)}to{transform:scaleY(1.9) scaleX(1.2)}}
 #bubble{position:fixed;right:120px;bottom:196px;z-index:6;max-width:230px;background:var(--washi);
   color:var(--ink);font-size:13px;line-height:1.45;padding:10px 14px;border-radius:12px 12px 2px 12px;
   opacity:0;transform:translateY(8px);transition:opacity .3s,transform .3s;pointer-events:none;
@@ -200,6 +201,93 @@ button{font-family:inherit;cursor:pointer}
   background:#4FE0B0;animation:blink 1.6s infinite}
 #bot .wheels{display:flex;justify-content:space-around;margin-top:-2px}
 #bot .wheels i{width:8px;height:8px;border-radius:50%;background:var(--ink)}
+
+/* ---------- night train (grind era only) ---------- */
+#train{position:fixed;left:0;bottom:4px;z-index:4;width:220px;pointer-events:none;opacity:0;
+  transition:opacity .6s;animation:trainrun 30s linear infinite}
+@keyframes trainrun{from{transform:translateX(105vw)}to{transform:translateX(-260px)}}
+#train svg{display:block;width:100%;height:auto;animation:chug .38s steps(2,end) infinite}
+@keyframes chug{50%{transform:translateY(-1.5px)}}
+
+/* ---------- drifting satellite (final act only) ---------- */
+#sat-drift{position:fixed;top:11%;left:0;z-index:4;width:60px;pointer-events:none;opacity:0;
+  transition:opacity .8s;animation:satdrift 70s linear infinite}
+@keyframes satdrift{from{transform:translate(-90px,0) rotate(-10deg)}to{transform:translate(108vw,70px) rotate(16deg)}}
+#sat-drift svg{display:block;width:100%;height:auto}
+
+/* ---------- card satellites: glyphs at real 3D depths around chapter cards ---------- */
+.card{transform-style:preserve-3d}
+.sat{position:absolute;left:var(--sx);top:var(--sy);transform:translate3d(-50%,-50%,var(--sz,0px));
+  font-family:var(--font-mono);color:var(--accent);pointer-events:none;
+  text-shadow:0 0 14px var(--accent)}
+.sat i{display:block;font-style:normal;opacity:.92;
+  animation:satfloat var(--sdur,5s) ease-in-out var(--sd,0s) infinite alternate}
+.sat svg{display:block;filter:drop-shadow(0 0 9px currentColor)}
+.sat .sat-txt{font-size:17px;font-weight:600;letter-spacing:.04em}
+@keyframes satfloat{from{transform:translateY(-7px) rotate(-8deg)}to{transform:translateY(7px) rotate(8deg)}}
+
+/* ---------- field reports (blog postcards) ---------- */
+.blognode{width:min(86vw,500px);text-align:center}
+.bn-eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:.3em;color:var(--accent);
+  text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:9px}
+.blognode h2,.obsv h2{font-family:var(--font-display);font-weight:800;
+  font-size:clamp(26px,4.6vw,40px);letter-spacing:-.01em;margin:8px 0 18px}
+.postcards{display:flex;flex-direction:column;gap:14px}
+.postcard{display:block;background:var(--washi);color:var(--ink);padding:14px 16px 12px;
+  text-align:left;text-decoration:none;transform:rotate(var(--pr,0deg));
+  transition:transform .25s,box-shadow .25s;
+  box-shadow:0 0 0 1px rgba(255,255,255,.12),0 18px 44px rgba(0,0,0,.5);
+  border:6px solid;
+  border-image:repeating-linear-gradient(45deg,#D8492B 0 10px,var(--washi) 10px 20px,#2C5AB0 20px 30px,var(--washi) 30px 40px) 6}
+.postcard:hover{transform:rotate(0deg) translateY(-4px) scale(1.02);
+  box-shadow:0 0 0 1px rgba(255,255,255,.2),0 26px 60px rgba(0,0,0,.6)}
+.postcard h3{font-family:var(--font-display);font-size:16px;font-weight:700;line-height:1.35;margin:8px 0}
+.pc-top{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.pc-date{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.15em;color:var(--ink-soft);text-transform:uppercase}
+.pc-cat{font-family:var(--font-mono);font-size:10px;padding:2px 8px;border:1px solid var(--accent-deep);
+  color:var(--accent-deep);border-radius:999px}
+.pc-read{font-family:var(--font-mono);font-size:11.5px;color:var(--accent-deep);font-weight:600}
+.bn-all{display:inline-block;margin-top:18px;font-family:var(--font-mono);font-size:12.5px;
+  color:var(--accent);text-decoration:none;border-bottom:1px dashed var(--accent);padding-bottom:2px}
+.bn-all:hover{color:var(--washi);border-color:var(--washi)}
+.bn-fallback{color:var(--moon);font-size:15px;margin-bottom:6px}
+
+/* ---------- mission control (live GitHub orbits) ---------- */
+.obsv{width:min(92vw,640px);text-align:center}
+.obsv-sub{color:var(--moon);font-size:14.5px;margin:-8px 0 4px}
+.live-dot{width:8px;height:8px;border-radius:50%;background:#FF5B5B;display:inline-block;
+  box-shadow:0 0 10px rgba(255,91,91,.9);animation:blink 1.6s infinite}
+#orbit-sys{position:relative;width:min(84vw,54vh,470px);height:min(84vw,54vh,470px);margin:4px auto 0}
+.orbit-status{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--font-mono);
+  font-size:12px;color:var(--moon);letter-spacing:.2em}
+.ring{position:absolute;inset:0;margin:auto;width:calc(var(--r)*2);height:calc(var(--r)*2);
+  border:1px dashed rgba(174,184,200,.16);border-radius:50%}
+.orb{position:absolute;inset:0;animation:orbit var(--dur) linear infinite;animation-delay:var(--del)}
+@keyframes orbit{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.planet{position:absolute;left:50%;top:0;transform:translate(-50%,-50%)}
+.pbody{display:flex;flex-direction:column;align-items:center;gap:5px;text-decoration:none;
+  animation:orbit var(--dur) linear infinite reverse;animation-delay:var(--del)}
+.pbody i{display:block;width:var(--sz);height:var(--sz);border-radius:50%;background:var(--pc);
+  box-shadow:0 0 14px var(--pc),inset -3px -3px 6px rgba(0,0,0,.4);transition:transform .2s}
+.pbody:hover i{transform:scale(1.3)}
+.pbody span{font-family:var(--font-mono);font-size:10px;color:var(--moon);white-space:nowrap;
+  opacity:.8;transition:opacity .2s,color .2s}
+.pbody:hover span{opacity:1;color:var(--washi)}
+#orbit-sys:hover .orb,#orbit-sys:hover .pbody{animation-play-state:paused}
+.core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;
+  flex-direction:column;align-items:center;gap:6px}
+.core img{width:54px;height:54px;border-radius:50%;border:2px solid var(--accent);
+  box-shadow:0 0 28px var(--accent)}
+.core span{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.15em;color:var(--moon)}
+.obsv-stats{display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap;min-height:28px}
+.obsv-stats span{font-family:var(--font-mono);font-size:11.5px;color:var(--accent);
+  border:1px solid var(--accent);border-radius:999px;padding:4px 12px}
+#orbit-tip{position:fixed;z-index:8;background:var(--washi);color:var(--ink);border-radius:10px;
+  padding:10px 14px;font-size:12.5px;max-width:250px;pointer-events:none;opacity:0;
+  transition:opacity .15s;box-shadow:0 10px 30px rgba(0,0,0,.5);text-align:left}
+#orbit-tip b{font-family:var(--font-mono);font-size:12px}
+#orbit-tip .d{color:var(--ink-soft);margin-top:3px;line-height:1.45}
+#orbit-tip .m{font-family:var(--font-mono);font-size:10.5px;color:var(--accent-deep);margin-top:5px}
 
 button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 
@@ -233,6 +321,8 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
   #hud-name{top:14px;left:16px}
   #dock{left:16px;max-width:60vw}
   .card{padding:20px 20px 18px}
-  #crow{width:70px;right:44px;bottom:92px}
+  #buddy{width:46px;right:44px;bottom:92px}
   #bubble{right:80px;bottom:164px;font-size:12px;max-width:180px}
+  #train{width:150px}
+  .sat{display:none}
 }

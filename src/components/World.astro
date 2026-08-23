@@ -5,7 +5,13 @@
  * Horizontal/vertical offsets are emitted as --dx/--dy custom properties in
  * viewport units — the CSS equivalent of the old innerWidth math.
  */
-import { TIMELINE, ERAS, NOTES, ALL_SKILLS, SITE } from '../data/portfolio';
+import { TIMELINE, ERAS, NOTES, ALL_SKILLS, GATE_CAM, SITE } from '../data/portfolio';
+import type { BlogPost } from '../lib/blog';
+
+interface Props {
+  posts: BlogPost[];
+}
+const { posts } = Astro.props;
 
 const ASCII_TREE = `        (8)
        /   \\
@@ -48,6 +54,42 @@ const offset = (idx: number, item: (typeof TIMELINE)[number]) => {
 };
 
 const factRotation = (idx: number) => `${(idx % 2 ? 1 : -1) * (2 + (idx % 3))}deg`;
+
+/* ---------- card satellites: era-themed objects floating at real 3D depths ---------- */
+const SAT_SLOTS = [
+  { x: '-16%', y: '-14%' }, { x: '106%', y: '-10%' }, { x: '112%', y: '58%' },
+  { x: '-18%', y: '72%' }, { x: '30%', y: '-22%' }, { x: '-24%', y: '32%' },
+  { x: '108%', y: '26%' }, { x: '55%', y: '114%' },
+];
+const SVG = {
+  plane: `<svg viewBox="0 0 32 26" width="30"><path d="M1 12 L31 1 L20 25 L14 16 Z" fill="currentColor" opacity=".9"/><path d="M14 16 L31 1" stroke="#0B0E1A" stroke-width="1.2"/></svg>`,
+  chai: `<svg viewBox="0 0 28 27" width="24"><path d="M4 9 h16 v7 a8 8 0 0 1 -16 0 Z" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M20 11 h3 a3.5 3.5 0 0 1 0 7 h-3.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M9 5 q1.5 -2.2 0 -4 M14 5 q1.5 -2.2 0 -4" stroke="currentColor" stroke-width="1.6" fill="none" opacity=".8"/></svg>`,
+  tree: `<svg viewBox="0 0 34 30" width="27"><line x1="17" y1="6" x2="8" y2="22" stroke="currentColor" stroke-width="1.8"/><line x1="17" y1="6" x2="26" y2="22" stroke="currentColor" stroke-width="1.8"/><circle cx="17" cy="5" r="4.2" fill="currentColor"/><circle cx="8" cy="23" r="4.2" fill="currentColor"/><circle cx="26" cy="23" r="4.2" fill="currentColor"/></svg>`,
+  gear: `<svg viewBox="0 0 30 30" width="26"><circle cx="15" cy="15" r="6.5" fill="none" stroke="currentColor" stroke-width="2.6"/><g stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><line x1="15" y1="1.5" x2="15" y2="6"/><line x1="15" y1="24" x2="15" y2="28.5"/><line x1="1.5" y1="15" x2="6" y2="15"/><line x1="24" y1="15" x2="28.5" y2="15"/><line x1="5.5" y1="5.5" x2="8.7" y2="8.7"/><line x1="21.3" y1="21.3" x2="24.5" y2="24.5"/><line x1="24.5" y1="5.5" x2="21.3" y2="8.7"/><line x1="8.7" y1="21.3" x2="5.5" y2="24.5"/></g></svg>`,
+  phone: `<svg viewBox="0 0 20 32" width="17"><rect x="1.5" y="1.5" width="17" height="29" rx="3.5" fill="none" stroke="currentColor" stroke-width="2.4"/><line x1="7" y1="26" x2="13" y2="26" stroke="currentColor" stroke-width="2"/></svg>`,
+  planet: `<svg viewBox="0 0 36 24" width="32"><circle cx="18" cy="12" r="7.5" fill="currentColor" opacity=".9"/><ellipse cx="18" cy="12" rx="16" ry="5" fill="none" stroke="currentColor" stroke-width="1.7" opacity=".85"/></svg>`,
+  torii: `<svg viewBox="0 0 32 28" width="26"><path d="M2 6 Q16 2 30 6" stroke="currentColor" stroke-width="2.8" fill="none"/><line x1="4" y1="12" x2="28" y2="12" stroke="currentColor" stroke-width="2.2"/><line x1="8" y1="6" x2="8" y2="27" stroke="currentColor" stroke-width="2.6"/><line x1="24" y1="6" x2="24" y2="27" stroke="currentColor" stroke-width="2.6"/></svg>`,
+  comet: `<svg viewBox="0 0 36 20" width="32"><circle cx="28" cy="10" r="5" fill="currentColor"/><path d="M24 7 L2 3 M23 10 L4 10 M24 13 L6 17" stroke="currentColor" stroke-width="1.6" opacity=".7"/></svg>`,
+};
+type Sat = { svg?: string; text?: string };
+const SAT_SETS: Sat[][] = [
+  [{ svg: SVG.plane }, { svg: SVG.chai }, { text: 'hello();' }],   // the spark
+  [{ svg: SVG.tree }, { text: '{ }' }, { text: '</>' }],           // the grind
+  [{ svg: SVG.gear }, { svg: SVG.phone }, { text: '$_' }],         // the builder
+  [{ svg: SVG.torii }, { svg: SVG.planet }, { text: '∞' }],        // worldmaker
+  [{ svg: SVG.comet }, { svg: SVG.planet }, { text: '★' }],        // now
+];
+const eraOf = (zCam: number) => Math.max(0, GATE_CAM.filter((g) => g <= zCam).length - 1);
+const satellites = (idx: number, zCam: number) => {
+  const set = SAT_SETS[eraOf(zCam)];
+  return [0, 1, 2].map((k) => ({
+    ...SAT_SLOTS[(idx * 3 + k) % SAT_SLOTS.length],
+    ...set[(idx + k) % set.length],
+    z: [-90, 70, 130][k],
+    dur: 4 + ((idx + k) % 3),
+    delay: (idx % 4) * 0.4 + k * 0.55,
+  }));
+};
 ---
 
 <div
@@ -111,9 +153,55 @@ const factRotation = (idx: number) => `${(idx % 2 ? 1 : -1) * (2 + (idx % 3))}de
             </div>
           );
 
+        if (item.type === 'blog')
+          return (
+            <section class="node blognode" data-z={z} data-near="1" style={style} aria-label="Latest blog posts">
+              <div class="bn-eyebrow">FIELD REPORTS · FROM THE BLOG</div>
+              <h2>Written from the lab</h2>
+              {posts.length > 0 ? (
+                <div class="postcards">
+                  {posts.map((p, i) => (
+                    <a class="postcard" href={p.link} target="_blank" rel="noopener" style={`--pr:${i % 2 ? 2.2 : -2.4}deg`}>
+                      <div class="pc-top">
+                        <span class="pc-date">{p.date}</span>
+                        {p.category && <span class="pc-cat">{p.category}</span>}
+                      </div>
+                      <h3>{p.title}</h3>
+                      <span class="pc-read">read the report →</span>
+                    </a>
+                  ))}
+                </div>
+              ) : (
+                <p class="bn-fallback">Long-form engineering write-ups — homelab, Kubernetes, Android, and whatever broke last week.</p>
+              )}
+              <a class="bn-all" href={SITE.blog} target="_blank" rel="noopener">
+                All posts → blogs.ijlalahmad.dev
+              </a>
+            </section>
+          );
+
+        if (item.type === 'repos')
+          return (
+            <section class="node obsv" data-z={z} data-near="1" style={style} aria-label="Live GitHub repositories">
+              <div class="bn-eyebrow">
+                <span class="live-dot" />
+                LIVE TELEMETRY · GITHUB API
+              </div>
+              <h2>Mission Control</h2>
+              <p class="obsv-sub">Real repositories in real orbits — sized by stars, colored by language, fetched the moment you flew in.</p>
+              <div id="orbit-sys" data-user={SITE.githubUser}>
+                <div class="orbit-status" id="orbit-status">establishing uplink…</div>
+              </div>
+              <div class="obsv-stats" id="gh-stats" aria-live="polite" />
+              <a class="bn-all" href={SITE.github} target="_blank" rel="noopener">
+                Full archive → github.com/{SITE.githubUser}
+              </a>
+            </section>
+          );
+
         if (item.type === 'end')
           return (
-            <div class="node finale" data-z={z} style={style}>
+            <div class="node finale" data-z={z} data-near="1" style={style}>
               <h2>
                 Everything collected,
                 <br />
@@ -144,6 +232,7 @@ const factRotation = (idx: number) => `${(idx % 2 ? 1 : -1) * (2 + (idx % 3))}de
                 <a class="primary" href={`mailto:${SITE.email}`}>Say hello</a>
                 <a href={SITE.github}>GitHub</a>
                 <a href={SITE.linkedin}>LinkedIn</a>
+                <a href={SITE.blog}>Blog</a>
               </div>
             </div>
           );
@@ -151,6 +240,15 @@ const factRotation = (idx: number) => `${(idx % 2 ? 1 : -1) * (2 + (idx % 3))}de
         /* chapter card */
         return (
           <article class="node card" data-z={z} style={style}>
+            {satellites(item.idx, item.zCam).map((s) => (
+              <span
+                class="sat"
+                aria-hidden="true"
+                style={`--sx:${s.x};--sy:${s.y};--sz:${s.z}px;--sdur:${s.dur}s;--sd:${s.delay}s`}
+              >
+                {s.svg ? <i set:html={s.svg} /> : <i class="sat-txt">{s.text}</i>}
+              </span>
+            ))}
             <div class="yr">{item.yr}</div>
             <h2>{item.t}</h2>
             <p>{item.body}</p>

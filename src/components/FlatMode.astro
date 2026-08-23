@@ -4,6 +4,12 @@
  * and no-JS visitors get the complete story, skills and contact links.
  */
 import { NOTES, ALL_SKILLS, SITE } from '../data/portfolio';
+import type { BlogPost } from '../lib/blog';
+
+interface Props {
+  posts: BlogPost[];
+}
+const { posts } = Astro.props;
 
 const story: { yr: string; title: string; body: string }[] = [
   { yr: '2016', title: 'First line of code.', body: 'A hand-me-down PC and a blinking cursor. No idea yet that it would become everything.' },
@@ -27,6 +33,7 @@ const story: { yr: string; title: string; body: string }[] = [
     <div class="links">
       <a href={SITE.github}>GitHub</a>
       <a href={SITE.linkedin}>LinkedIn</a>
+      <a href={SITE.blog}>Blog</a>
       <a href={`mailto:${SITE.email}`}>Email</a>
     </div>
 
@@ -40,6 +47,32 @@ const story: { yr: string; title: string; body: string }[] = [
           </p>
         </div>
       ))
+    }
+
+    {
+      posts.length > 0 && (
+        <>
+          <h3>Writing</h3>
+          {posts.map((p) => (
+            <div class="row">
+              <b>{p.date.split(',')[1]?.trim() ?? ''}</b>
+              <p>
+                <strong>
+                  <a href={p.link} style="color:#D8492B;text-decoration:none">{p.title}</a>
+                </strong>{' '}
+                {p.category ? `${p.category} · ` : ''}
+                {p.date}
+              </p>
+            </div>
+          ))}
+          <div class="row">
+            <b>ALL</b>
+            <p>
+              <a href={SITE.blog} style="color:#D8492B">More on the blog →</a>
+            </p>
+          </div>
+        </>
+      )
     }
 
     <h3>Field notes</h3>
