@@ -261,6 +261,18 @@ export const INTERESTS = ['Movies', 'Games', 'Anime', 'Sketching'];
 export const BUDDY = {
   start: "beep — co-pilot online. scroll to fly, i'll match your thrust.",
   fast: 'whoa! easy on the thrusters.',
+  quips: [
+    'beep. yes, the flame is supposed to do that.',
+    'fuel status: chai. levels: critical but stable.',
+    "i've flown this route 4,000 times. still not bored.",
+    'fun fact: the stars back there? hand-painted. every night.',
+    'he debugged me once at 3am. i saw things.',
+    'the crow retired. i have better mileage.',
+    'click detected. affection registered.',
+    'somewhere out there is a segfault he never fixed. we don’t go there.',
+    'trajectory nominal. vibes nominal.',
+    'psst — try the ? block if you haven’t.',
+  ],
   eras: [
     'act one: a kid, a keyboard, a spark.',
     'the grind era. he filled whole notebooks with trees.',
