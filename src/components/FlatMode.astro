@@ -1,0 +1,63 @@
+---
+/*
+ * "Boring mode" — the plain-text version. Fully server-rendered so crawlers
+ * and no-JS visitors get the complete story, skills and contact links.
+ */
+import { NOTES, ALL_SKILLS, SITE } from '../data/portfolio';
+
+const story: { yr: string; title: string; body: string }[] = [
+  { yr: '2016', title: 'First line of code.', body: 'A hand-me-down PC and a blinking cursor. No idea yet that it would become everything.' },
+  { yr: '2018', title: 'First web pages.', body: 'Discovered view-source and never recovered — the internet stopped being magic and became a workshop.' },
+  { yr: '2019', title: 'The DSA years.', body: 'Data structures and algorithms in C++, documented with hand-drawn ASCII diagrams.' },
+  { yr: '2020', title: 'Hackathons & all-nighters.', body: 'Duct-tape demos and the discovery that shipping beats perfect.' },
+  { yr: '2021', title: 'Android developer.', body: 'Kotlin, real apps, real users, real crash reports at 2am.' },
+  { yr: '2022', title: 'Full stack.', body: 'Followed the data past the screen into APIs, databases, and everything between.' },
+  { yr: '2023', title: 'Boardy.', body: 'A feature-rich drawing and design app in Next.js — my own canvas, literally.' },
+  { yr: '2024', title: 'Tooling & templates.', body: 'A production-grade Node + TypeScript service template, and node-server-init — one command, full server.' },
+  { yr: '2025', title: 'Infinity Castle.', body: 'An infinite, self-assembling Japanese castle in Three.js. You fly through it as a crow. Zero art assets.' },
+  { yr: '2025', title: 'Home server lab.', body: 'Enterprise-grade self-hosted services running 24/7 on Raspberry Pi.' },
+];
+---
+
+<div id="flat" role="document">
+  <div class="flat-in">
+    <div class="note">The plain version — no flying required</div>
+    <h1>{SITE.name}</h1>
+    <div class="sub">Full stack web &amp; Android developer. I build tools, worlds, and the servers they run on.</div>
+    <div class="links">
+      <a href={SITE.github}>GitHub</a>
+      <a href={SITE.linkedin}>LinkedIn</a>
+      <a href={`mailto:${SITE.email}`}>Email</a>
+    </div>
+
+    <h3>The short story</h3>
+    {
+      story.map((row) => (
+        <div class="row">
+          <b>{row.yr}</b>
+          <p>
+            <strong>{row.title}</strong> {row.body}
+          </p>
+        </div>
+      ))
+    }
+
+    <h3>Field notes</h3>
+    <div class="notes-list">{NOTES.map((n) => <span>{n}</span>)}</div>
+
+    <h3>Skills</h3>
+    <div class="skills">{ALL_SKILLS.map((s) => <span>{s}</span>)}</div>
+
+    <h3>Say hello</h3>
+    <div class="row">
+      <b>NOW</b>
+      <p>
+        Open to interesting problems. The fastest way to reach me is
+        <a href={`mailto:${SITE.email}`} style="color:#D8492B"> email</a> or a GitHub issue on any repo — I actually read those.
+      </p>
+    </div>
+    <p class="rm-note" id="rm-note" hidden>
+      You're seeing this version because your system prefers reduced motion. The full experience is one button away if you want it.
+    </p>
+  </div>
+</div>

@@ -1,0 +1,48 @@
+---
+/* Fixed-position UI: HUD, chapter rail, skill dock, toast, crow, robot pet. */
+import { TIMELINE, SITE } from '../data/portfolio';
+
+const railItems = TIMELINE.filter(
+  (it) => it.type === 'ch' || it.type === 'end' || it.type === 'intro',
+);
+const railLabel = (it: (typeof railItems)[number]) =>
+  it.type === 'ch' ? `${it.yr} · ${it.t}` : it.type === 'end' ? 'Today' : 'Start';
+---
+
+<div id="hud-name">
+  {SITE.name.toUpperCase()}<small>FULL STACK · WEB / ANDROID</small>
+</div>
+
+<button id="skip">Skip to the point →</button>
+
+<nav id="rail" aria-label="Chapters">
+  {railItems.map((it) => <button data-t={railLabel(it)} data-z={it.zCam} aria-label={railLabel(it)} />)}
+</nav>
+
+<div id="dock" aria-live="polite">
+  <div class="dl" hidden>Skills collected</div>
+  <div class="tags"></div>
+</div>
+
+<div id="toast" role="status"></div>
+<div id="hint2">SCROLL · DRAG · ARROW KEYS</div>
+
+<div id="crow" aria-hidden="true">
+  <div class="bobber">
+    <svg viewBox="0 0 120 78">
+      <polygon points="18,52 66,40 94,52 66,60" fill="#20232E"></polygon>
+      <polygon points="94,52 111,47 94,58" fill="var(--accent)"></polygon>
+      <polygon points="18,52 3,42 12,58" fill="#20232E"></polygon>
+      <polygon points="66,40 78,32 82,42" fill="#20232E"></polygon>
+      <circle cx="76" cy="39" r="1.8" fill="var(--washi)"></circle>
+      <polygon class="wing" points="52,46 76,6 66,48" fill="var(--accent)"></polygon>
+    </svg>
+  </div>
+</div>
+<div id="bubble" role="status"></div>
+
+<div id="bot" aria-hidden="true">
+  <div class="ant"></div>
+  <div class="body"><div class="eye"></div></div>
+  <div class="wheels"><i></i><i></i></div>
+</div>

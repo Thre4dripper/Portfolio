@@ -1,0 +1,193 @@
+---
+/*
+ * The 3D world, server-rendered. Every node in the flight path is real HTML
+ * (crawlable, works before JS loads); the camera script only animates them.
+ * Horizontal/vertical offsets are emitted as --dx/--dy custom properties in
+ * viewport units — the CSS equivalent of the old innerWidth math.
+ */
+import { TIMELINE, ERAS, NOTES, ALL_SKILLS, SITE } from '../data/portfolio';
+
+const ASCII_TREE = `        (8)
+       /   \\
+     (3)   (10)
+     / \\      \\
+   (1) (6)    (14)   ← my notes still
+       / \\    /        look like this
+     (4) (7)(13)`;
+
+/** Constellation points — same deterministic pseudo-random layout as before. */
+const points = ALL_SKILLS.map((s, i) => {
+  const gx = i % 5;
+  const gy = Math.floor(i / 5);
+  return {
+    s,
+    x: 70 + gx * 125 + Math.sin(i * 12.9898) * 26,
+    y: 58 + gy * 88 + Math.cos(i * 78.233) * 20,
+  };
+});
+
+const offset = (idx: number, item: (typeof TIMELINE)[number]) => {
+  if (item.type === 'fact') {
+    const mag = 'min(27vw, 310px)';
+    return {
+      dx: idx % 2 ? mag : `calc(-1 * ${mag})`,
+      dy: `${((idx % 3) - 1) * 55 - 20}px`,
+    };
+  }
+  if (item.type === 'block') {
+    return { dx: 'calc(-1 * min(18vw, 200px))', dy: '-180px' };
+  }
+  if (item.type === 'ch') {
+    const mag = 'min(14vw, 170px)';
+    return {
+      dx: idx % 2 ? `calc(-1 * ${mag})` : mag,
+      dy: `${((idx % 3) - 1) * 24}px`,
+    };
+  }
+  return { dx: '0px', dy: '0px' };
+};
+
+const factRotation = (idx: number) => `${(idx % 2 ? 1 : -1) * (2 + (idx % 3))}deg`;
+---
+
+<div
+  id="stage"
+  aria-label="3D journey through Ijlal's life and work. Scroll to travel. A plain-text version is available via the Skip to the point button."
+>
+  <div id="world">
+    {
+      TIMELINE.map((item) => {
+        const { dx, dy } = offset(item.idx, item);
+        const style = `--dx:${dx};--dy:${dy}`;
+        const z = -item.zCam;
+
+        if (item.type === 'intro')
+          return (
+            <div class="node intro" data-z={z} style={style}>
+              <div class="eyebrow">A portfolio you fly through</div>
+              <h1>
+                IJLAL
+                <br />
+                <em>AHMAD</em>
+              </h1>
+              <p>
+                Full stack web &amp; Android developer. This isn't a page — it's a flight path.
+                <br />
+                Five acts ahead. The sky changes as the story does.
+              </p>
+              <div class="hint">SCROLL TO FLY ↓</div>
+            </div>
+          );
+
+        if (item.type === 'gate') {
+          const era = ERAS[item.era];
+          return (
+            <div class="node gate" data-z={z} style={`${style};color:${era.acc}`}>
+              <div class="rule" />
+              <h2>{era.name}</h2>
+              <small>{era.sub}</small>
+              <div class="rule" style="margin-top:16px" />
+            </div>
+          );
+        }
+
+        if (item.type === 'fact')
+          return (
+            <aside class="node fact" data-z={z} style={style}>
+              <div class="fin" style={`--rot:${factRotation(item.idx)}`}>
+                <div class="pin" />
+                <div class="fl">field note</div>
+                <p>{NOTES[item.n]}</p>
+              </div>
+            </aside>
+          );
+
+        if (item.type === 'block')
+          return (
+            <div class="node" data-z={z} style={style}>
+              <button id="qblock" aria-label="Secret block. Press for a fun fact.">
+                ?
+              </button>
+            </div>
+          );
+
+        if (item.type === 'end')
+          return (
+            <div class="node finale" data-z={z} style={style}>
+              <h2>
+                Everything collected,
+                <br />
+                <em>one constellation.</em>
+              </h2>
+              <p>Each skill was picked up somewhere on this flight. Here's the whole sky.</p>
+              <svg id="constellation" viewBox="0 0 640 470" role="img" aria-label="Constellation of skills">
+                {points.slice(0, -1).map((p, i) => (
+                  <line
+                    class="c-line"
+                    x1={p.x}
+                    y1={p.y}
+                    x2={points[i + 1].x}
+                    y2={points[i + 1].y}
+                    style={`animation-delay:${(i * 0.1).toFixed(1)}s`}
+                  />
+                ))}
+                {points.map((p, i) => (
+                  <>
+                    <circle class="c-dot" cx={p.x} cy={p.y} r="3.4" style={`animation-delay:${(0.3 + i * 0.1).toFixed(1)}s`} />
+                    <text class="c-txt" x={p.x} y={p.y - 11} text-anchor="middle" style={`animation-delay:${(0.5 + i * 0.1).toFixed(1)}s`}>
+                      {p.s}
+                    </text>
+                  </>
+                ))}
+              </svg>
+              <div class="contact">
+                <a class="primary" href={`mailto:${SITE.email}`}>Say hello</a>
+                <a href={SITE.github}>GitHub</a>
+                <a href={SITE.linkedin}>LinkedIn</a>
+              </div>
+            </div>
+          );
+
+        /* chapter card */
+        return (
+          <article class="node card" data-z={z} style={style}>
+            <div class="yr">{item.yr}</div>
+            <h2>{item.t}</h2>
+            <p>{item.body}</p>
+            {item.set === 'ascii' && <div class="ascii">{ASCII_TREE}</div>}
+            {item.set === 'draw' && (
+              <div class="draw-wrap">
+                <canvas id="boardy" width="700" height="260" />
+                <span class="lbl">draw here — go on</span>
+              </div>
+            )}
+            {item.set === 'term' && (
+              <div class="term">
+                <span class="ps1">$</span> <span id="term-out" />
+              </div>
+            )}
+            {item.set === 'castle' && (
+              <div class="castle" id="castle">
+                <span class="glow" />
+              </div>
+            )}
+            {item.set === 'rack' && (
+              <div class="rack">
+                <div><span class="led" />pi-hole<b>dns · up 214d</b></div>
+                <div><span class="led" style="animation-delay:.7s" />jellyfin<b>media · up 214d</b></div>
+                <div><span class="led" style="animation-delay:1.3s" />nextcloud<b>files · up 198d</b></div>
+                <div><span class="led" style="animation-delay:1.9s" />uptime-kuma<b>watching the watchers</b></div>
+              </div>
+            )}
+            <div class="tags">{item.skills.map((s) => <span>{s}</span>)}</div>
+            {item.link && (
+              <a class="peek" href={item.link[0]} target="_blank" rel="noopener">
+                {item.link[1]}
+              </a>
+            )}
+          </article>
+        );
+      })
+    }
+  </div>
+</div>
