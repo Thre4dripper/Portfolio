@@ -29,9 +29,15 @@ export const NOTES: string[] = [
   'keyboard: loud. regrets: none.',
   'watches conference talks the way other people watch netflix.',
   'the home server has better uptime than his sleep schedule.',
+  'sketches anime characters between deploys. calls it "research".',
 ];
 
-export type SetPiece = 'ascii' | 'draw' | 'term' | 'castle' | 'rack';
+export type SetPiece =
+  | 'ascii' | 'draw' | 'term' | 'castle' | 'rack'
+  | 'boot' | 'viewsrc' | 'shipit' | 'crash' | 'api';
+
+/** Window chrome a chapter renders in — variety beyond the washi card. */
+export type Frame = 'terminal' | 'browser' | 'notebook' | 'phone' | 'editor';
 
 export type TimelineItem =
   | { type: 'intro' }
@@ -43,6 +49,7 @@ export type TimelineItem =
       skills: string[];
       body: string;
       set?: SetPiece;
+      frame?: Frame;
       link?: [url: string, label: string];
     }
   | { type: 'fact'; n: number }
@@ -53,7 +60,7 @@ export type TimelineItem =
   | { type: 'end' };
 
 export const SPACING: Record<TimelineItem['type'], number> = {
-  intro: 950,
+  intro: 1100,
   gate: 780,
   ch: 950,
   fact: 560,
@@ -68,34 +75,38 @@ const RAW_TIMELINE: TimelineItem[] = [
   { type: 'intro' },
   { type: 'gate', era: 0 },
   {
-    type: 'ch', yr: '2016', t: 'First line of code', skills: ['C++'],
+    type: 'ch', yr: '2016', t: 'First line of code', skills: ['C++'], frame: 'terminal', set: 'boot',
     body: 'A hand-me-down PC, a blinking cursor, and no idea it would become everything.',
   },
   { type: 'fact', n: 0 },
   {
-    type: 'ch', yr: '2018', t: 'First web pages', skills: ['HTML', 'CSS', 'JavaScript'],
+    type: 'ch', yr: '2018', t: 'First web pages', skills: ['HTML', 'CSS', 'JavaScript'], frame: 'browser', set: 'viewsrc',
     body: 'Discovered view-source and never recovered. The internet stopped being magic and became a workshop.',
   },
   { type: 'fact', n: 1 },
   { type: 'gate', era: 1 },
   {
-    type: 'ch', yr: '2019', t: 'The DSA years', skills: ['Algorithms', 'Data structures'],
+    type: 'ch', yr: '2019', t: 'The DSA years', skills: ['Algorithms', 'Data structures'], frame: 'notebook',
     body: 'Grinding data structures in C++ and documenting every one with ASCII diagrams — so future-me could understand past-me.',
     set: 'ascii',
   },
   { type: 'fact', n: 2 },
   {
-    type: 'ch', yr: '2020', t: 'Hackathons & all-nighters', skills: ['Git', 'Problem solving'],
+    type: 'ch', yr: '2020', t: 'Hackathons & all-nighters', skills: ['Git', 'Problem solving'], set: 'shipit',
     body: 'Team projects, duct-tape demos, and the discovery that shipping beats perfect.',
+  },
+  {
+    type: 'ch', yr: '2020', t: 'Enter Jamia Millia', skills: ['Computer Science'],
+    body: 'B.E. in Computer Science at Jamia Millia Islamia, New Delhi. A 9.14 GPA — and four years where everything accelerated.',
   },
   { type: 'gate', era: 2 },
   {
-    type: 'ch', yr: '2021', t: 'Android developer', skills: ['Kotlin', 'Android'],
+    type: 'ch', yr: '2021', t: 'Android developer', skills: ['Kotlin', 'Android'], frame: 'phone', set: 'crash',
     body: 'Shipping real apps to real users. Learning that "works on my device" is a threat, not a status.',
   },
   { type: 'fact', n: 3 },
   {
-    type: 'ch', yr: '2022', t: 'Going full stack', skills: ['TypeScript', 'React', 'Node.js'],
+    type: 'ch', yr: '2022', t: 'Going full stack', skills: ['TypeScript', 'React', 'Node.js'], frame: 'editor', set: 'api',
     body: 'Followed the data past the screen — into APIs, databases, sockets, and everything between.',
   },
   {
@@ -106,10 +117,19 @@ const RAW_TIMELINE: TimelineItem[] = [
   },
   { type: 'fact', n: 4 },
   {
+    type: 'ch', yr: '2023', t: 'Medusa & a national win', skills: ['WebRTC', 'AI proctoring'],
+    body: 'An AI-proctored exam portal — selective many-to-many WebRTC monitoring, AI flagging suspicious activity. Smart India Hackathon 2023: winner.',
+  },
+  { type: 'fact', n: 8 },
+  {
     type: 'ch', yr: '2024', t: 'Tooling & templates', skills: ['Express', 'Docker', 'Redis', 'gRPC'],
     body: 'A production-grade Node + TypeScript service template — and an npm package that scaffolds it in one command.',
     set: 'term',
     link: ['https://github.com/Thre4dripper/NodeTs-Express-Service-Based-Template', 'View the template →'],
+  },
+  {
+    type: 'ch', yr: '2024', t: 'S&P Global', skills: ['AWS', 'ECS', 'Splunk'],
+    body: 'Associate SDE — moved the iLevel notification microservices from Lambda to ECS, built the Splunk dashboards that watch them, and tuned a big-data pipeline into S3.',
   },
   { type: 'block' },
   { type: 'gate', era: 3 },
@@ -127,8 +147,12 @@ const RAW_TIMELINE: TimelineItem[] = [
     link: ['https://github.com/Thre4dripper/Home-Server-Lab', 'See the lab →'],
   },
   { type: 'fact', n: 6 },
-  { type: 'fact', n: 7 },
   { type: 'gate', era: 4 },
+  {
+    type: 'ch', yr: '2025', t: 'Kenverse — AI platform', skills: ['LLM agents', 'IAM', 'Multi-tenancy'],
+    body: 'SDE at Kenverse (TurboStart): a multi-tenant AI platform — LLM chat & voice agents, Casbin-based IAM, white-labeled tenant deployments.',
+  },
+  { type: 'fact', n: 7 },
   { type: 'journeys' },
   { type: 'blog' },
   { type: 'repos' },
@@ -177,10 +201,54 @@ export function railLabel(it: PositionedItem): string {
 
 /** LinkedIn track of the Journey Log — the API is closed, so EDIT ME by hand. */
 export const LINKEDIN_MILESTONES: { yr: string; label: string }[] = [
-  { yr: '2021', label: 'Android developer' },
-  { yr: '2022', label: 'Full stack engineer' },
-  { yr: '2024', label: 'Building tools & infra' }, // TODO: your actual roles
+  { yr: '2023', label: 'SDE intern · Bea Brand' },
+  { yr: '2024', label: 'Associate SDE · S&P Global' },
+  { yr: '2025', label: 'SDE · Kenverse' },
 ];
+
+/* ---------- resume data (drives the plain/flat CV page) ---------- */
+
+export const EXPERIENCE = [
+  {
+    org: 'Kenverse (TurboStart)', where: 'New Delhi', role: 'Software Development Engineer', when: 'Nov 2025 — present',
+    points: [
+      'Designing a multi-tenant AI platform for scalable LLM-powered chat and voice agents with dynamic agentic workflows.',
+      'Centralized IAM with Casbin-based PBAC securing AI/agent APIs across REST and gRPC microservices.',
+      'Hierarchical multi-tenancy with white-labeling for tenant-isolated agent deployments.',
+      'Dynamic secrets store for AI providers and tenant configs, secured with RSA asymmetric encryption.',
+    ],
+  },
+  {
+    org: 'S&P Global', where: 'Noida', role: 'Associate Software Development Engineer', when: 'Jul 2024 — Nov 2025',
+    points: [
+      'Migrated core iLevel notification microservices from AWS Lambda to Amazon ECS for cost efficiency and scale.',
+      'Built Splunk dashboards for big-data analysis and real-time monitoring.',
+      'Optimized a big-data streaming pipeline ingesting into Amazon S3.',
+    ],
+  },
+  {
+    org: 'Bea Brand', where: 'Gurugram', role: 'Software Development Intern', when: 'Jan 2023 — Jul 2024',
+    points: [
+      'Node.js (Express) + TypeScript with MySQL on Amazon RDS for an e-commerce platform.',
+      'Push and email notification service with Apache Kafka and Firebase Cloud Messaging.',
+      'Cloud drive on Amazon S3 with RDS as the metadata store.',
+    ],
+  },
+];
+
+export const EDUCATION = [
+  { school: 'Jamia Millia Islamia, New Delhi', detail: 'B.E. Computer Science — 9.14/10 GPA', when: 'Dec 2020 — May 2024' },
+  { school: 'Bal Vidya Mandir Sr. Sec. School, Sambhal', detail: 'Intermediate 93.2% · High School 9.2 CGPA', when: '2014 — 2018' },
+];
+
+export const ACHIEVEMENTS = [
+  'Smart India Hackathon 2023 — Winner (Medusa, AI-proctored examination portal)',
+  'Smart India Hackathon 2022 — Finalist',
+  'AWS Beginner to Advanced certification',
+  '500+ problems solved on LeetCode',
+];
+
+export const INTERESTS = ['Movies', 'Games', 'Anime', 'Sketching'];
 
 export const BUDDY = {
   start: "beep — co-pilot online. scroll to fly, i'll match your thrust.",
@@ -214,5 +282,6 @@ export const SITE = {
   linkedin: 'https://www.linkedin.com/in/thre4dripper/',
   blog: 'https://blogs.ijlalahmad.dev',
   blogRss: 'https://blogs.ijlalahmad.dev/rss.xml',
-  email: 'hello@example.com', // TODO: put your real email here
+  email: 'ijlalahmad845@gmail.com',
+  location: 'New Delhi, India',
 };

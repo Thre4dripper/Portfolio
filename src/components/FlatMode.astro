@@ -1,9 +1,12 @@
 ---
 /*
- * "Boring mode" — the plain-text version. Fully server-rendered so crawlers
- * and no-JS visitors get the complete story, skills and contact links.
+ * "Boring mode" — the minimal, content-complete CV. Fully server-rendered:
+ * crawlers, no-JS visitors and recruiters in a hurry all get everything —
+ * experience, education, projects, achievements, writing, skills, contact.
  */
-import { NOTES, ALL_SKILLS, SITE } from '../data/portfolio';
+import {
+  NOTES, ALL_SKILLS, SITE, EXPERIENCE, EDUCATION, ACHIEVEMENTS, INTERESTS,
+} from '../data/portfolio';
 import type { BlogPost } from '../lib/blog';
 
 interface Props {
@@ -11,17 +14,12 @@ interface Props {
 }
 const { posts } = Astro.props;
 
-const story: { yr: string; title: string; body: string }[] = [
-  { yr: '2016', title: 'First line of code.', body: 'A hand-me-down PC and a blinking cursor. No idea yet that it would become everything.' },
-  { yr: '2018', title: 'First web pages.', body: 'Discovered view-source and never recovered — the internet stopped being magic and became a workshop.' },
-  { yr: '2019', title: 'The DSA years.', body: 'Data structures and algorithms in C++, documented with hand-drawn ASCII diagrams.' },
-  { yr: '2020', title: 'Hackathons & all-nighters.', body: 'Duct-tape demos and the discovery that shipping beats perfect.' },
-  { yr: '2021', title: 'Android developer.', body: 'Kotlin, real apps, real users, real crash reports at 2am.' },
-  { yr: '2022', title: 'Full stack.', body: 'Followed the data past the screen into APIs, databases, and everything between.' },
-  { yr: '2023', title: 'Boardy.', body: 'A feature-rich drawing and design app in Next.js — my own canvas, literally.' },
-  { yr: '2024', title: 'Tooling & templates.', body: 'A production-grade Node + TypeScript service template, and node-server-init — one command, full server.' },
-  { yr: '2025', title: 'Infinity Castle.', body: 'An infinite, self-assembling Japanese castle in Three.js. You fly through it as a crow. Zero art assets.' },
-  { yr: '2025', title: 'Home server lab.', body: 'Enterprise-grade self-hosted services running 24/7 on Raspberry Pi.' },
+const projects: { yr: string; title: string; body: string; href?: string }[] = [
+  { yr: '2023', title: 'Medusa', body: 'AI-proctored examination portal with selective many-to-many WebRTC monitoring. Smart India Hackathon 2023 winner.' },
+  { yr: '2023', title: 'Boardy', body: 'Feature-rich drawing and design app in Next.js.', href: 'https://github.com/Thre4dripper/Boardy-WebApp' },
+  { yr: '2024', title: 'NodeTs service template + node-server-init', body: 'Production-grade Node + TypeScript service template, scaffolded by one npm command.', href: 'https://github.com/Thre4dripper/NodeTs-Express-Service-Based-Template' },
+  { yr: '2025', title: 'Infinity Castle', body: 'Infinite, self-assembling Japanese castle in Three.js — fly through it as a crow, zero art assets.', href: 'https://github.com/Thre4dripper/Infinity-Castle-ThreeJs' },
+  { yr: '2025', title: 'Home Server Lab', body: 'Enterprise-grade self-hosted services running 24/7 on Raspberry Pi.', href: 'https://github.com/Thre4dripper/Home-Server-Lab' },
 ];
 ---
 
@@ -29,25 +27,55 @@ const story: { yr: string; title: string; body: string }[] = [
   <div class="flat-in">
     <div class="note">The plain version — no flying required</div>
     <h1>{SITE.name}</h1>
-    <div class="sub">Full stack web &amp; Android developer. I build tools, worlds, and the servers they run on.</div>
+    <div class="sub">
+      Full stack web &amp; Android developer, {SITE.location}. I build tools, worlds, and the servers they run on.
+    </div>
     <div class="links">
       <a href={SITE.github}>GitHub</a>
       <a href={SITE.linkedin}>LinkedIn</a>
       <a href={SITE.blog}>Blog</a>
-      <a href={`mailto:${SITE.email}`}>Email</a>
+      <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
     </div>
 
-    <h3>The short story</h3>
+    <h3>Experience</h3>
     {
-      story.map((row) => (
+      EXPERIENCE.map((job) => (
         <div class="row">
-          <b>{row.yr}</b>
+          <b>{job.when.split(' ')[0].slice(-3)} {job.when.match(/\d{4}/)?.[0]}</b>
           <p>
-            <strong>{row.title}</strong> {row.body}
+            <strong>{job.role} · {job.org}</strong> {job.where} · {job.when}
+            <span class="bullets">{job.points.map((pt) => <span class="bullet">{pt}</span>)}</span>
           </p>
         </div>
       ))
     }
+
+    <h3>Education</h3>
+    {
+      EDUCATION.map((ed) => (
+        <div class="row">
+          <b>{ed.when.match(/\d{4}/)?.[0]}</b>
+          <p>
+            <strong>{ed.school}</strong> {ed.detail} · {ed.when}
+          </p>
+        </div>
+      ))
+    }
+
+    <h3>Projects</h3>
+    {
+      projects.map((pr) => (
+        <div class="row">
+          <b>{pr.yr}</b>
+          <p>
+            <strong>{pr.href ? <a href={pr.href} style="color:#D8492B;text-decoration:none">{pr.title}</a> : pr.title}.</strong> {pr.body}
+          </p>
+        </div>
+      ))
+    }
+
+    <h3>Achievements &amp; certifications</h3>
+    <div class="notes-list">{ACHIEVEMENTS.map((a) => <span>{a}</span>)}</div>
 
     {
       posts.length > 0 && (
@@ -55,7 +83,7 @@ const story: { yr: string; title: string; body: string }[] = [
           <h3>Writing</h3>
           {posts.map((p) => (
             <div class="row">
-              <b>{p.date.split(',')[1]?.trim() ?? ''}</b>
+              <b>{p.year}</b>
               <p>
                 <strong>
                   <a href={p.link} style="color:#D8492B;text-decoration:none">{p.title}</a>
@@ -75,11 +103,14 @@ const story: { yr: string; title: string; body: string }[] = [
       )
     }
 
+    <h3>Skills</h3>
+    <div class="skills">{ALL_SKILLS.map((s) => <span>{s}</span>)}</div>
+
     <h3>Field notes</h3>
     <div class="notes-list">{NOTES.map((n) => <span>{n}</span>)}</div>
 
-    <h3>Skills</h3>
-    <div class="skills">{ALL_SKILLS.map((s) => <span>{s}</span>)}</div>
+    <h3>Interests</h3>
+    <div class="notes-list">{INTERESTS.map((n) => <span>{n}</span>)}</div>
 
     <h3>Say hello</h3>
     <div class="row">

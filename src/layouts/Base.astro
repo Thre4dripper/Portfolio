@@ -18,8 +18,12 @@ const jsonLd = JSON.stringify({
   '@type': 'Person',
   name: SITE.name,
   jobTitle: SITE.role,
+  email: `mailto:${SITE.email}`,
   url: canonical.href,
   sameAs: [SITE.github, SITE.linkedin, SITE.blog],
+  worksFor: { '@type': 'Organization', name: 'Kenverse' },
+  alumniOf: { '@type': 'CollegeOrUniversity', name: 'Jamia Millia Islamia' },
+  address: { '@type': 'PostalAddress', addressLocality: 'New Delhi', addressCountry: 'IN' },
   knowsAbout: ALL_SKILLS,
 });
 ---
