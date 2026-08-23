@@ -6,7 +6,7 @@ import { initSky } from './sky';
 import {
   initBoardy, initCastle, initQBlock, initCompile, initDeploy, createQuestsReveal,
   initMiniOS, createProctorStarter, initTools, initMigrate, createAgentChat,
-  initEditorTabs, initRackPower,
+  initEditorTabs, initRackPower, initStackWidget,
 } from './setpieces';
 import { loadGithub, initSkillPanel } from './github';
 
@@ -16,11 +16,29 @@ const flat = document.getElementById('flat')!;
 const nodes = [...document.querySelectorAll<HTMLElement>('#world > .node')];
 const sky = initSky(document.getElementById('sky') as HTMLCanvasElement);
 
-/* ================= camera / input: smooth flight ================= */
+/* ================= camera / input: smooth flight + gentle docking ================= */
 let cam = 0;
 let target = 0;
 let scrolled = false;
+let lastInput = 0;
 const clampT = (v: number) => Math.max(-120, Math.min(MAXZ + 120, v));
+
+/* Free parallax scrolling — but once input goes quiet near a plane, the
+   camera docks onto it slowly, so every CTA ends up at interaction range. */
+const PLANES = RAIL_ITEMS.map((it) => it.zCam);
+function dock(now: number) {
+  if (dragging || now - lastInput < 380) return;
+  let nearest = PLANES[0];
+  let best = Infinity;
+  for (const z of PLANES) {
+    const d = Math.abs(z - target);
+    if (d < best) {
+      best = d;
+      nearest = z;
+    }
+  }
+  if (best > 1 && best < 560) target += (nearest - target) * 0.055;
+}
 
 addEventListener(
   'wheel',
@@ -28,6 +46,7 @@ addEventListener(
     if (flat.classList.contains('open')) return;
     target = clampT(target + e.deltaY * (e.deltaMode === 1 ? 24 : 1.4));
     scrolled = true;
+    lastInput = performance.now();
   },
   { passive: true },
 );
@@ -44,6 +63,7 @@ addEventListener('pointermove', (e) => {
   target = clampT(target + (lastY - e.clientY) * 4.2);
   lastY = e.clientY;
   scrolled = true;
+  lastInput = performance.now();
 });
 addEventListener('pointerup', () => (dragging = false));
 
@@ -53,6 +73,7 @@ addEventListener('keydown', (e) => {
   if (step) {
     target = clampT(target + step);
     scrolled = true;
+    lastInput = performance.now();
     e.preventDefault();
   }
   if (e.key === 'Home') target = 0;
@@ -94,8 +115,15 @@ initMiniOS();
 initMigrate();
 initEditorTabs();
 initRackPower();
+initStackWidget();
 initSkillPanel(SITE.githubUser);
-const playTools = initTools();
+const autoTools = initTools();
+let toolsPlayed = false;
+const playTools = () => {
+  if (toolsPlayed) return;
+  toolsPlayed = true;
+  autoTools();
+};
 const revealQuests = createQuestsReveal();
 const startProctor = createProctorStarter();
 const playAgentChat = createAgentChat();
@@ -117,10 +145,24 @@ setTimeout(() => {
 }, 1400);
 const eraSaid = ERAS.map(() => false);
 
-/* ================= era critters ================= */
+/* the rocket answers when poked — a different line each time */
+let quipIdx = Math.floor(Math.random() * BUDDY.quips.length);
+buddy.addEventListener('click', () => {
+  say(BUDDY.quips[quipIdx % BUDDY.quips.length], 3200);
+  quipIdx++;
+  buddy.classList.add('poked');
+  setTimeout(() => buddy.classList.remove('poked'), 500);
+});
+
+/* ================= era critters & passing visitors ================= */
 const bot = document.getElementById('bot')!;
 const train = document.getElementById('train')!;
 const satDrift = document.getElementById('sat-drift')!;
+const ufo = document.getElementById('ufo')!;
+const balloon = document.getElementById('balloon')!;
+/* visitors live in a camera-depth window, fading in and out at its edges */
+const zoneOpacity = (z: number, a: number, b: number, fade = 800) =>
+  Math.max(0, Math.min(1, (z - a) / fade, (b - z) / fade));
 
 /* ================= edge scenery ================= */
 const edgeGroups = [...document.querySelectorAll<HTMLElement>('#edges .edge-era')];
@@ -145,6 +187,7 @@ const finale = document.querySelector('.finale')!;
 let litDone = false;
 
 function frame(t: number) {
+  dock(t);
   const vel = target - cam;
   cam += vel * 0.105;
   computeEra(cam);
@@ -221,6 +264,8 @@ function frame(t: number) {
   }
   train.style.opacity = (eraW[1] * 0.9).toFixed(2);
   satDrift.style.opacity = (eraW[4] * 0.9).toFixed(2);
+  ufo.style.opacity = (zoneOpacity(cam, MAXZ * 0.24, MAXZ * 0.4) * 0.9).toFixed(2);
+  balloon.style.opacity = (zoneOpacity(cam, MAXZ * 0.52, MAXZ * 0.68) * 0.9).toFixed(2);
 
   /* edge scenery — cross-fade by era, parallax by progress through the era */
   edgeGroups.forEach((g, i) => {
