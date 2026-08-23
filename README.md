@@ -19,19 +19,32 @@ flight experience is a small vanilla-TS runtime with **zero framework JavaScript
 ```
 src/
   data/portfolio.ts      ← EDIT ME: all content (timeline, eras, notes, links, SEO text)
+  lib/blog.ts            ← build-time RSS fetch from blogs.ijlalahmad.dev
   styles/global.css      ← all styling
   layouts/Base.astro     ← <head>: meta tags, Open Graph, JSON-LD, fonts
   pages/index.astro      ← the single page
   components/
-    World.astro          ← the 3D flight path, server-rendered
-    Overlays.astro       ← HUD, rail, dock, crow, robot
+    World.astro          ← the 3D flight path, server-rendered (incl. card satellites,
+                            blog postcards, Mission Control shell)
+    Overlays.astro       ← HUD, rail, dock, rocket co-pilot, robot, train, satellite
     FlatMode.astro       ← the "boring mode" plain version
   scripts/
-    main.ts              ← camera, input, animation loop
+    main.ts              ← camera + magnetic snap, input, animation loop
     era.ts               ← era color blending
     sky.ts               ← canvas sky + particles
     setpieces.ts         ← drawing canvas, terminal, castle, ?-block
+    github.ts            ← live GitHub API → orbital repo system
 ```
+
+## Live integrations
+
+- **Mission Control** — repos are fetched client-side from the GitHub API
+  (unauthenticated, cached in sessionStorage for 30 min) and rendered as an
+  orbital system: planet size = stars, color = language. Fails soft to a
+  plain GitHub link if the API is unreachable.
+- **Field Reports** — the latest three posts are fetched from the blog's RSS
+  feed at build time and server-rendered as airmail postcards (plus listed in
+  flat mode). A dead feed never breaks the build.
 
 ## Before you deploy — TODOs
 
