@@ -13,7 +13,7 @@ const cdata = (block: string, tag: string): string | undefined => {
   return m?.[1]?.trim() || undefined;
 };
 
-export async function fetchPosts(rssUrl: string, limit = 3): Promise<BlogPost[]> {
+export async function fetchPosts(rssUrl: string, limit = 50): Promise<BlogPost[]> {
   try {
     const res = await fetch(rssUrl, { signal: AbortSignal.timeout(10_000) });
     if (!res.ok) throw new Error(`RSS fetch failed: ${res.status}`);

@@ -47,6 +47,7 @@ export type TimelineItem =
     }
   | { type: 'fact'; n: number }
   | { type: 'block' }
+  | { type: 'journeys' }
   | { type: 'blog' }
   | { type: 'repos' }
   | { type: 'end' };
@@ -57,6 +58,7 @@ export const SPACING: Record<TimelineItem['type'], number> = {
   ch: 950,
   fact: 560,
   block: 520,
+  journeys: 1300,
   blog: 1250,
   repos: 1500,
   end: 0,
@@ -127,6 +129,7 @@ const RAW_TIMELINE: TimelineItem[] = [
   { type: 'fact', n: 6 },
   { type: 'fact', n: 7 },
   { type: 'gate', era: 4 },
+  { type: 'journeys' },
   { type: 'blog' },
   { type: 'repos' },
   { type: 'end' },
@@ -154,20 +157,30 @@ export const GATE_CAM: number[] = ERAS.map(
 /** Every skill in timeline order — powers the dock, constellation and flat mode. */
 export const ALL_SKILLS: string[] = TIMELINE.flatMap((it) => (it.type === 'ch' ? it.skills : []));
 
-/** Stops shown in the chapter rail (and used for scroll snapping). */
+/** Stops shown in the chapter rail — one wheel gesture moves between these. */
 export const RAIL_ITEMS = TIMELINE.filter(
-  (it) => it.type === 'intro' || it.type === 'ch' || it.type === 'blog' || it.type === 'repos' || it.type === 'end',
+  (it) =>
+    it.type === 'intro' || it.type === 'ch' || it.type === 'journeys' ||
+    it.type === 'blog' || it.type === 'repos' || it.type === 'end',
 );
 
 export function railLabel(it: PositionedItem): string {
   switch (it.type) {
     case 'ch': return `${it.yr} · ${it.t}`;
+    case 'journeys': return 'Journey log';
     case 'blog': return 'Field reports';
     case 'repos': return 'Mission control';
     case 'end': return 'Today';
     default: return 'Start';
   }
 }
+
+/** LinkedIn track of the Journey Log — the API is closed, so EDIT ME by hand. */
+export const LINKEDIN_MILESTONES: { yr: string; label: string }[] = [
+  { yr: '2021', label: 'Android developer' },
+  { yr: '2022', label: 'Full stack engineer' },
+  { yr: '2024', label: 'Building tools & infra' }, // TODO: your actual roles
+];
 
 export const BUDDY = {
   start: "beep — co-pilot online. scroll to fly, i'll match your thrust.",

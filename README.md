@@ -38,6 +38,10 @@ src/
 
 ## Live integrations
 
+- **Journey Log** — a transit-map scene with three lines: GitHub milestones
+  (account created, first repo, orgs, today's totals — fetched at build
+  time), blog milestones (from RSS), and LinkedIn milestones (hand-edited in
+  `portfolio.ts`, the API is closed).
 - **Mission Control** — repos are fetched client-side from the GitHub API
   (unauthenticated, cached in sessionStorage for 30 min) and rendered as an
   orbital system: planet size = stars, color = language. Fails soft to a
@@ -45,6 +49,14 @@ src/
 - **Field Reports** — the latest three posts are fetched from the blog's RSS
   feed at build time and server-rendered as airmail postcards (plus listed in
   flat mode). A dead feed never breaks the build.
+
+### GitHub token (optional, recommended)
+
+Org memberships are private to the public API. Copy `.env.example` to `.env`
+and set `GITHUB_TOKEN` to a personal access token with the `read:org` scope —
+the Journey Log's GitHub line will then include your org stations. The token
+is read only during `astro build` on the server; it never reaches the client
+bundle. Rebuild after publishing posts or joining orgs to refresh the data.
 
 ## Before you deploy — TODOs
 
