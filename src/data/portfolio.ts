@@ -16,8 +16,8 @@ export const ERAS: EraDef[] = [
   { name: 'ACT I · THE SPARK', sub: '2016 — 2018', top: '#241436', bot: '#4A2145', acc: '#F49FB6', deep: '#B03A66' },
   { name: 'ACT II · THE GRIND', sub: '2019 — 2020', top: '#0A0F22', bot: '#14224A', acc: '#7FB4FF', deep: '#2C5AB0' },
   { name: 'ACT III · THE BUILDER', sub: '2021 — 2024', top: '#071414', bot: '#0E2B26', acc: '#4FE0B0', deep: '#0E7A5C' },
-  { name: 'ACT IV · WORLDMAKER', sub: '2025', top: '#0B0E1A', bot: '#221334', acc: '#F2A93B', deep: '#C4571F' },
-  { name: 'ACT V · NOW', sub: '2026 →', top: '#1B2440', bot: '#7E4327', acc: '#FFC66E', deep: '#B4611B' },
+  { name: 'ACT IV · WORLDMAKER', sub: '2025 — 2026', top: '#0B0E1A', bot: '#221334', acc: '#F2A93B', deep: '#C4571F' },
+  { name: 'ACT V · NOW', sub: 'PRESENT DAY', top: '#1B2440', bot: '#7E4327', acc: '#FFC66E', deep: '#B4611B' },
 ];
 
 export const NOTES: string[] = [
@@ -34,10 +34,11 @@ export const NOTES: string[] = [
 
 export type SetPiece =
   | 'ascii' | 'draw' | 'term' | 'castle' | 'rack'
-  | 'boot' | 'viewsrc' | 'shipit' | 'crash' | 'api';
+  | 'compile' | 'deploy' | 'quests' | 'minios' | 'api'
+  | 'proctor' | 'tools' | 'migrate' | 'agent';
 
 /** Window chrome a chapter renders in — variety beyond the washi card. */
-export type Frame = 'terminal' | 'browser' | 'notebook' | 'phone' | 'editor';
+export type Frame = 'terminal' | 'browser' | 'notebook' | 'phone' | 'editor' | 'rackmount' | 'idcard';
 
 export type TimelineItem =
   | { type: 'intro' }
@@ -75,12 +76,12 @@ const RAW_TIMELINE: TimelineItem[] = [
   { type: 'intro' },
   { type: 'gate', era: 0 },
   {
-    type: 'ch', yr: '2016', t: 'First line of code', skills: ['C++'], frame: 'terminal', set: 'boot',
+    type: 'ch', yr: '2016', t: 'First line of code', skills: ['C++'], frame: 'terminal', set: 'compile',
     body: 'A hand-me-down PC, a blinking cursor, and no idea it would become everything.',
   },
   { type: 'fact', n: 0 },
   {
-    type: 'ch', yr: '2018', t: 'First web pages', skills: ['HTML', 'CSS', 'JavaScript'], frame: 'browser', set: 'viewsrc',
+    type: 'ch', yr: '2018', t: 'First web pages', skills: ['HTML', 'CSS', 'JavaScript'], frame: 'browser', set: 'deploy',
     body: 'Discovered view-source and never recovered. The internet stopped being magic and became a workshop.',
   },
   { type: 'fact', n: 1 },
@@ -92,19 +93,20 @@ const RAW_TIMELINE: TimelineItem[] = [
   },
   { type: 'fact', n: 2 },
   {
-    type: 'ch', yr: '2020', t: 'Hackathons & all-nighters', skills: ['Git', 'Problem solving'], set: 'shipit',
-    body: 'Team projects, duct-tape demos, and the discovery that shipping beats perfect.',
-  },
-  {
-    type: 'ch', yr: '2020', t: 'Enter Jamia Millia', skills: ['Computer Science'],
+    type: 'ch', yr: '2020', t: 'Enter Jamia Millia', skills: ['Computer Science'], frame: 'idcard',
     body: 'B.E. in Computer Science at Jamia Millia Islamia, New Delhi. A 9.14 GPA — and four years where everything accelerated.',
   },
   { type: 'gate', era: 2 },
   {
-    type: 'ch', yr: '2021', t: 'Android developer', skills: ['Kotlin', 'Android'], frame: 'phone', set: 'crash',
-    body: 'Shipping real apps to real users. Learning that "works on my device" is a threat, not a status.',
+    type: 'ch', yr: '2021', t: 'Android developer', skills: ['Kotlin', 'Android'], frame: 'phone', set: 'minios',
+    body: 'Started building apps back in school — Paint, TicTacToe, a clock. Then Matscape, my matrix calculator, went live on the Play Store.',
+    link: ['https://play.google.com/store/apps/details?id=com.ByteMechanics.matscape', 'Matscape on Google Play →'],
   },
   { type: 'fact', n: 3 },
+  {
+    type: 'ch', yr: '2022', t: 'The hackathon years', skills: ['Git', 'Problem solving'], set: 'quests',
+    body: 'Team projects, duct-tape demos, and the discovery that shipping beats perfect.',
+  },
   {
     type: 'ch', yr: '2022', t: 'Going full stack', skills: ['TypeScript', 'React', 'Node.js'], frame: 'editor', set: 'api',
     body: 'Followed the data past the screen — into APIs, databases, sockets, and everything between.',
@@ -117,39 +119,37 @@ const RAW_TIMELINE: TimelineItem[] = [
   },
   { type: 'fact', n: 4 },
   {
-    type: 'ch', yr: '2023', t: 'Medusa & a national win', skills: ['WebRTC', 'AI proctoring'],
+    type: 'ch', yr: '2023', t: 'Medusa & a national win', skills: ['WebRTC', 'AI proctoring'], set: 'proctor',
     body: 'An AI-proctored exam portal — selective many-to-many WebRTC monitoring, AI flagging suspicious activity. Smart India Hackathon 2023: winner.',
   },
   { type: 'fact', n: 8 },
   {
-    type: 'ch', yr: '2024', t: 'Tooling & templates', skills: ['Express', 'Docker', 'Redis', 'gRPC'],
-    body: 'A production-grade Node + TypeScript service template — and an npm package that scaffolds it in one command.',
-    set: 'term',
+    type: 'ch', yr: '2024', t: 'Tooling & templates', skills: ['Express', 'Docker', 'Redis', 'gRPC'], set: 'tools',
+    body: 'A production-grade Node + TypeScript service template, an npm scaffolder, and a keyboard-first download manager in Go.',
     link: ['https://github.com/Thre4dripper/NodeTs-Express-Service-Based-Template', 'View the template →'],
   },
   {
-    type: 'ch', yr: '2024', t: 'S&P Global', skills: ['AWS', 'ECS', 'Splunk'],
-    body: 'Associate SDE — moved the iLevel notification microservices from Lambda to ECS, built the Splunk dashboards that watch them, and tuned a big-data pipeline into S3.',
+    type: 'ch', yr: '2024', t: 'S&P Global', skills: ['AWS', 'ECS', 'Splunk'], set: 'migrate',
+    body: 'First job out of college. Moved the iLevel notification microservices from Lambda to ECS, built the Splunk dashboards that watch them, tuned a big-data pipeline into S3.',
   },
   { type: 'block' },
   { type: 'gate', era: 3 },
   {
-    type: 'ch', yr: '2025', t: 'Infinity Castle', skills: ['Three.js', 'WebGL', 'Procedural generation'],
+    type: 'ch', yr: '2025', t: 'Home server lab', skills: ['Linux', 'Self-hosting', 'Raspberry Pi'], frame: 'rackmount', set: 'rack',
+    body: 'Enterprise-grade services, self-hosted on a Raspberry Pi humming in the corner. Uptime is a love language.',
+    link: ['https://github.com/Thre4dripper/Home-Server-Lab', 'See the lab →'],
+  },
+  { type: 'fact', n: 5 },
+  {
+    type: 'ch', yr: '2026', t: 'Infinity Castle', skills: ['Three.js', 'WebGL', 'Procedural generation'],
     body: 'An infinite, self-assembling Japanese castle in the browser. Fly through it as a crow. Zero art assets.',
     set: 'castle',
     link: ['https://github.com/Thre4dripper/Infinity-Castle-ThreeJs', 'Fly the castle →'],
   },
-  { type: 'fact', n: 5 },
-  {
-    type: 'ch', yr: '2025', t: 'Home server lab', skills: ['Linux', 'Self-hosting', 'Raspberry Pi'],
-    body: 'Enterprise-grade services, self-hosted on a Raspberry Pi humming in the corner. Uptime is a love language.',
-    set: 'rack',
-    link: ['https://github.com/Thre4dripper/Home-Server-Lab', 'See the lab →'],
-  },
   { type: 'fact', n: 6 },
   { type: 'gate', era: 4 },
   {
-    type: 'ch', yr: '2025', t: 'Kenverse — AI platform', skills: ['LLM agents', 'IAM', 'Multi-tenancy'],
+    type: 'ch', yr: '2025', t: 'Kenverse — AI platform', skills: ['LLM agents', 'IAM', 'Multi-tenancy'], set: 'agent',
     body: 'SDE at Kenverse (TurboStart): a multi-tenant AI platform — LLM chat & voice agents, Casbin-based IAM, white-labeled tenant deployments.',
   },
   { type: 'fact', n: 7 },
@@ -157,6 +157,14 @@ const RAW_TIMELINE: TimelineItem[] = [
   { type: 'blog' },
   { type: 'repos' },
   { type: 'end' },
+];
+
+/** Quest log for the hackathon years. */
+export const HACKS = [
+  { yr: '2021', name: 'e-Yantra (IIT Bombay)', result: 'robotics, first taste of real deadlines' },
+  { yr: '2022', name: 'Hashes 2.0', result: 'shipped a working demo overnight' },
+  { yr: '2022', name: 'Smart India Hackathon', result: 'national finalist', medal: 'silver' },
+  { yr: '2023', name: 'Smart India Hackathon', result: 'WINNER — Medusa', medal: 'gold' },
 ];
 
 export type PositionedItem = TimelineItem & { zCam: number; idx: number };
@@ -284,4 +292,6 @@ export const SITE = {
   blogRss: 'https://blogs.ijlalahmad.dev/rss.xml',
   email: 'ijlalahmad845@gmail.com',
   location: 'New Delhi, India',
+  leetcode: 'thre4dripper',
+  playstore: 'https://play.google.com/store/apps/details?id=com.ByteMechanics.matscape',
 };

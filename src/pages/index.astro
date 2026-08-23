@@ -6,18 +6,20 @@ import FlatMode from '../components/FlatMode.astro';
 import Edges from '../components/Edges.astro';
 import { fetchPosts } from '../lib/blog';
 import { fetchGhStory } from '../lib/github-story';
+import { fetchLeetStats } from '../lib/leetcode';
 import { SITE } from '../data/portfolio';
 
-const [posts, ghStory] = await Promise.all([
+const [posts, ghStory, leet] = await Promise.all([
   fetchPosts(SITE.blogRss),
   fetchGhStory(SITE.githubUser),
+  fetchLeetStats(SITE.leetcode),
 ]);
 ---
 
 <Base>
   <canvas id="sky" aria-hidden="true"></canvas>
 
-  <World posts={posts} ghStory={ghStory} />
+  <World posts={posts} ghStory={ghStory} leet={leet} />
   <Edges />
   <Overlays />
   <FlatMode posts={posts} />
