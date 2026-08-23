@@ -5,15 +5,26 @@
  * Horizontal/vertical offsets are emitted as --dx/--dy custom properties in
  * viewport units — the CSS equivalent of the old innerWidth math.
  */
-import { TIMELINE, ERAS, NOTES, ALL_SKILLS, GATE_CAM, SITE, LINKEDIN_MILESTONES } from '../data/portfolio';
+import { TIMELINE, ERAS, NOTES, ALL_SKILLS, GATE_CAM, SITE, LINKEDIN_MILESTONES, HACKS } from '../data/portfolio';
 import type { BlogPost } from '../lib/blog';
 import type { GhStory } from '../lib/github-story';
+import type { LeetStats } from '../lib/leetcode';
 
 interface Props {
   posts: BlogPost[];
   ghStory: GhStory | null;
+  leet: LeetStats;
 }
-const { posts, ghStory } = Astro.props;
+const { posts, ghStory, leet } = Astro.props;
+
+/* extra floating grind-era elements around the DSA notebook */
+const GRIND_SATS = [
+  { x: '-26%', y: '10%', z: 120, dur: 5, delay: 0.2, html: `<span class="leet-chip">LeetCode · ${leet.total} solved</span>` },
+  { x: '108%', y: '78%', z: 80, dur: 6, delay: 0.9, html: `<span class="leet-chip sub">${leet.easy} easy · ${leet.medium} med · ${leet.hard} hard</span>` },
+  { x: '112%', y: '6%', z: -70, dur: 4, delay: 0.5, html: `<svg viewBox="0 0 88 26" width="72"><g fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="13" r="8"/><circle cx="44" cy="13" r="8"/><circle cx="76" cy="13" r="8"/><path d="M20 13 h14 m-5 -4 5 4 -5 4 M52 13 h14 m-5 -4 5 4 -5 4"/></g></svg>` },
+  { x: '-20%', y: '58%', z: -90, dur: 7, delay: 1.4, html: `<svg viewBox="0 0 40 44" width="30"><g fill="none" stroke="currentColor" stroke-width="2.4"><rect x="4" y="4" width="32" height="10" rx="2"/><rect x="4" y="17" width="32" height="10" rx="2"/><rect x="4" y="30" width="32" height="10" rx="2"/></g></svg>` },
+  { x: '38%', y: '-20%', z: 90, dur: 5, delay: 1.1, html: `<span class="leet-chip sub">gfg · codeforces · cses</span>` },
+];
 
 /* ---------- journey log: subway-map data ---------- */
 interface Station {
@@ -45,7 +56,7 @@ const blogStations: Station[] =
   posts.length > 0
     ? [
         { yr: postYear(posts[posts.length - 1]), label: 'first field report', title: posts[posts.length - 1].title },
-        ...(posts.length > 2 ? [{ yr: '', label: `${posts.length} reports later` }] : []),
+        ...(posts.length > 2 ? [{ yr: '', label: `${posts.length} reports logged` }] : []),
         { yr: postYear(posts[0]), label: 'latest report', title: posts[0].title },
       ]
     : [{ yr: 'now', label: 'blogs.ijlalahmad.dev' }];
@@ -352,57 +363,189 @@ const satellites = (idx: number, zCam: number) => {
               <div class="fr-bar">
                 <i /><i /><i />
                 <span class="fr-url">ijlal.dev/first-page.html</span>
-                <button class="fr-btn" id="viewsrc-btn">view source</button>
               </div>
             )}
             {item.frame === 'editor' && (
-              <div class="fr-tabs"><span class="on">api.ts</span><span>schema.sql</span><span>compose.yml</span></div>
+              <div class="fr-tabs">
+                <span class="on" data-tab="api">api.ts</span>
+                <span data-tab="sql">schema.sql</span>
+                <span data-tab="yml">compose.yml</span>
+              </div>
+            )}
+            {item.frame === 'rackmount' && (
+              <div class="rk-bar">
+                <i class="rk-ear" /><span class="fr-url">RACK 01 · 4U</span>
+                <button class="rk-power" id="rack-power" aria-label="rack power" aria-pressed="false" />
+                <i class="rk-ear" />
+              </div>
+            )}
+            {item.frame === 'idcard' && (
+              <div class="id-head">
+                <span class="id-crest">جامعة</span>
+                <span class="id-title">JAMIA MILLIA ISLAMIA<small>STUDENT IDENTITY CARD</small></span>
+                <span class="id-photo">IA</span>
+              </div>
             )}
             {item.frame === 'phone' && <div class="ph-notch" />}
             <div class="yr">{item.yr}</div>
             <h2>{item.t}</h2>
             <p>{item.body}</p>
-            {item.set === 'boot' && (
-              <div class="term boot"><span class="ps1">$</span> <span id="boot-out" /></div>
-            )}
-            {item.set === 'viewsrc' && (
-              <div class="mini-web" id="mini-web">
-                <div class="mw-render" id="mw-render">
-                  <h4>~ welcome to my homepage ~</h4>
-                  <p>under construction 🚧 since 2018</p>
-                  <span class="mw-marquee"><span>thanks for visiting!! sign my guestbook!!</span></span>
-                </div>
-                <pre class="mw-src" id="mw-src" hidden>{`<html>
-  <body bgcolor="black">
-    <h4>~ welcome to my homepage ~</h4>
-    <p>under construction 🚧 since 2018</p>
-    <marquee>thanks for visiting!!</marquee>
-  </body> <!-- how does any of this work?? -->
-</html>`}</pre>
+            {item.frame === 'idcard' && (
+              <div class="id-rows">
+                <span>COURSE<b>B.E. Computer Science</b></span>
+                <span>BATCH<b>2020 — 2024</b></span>
+                <span>GPA<b>9.14 / 10</b></span>
               </div>
             )}
-            {item.set === 'ascii' && <div class="ascii">{ASCII_TREE}</div>}
-            {item.set === 'shipit' && (
-              <div class="ship-wrap">
-                <button class="shipit" id="shipit">SHIP IT 🚀</button>
-                <span class="ship-status" id="ship-status" role="status" />
+            {item.set === 'compile' && (
+              <>
+                <pre class="code-blk">{`#include <iostream>
+
+int main() {
+    std::cout << "hello, world";
+    return 0;
+}`}</pre>
+                <div class="run-row">
+                  <button class="run-btn" id="compile-btn">▶ compile &amp; run</button>
+                </div>
+                <div class="term boot"><span id="compile-out" /></div>
+              </>
+            )}
+            {item.set === 'deploy' && (
+              <div class="deploy-wrap">
+                <div class="deploy-left">
+                  <pre class="code-blk sm">{`<h4>~ my homepage ~</h4>
+<p>under construction 🚧</p>
+<marquee>welcome!!</marquee>`}</pre>
+                  <button class="run-btn" id="deploy-btn">⇪ deploy</button>
+                  <div class="term boot sm"><span id="deploy-log" /></div>
+                </div>
+                <div class="mini-monitor" id="mini-monitor">
+                  <div class="mm-screen">
+                    <div class="mm-page">
+                      <h4>~ my homepage ~</h4>
+                      <p>under construction 🚧</p>
+                      <span class="mw-marquee"><span>welcome!! sign my guestbook!!</span></span>
+                    </div>
+                    <span class="mm-off-label">NO SIGNAL</span>
+                  </div>
+                  <div class="mm-stand" />
+                </div>
               </div>
             )}
-            {item.set === 'crash' && (
-              <div class="app-scr" id="app-scr">
-                <div class="app-bar">MyFirstApp</div>
-                <div class="app-row" /><div class="app-row w60" /><div class="app-row w80" />
-                <div class="crash" id="crash" hidden>
-                  <p>Unfortunately, MyFirstApp has stopped.</p>
-                  <div><button id="crash-report">REPORT</button><button id="crash-restart">RESTART</button></div>
+            {item.set === 'ascii' && (
+              <>
+                <div class="ascii">{ASCII_TREE}</div>
+                {GRIND_SATS.map((g) => (
+                  <span
+                    class="sat grind"
+                    aria-hidden="true"
+                    style={`--sx:${g.x};--sy:${g.y};--sz:${g.z}px;--sdur:${g.dur}s;--sd:${g.delay}s`}
+                  >
+                    <i set:html={g.html} />
+                  </span>
+                ))}
+              </>
+            )}
+            {item.set === 'quests' && (
+              <div class="quests" id="quests">
+                {HACKS.map((h, i) => (
+                  <div class={`quest${h.medal ? ' ' + h.medal : ''}`} style={`--qd:${i * 0.22}s`}>
+                    <span class="q-medal">{h.medal === 'gold' ? '🏆' : h.medal === 'silver' ? '🥈' : '▸'}</span>
+                    <span class="q-name">{h.name}<small>{h.result}</small></span>
+                    <span class="q-yr">{h.yr}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+            {item.set === 'minios' && (
+              <div class="app-scr minios" id="minios">
+                <div data-screen="home">
+                  <div class="os-grid">
+                    <button data-open="paint"><i class="os-ic paint">🖌</i>Paint</button>
+                    <button data-open="ttt-scr"><i class="os-ic ttt-ic">◻</i>TicTac</button>
+                    <a href={SITE.playstore} target="_blank" rel="noopener"><i class="os-ic mat">[M]</i>Matscape</a>
+                  </div>
+                  <small class="os-hint">school-era apps, still running</small>
                 </div>
-                <div class="app-toast" id="app-toast" hidden />
+                <div data-screen="paint" hidden>
+                  <div class="os-top"><button data-open="home">←</button>Paint.java</div>
+                  <canvas id="mini-paint" width="400" height="240" />
+                </div>
+                <div data-screen="ttt-scr" hidden>
+                  <div class="os-top"><button data-open="home">←</button>TicTacToe.java</div>
+                  <div class="ttt-board" id="ttt">
+                    <button /><button /><button /><button /><button /><button /><button /><button /><button />
+                  </div>
+                  <small class="os-hint" id="ttt-status">X to move</small>
+                </div>
+              </div>
+            )}
+            {item.set === 'proctor' && (
+              <div class="proctor-wrap">
+                <div class="proctor" id="proctor">
+                  {['candidate 01', 'candidate 02', 'candidate 03', 'candidate 04', 'candidate 05', 'you 👀'].map((label) => (
+                    <div class="pt">
+                      <i class="pt-face" />
+                      <span>{label}</span>
+                      <em class="pt-flag">⚠ flagged</em>
+                    </div>
+                  ))}
+                </div>
+                <div class="proctor-status">
+                  <span class="live-dot" /> AI proctor watching · <b id="flag-count">0 flagged</b>
+                </div>
+              </div>
+            )}
+            {item.set === 'tools' && (
+              <>
+                <div class="tool-tabs">
+                  <button data-tool="nsi" class="on">node-server-init</button>
+                  <button data-tool="tidefetch">tidefetch</button>
+                </div>
+                <div class="term"><span class="ps1">$</span> <span id="tools-out" /></div>
+              </>
+            )}
+            {item.set === 'migrate' && (
+              <div class="mig-wrap">
+                <div class="mig" id="mig">
+                  <div class="mig-col">
+                    <small>AWS LAMBDA</small>
+                    <i class="mig-box">λ</i><i class="mig-box">λ</i><i class="mig-box">λ</i>
+                  </div>
+                  <span class="mig-arrow">⟶</span>
+                  <div class="mig-col ecs">
+                    <small>AMAZON ECS</small>
+                    <i class="mig-slot" /><i class="mig-slot" /><i class="mig-slot" />
+                  </div>
+                </div>
+                <div class="run-row">
+                  <button class="run-btn" id="migrate-btn">run migration</button>
+                  <span class="mig-status" id="mig-status" role="status" />
+                </div>
               </div>
             )}
             {item.set === 'api' && (
-              <div class="api-demo">
-                <button class="api-get" id="api-btn"><b>GET</b> /api/chai</button>
-                <pre class="api-out" id="api-out" hidden />
+              <>
+                <div class="api-demo" data-pane="api">
+                  <button class="api-get" id="api-btn"><b>GET</b> /api/chai</button>
+                  <pre class="api-out" id="api-out" hidden />
+                </div>
+                <div class="api-demo" data-pane="sql" hidden>
+                  <button class="api-get" id="sql-btn"><b>RUN</b> query.sql</button>
+                  <pre class="api-out" id="sql-out" hidden />
+                </div>
+                <div class="api-demo" data-pane="yml" hidden>
+                  <button class="api-get" id="yml-btn"><b>UP</b> docker compose</button>
+                  <pre class="api-out" id="yml-out" hidden />
+                </div>
+              </>
+            )}
+            {item.set === 'agent' && (
+              <div class="agent-log" id="agent-log">
+                <div class="msg user">spin up a support agent for tenant “acme”, voice + chat</div>
+                <div class="msg bot">provisioning… casbin policies attached, secrets mounted</div>
+                <div class="msg bot ok">✔ agent live — isolated, white-labeled, 240ms cold start</div>
               </div>
             )}
             {item.set === 'draw' && (
@@ -411,14 +554,15 @@ const satellites = (idx: number, zCam: number) => {
                 <span class="lbl">draw here — go on</span>
               </div>
             )}
-            {item.set === 'term' && (
-              <div class="term">
-                <span class="ps1">$</span> <span id="term-out" />
-              </div>
-            )}
             {item.set === 'castle' && (
               <div class="castle" id="castle" title="click to rebuild">
                 <span class="glow" />
+                <span class="castle-crow" aria-hidden="true">
+                  <svg viewBox="0 0 24 14" width="22">
+                    <polygon points="2,8 12,5 20,8 12,10" fill="#1B1B22"></polygon>
+                    <polygon points="9,7 14,1 13,8" fill="#D8492B"></polygon>
+                  </svg>
+                </span>
               </div>
             )}
             {item.set === 'rack' && (
