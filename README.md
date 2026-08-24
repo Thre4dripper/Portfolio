@@ -66,6 +66,11 @@ bundle. Rebuild after publishing posts or joining orgs to refresh the data.
 3. **OG image**: add a 1200×630 `public/og.png` and uncomment the `og:image`
    tag in `src/layouts/Base.astro` for rich link previews.
 
+## Credits
+
+- Campus photo: ["Centenary Gate, Jamia Millia Islamia"](https://commons.wikimedia.org/wiki/File:Centenary_Gate,_Jamia_Millia_Islamia.jpg)
+  by Muntaqibah, Wikimedia Commons, CC BY-SA 4.0 (resized).
+
 ## Performance & SEO notes
 
 - Fonts are self-hosted variable fonts (`@fontsource-variable/*`) — no

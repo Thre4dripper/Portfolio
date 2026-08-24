@@ -35,7 +35,7 @@ export const NOTES: string[] = [
 export type SetPiece =
   | 'ascii' | 'draw' | 'term' | 'castle' | 'rack'
   | 'compile' | 'deploy' | 'quests' | 'minios' | 'api'
-  | 'proctor' | 'tools' | 'migrate' | 'agent';
+  | 'proctor' | 'tools' | 'migrate' | 'agent' | 'blueprint';
 
 /** Window chrome a chapter renders in — variety beyond the washi card. */
 export type Frame = 'terminal' | 'browser' | 'notebook' | 'phone' | 'editor' | 'rackmount' | 'idcard';
@@ -94,7 +94,7 @@ const RAW_TIMELINE: TimelineItem[] = [
   { type: 'fact', n: 2 },
   {
     type: 'ch', yr: '2020', t: 'Enter Jamia Millia', skills: ['Computer Science'], frame: 'idcard',
-    body: 'B.E. in Computer Science at Jamia Millia Islamia, New Delhi. A 9.14 GPA — and four years where everything accelerated.',
+    body: 'B.Tech in Computer Science at Jamia Millia Islamia, New Delhi. A 9.14 GPA — and four years where everything accelerated.',
   },
   { type: 'gate', era: 2 },
   {
@@ -153,6 +153,10 @@ const RAW_TIMELINE: TimelineItem[] = [
     body: 'SDE at Kenverse (TurboStart): a multi-tenant AI platform — LLM chat & voice agents, Casbin-based IAM, white-labeled tenant deployments.',
   },
   { type: 'fact', n: 7 },
+  {
+    type: 'ch', yr: '2026', t: 'GUS Global — AI native', skills: ['AI platforms', 'Agentic systems'], set: 'blueprint',
+    body: 'Associate AI Consultant at GUS Global (Global University Systems) — architecting the company’s first AI-native platform from the ground up.',
+  },
   { type: 'journeys' },
   { type: 'blog' },
   { type: 'repos' },
@@ -212,13 +216,21 @@ export const LINKEDIN_MILESTONES: { yr: string; label: string }[] = [
   { yr: '2023', label: 'SDE intern · Bea Brand' },
   { yr: '2024', label: 'Associate SDE · S&P Global' },
   { yr: '2025', label: 'SDE · Kenverse' },
+  { yr: '2026', label: 'AI Consultant · GUS Global' },
 ];
 
 /* ---------- resume data (drives the plain/flat CV page) ---------- */
 
 export const EXPERIENCE = [
   {
-    org: 'Kenverse (TurboStart)', where: 'New Delhi', role: 'Software Development Engineer', when: 'Nov 2025 — present',
+    org: 'GUS Global (Global University Systems)', where: 'Remote', role: 'Associate AI Consultant', when: '2026 — present',
+    points: [
+      'Architecting the company’s first AI-native platform for one of the world’s largest higher-education networks.',
+      'Designing agentic workflows and LLM integrations across the group’s institutions.',
+    ],
+  },
+  {
+    org: 'Kenverse (TurboStart)', where: 'New Delhi', role: 'Software Development Engineer', when: 'Nov 2025 — 2026',
     points: [
       'Designing a multi-tenant AI platform for scalable LLM-powered chat and voice agents with dynamic agentic workflows.',
       'Centralized IAM with Casbin-based PBAC securing AI/agent APIs across REST and gRPC microservices.',
@@ -245,7 +257,7 @@ export const EXPERIENCE = [
 ];
 
 export const EDUCATION = [
-  { school: 'Jamia Millia Islamia, New Delhi', detail: 'B.E. Computer Science — 9.14/10 GPA', when: 'Dec 2020 — May 2024' },
+  { school: 'Jamia Millia Islamia, New Delhi', detail: 'B.Tech Computer Science — 9.14/10 GPA', when: 'Dec 2020 — May 2024' },
   { school: 'Bal Vidya Mandir Sr. Sec. School, Sambhal', detail: 'Intermediate 93.2% · High School 9.2 CGPA', when: '2014 — 2018' },
 ];
 
@@ -292,11 +304,11 @@ export const FACTS_BLOCK: string[] = [
 
 export const SITE = {
   name: 'Ijlal Ahmad',
-  role: 'Full Stack Web & Android Developer',
-  title: 'Ijlal Ahmad — Full Stack Web & Android Developer',
+  role: 'Full Stack & AI Engineer',
+  title: 'Ijlal Ahmad — Full Stack & AI Engineer',
   description:
-    'Full stack web & Android developer building tools, worlds, and the servers they run on. ' +
-    'Kotlin, TypeScript, React, Node.js, Three.js — told as a flight through five acts.',
+    'Full stack, Android, and AI-platform engineer building tools, worlds, and the servers they run on. ' +
+    'Associate AI Consultant at GUS Global — told as a flight through five acts.',
   github: 'https://github.com/Thre4dripper',
   githubUser: 'Thre4dripper',
   linkedin: 'https://www.linkedin.com/in/thre4dripper/',
