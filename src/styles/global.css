@@ -17,7 +17,10 @@ button{font-family:inherit;cursor:pointer}
 #sky{position:fixed;inset:0;z-index:0}
 
 #stage{position:fixed;inset:0;z-index:1;perspective:1000px;perspective-origin:50% 46%;overflow:hidden}
-#world{position:absolute;inset:0;transform-style:preserve-3d}
+/* #world's own plane sits at z=0 and the camera docks cards a fraction of a
+   pixel BEHIND it — if it took pointer events it would eat every card click.
+   Nodes opt back in via .on; drags fall through to #stage. */
+#world{position:absolute;inset:0;transform-style:preserve-3d;pointer-events:none}
 
 /* Nodes are server-rendered; --dx/--dy come from inline styles, the camera
    script animates depth per frame. Default transform keeps the intro centered
@@ -195,6 +198,22 @@ button{font-family:inherit;cursor:pointer}
 .bfs-n.lit{fill:var(--accent-deep);stroke:var(--accent-deep)}
 .sat-cap{display:block;text-align:center;font-family:var(--font-mono);font-size:9px;
   letter-spacing:.14em;color:var(--moon);margin-top:5px}
+
+/* LAN panel (homelab) — switch, wires, packets, pingable devices */
+.dsw.lan{width:150px;color:#CFD6E4;background:#181B24;
+  box-shadow:0 0 0 1px rgba(255,255,255,.1),0 16px 40px rgba(0,0,0,.55)}
+.dsw.lan .dsw-title{color:var(--accent)}
+.dsw.lan svg{display:block;margin:0 auto;overflow:visible}
+.lan-lbl{fill:#8E99AF;font-family:var(--font-mono);font-size:8.5px;text-anchor:middle}
+.lan-wire{stroke:#39415A;stroke-width:1.8;stroke-dasharray:3 3}
+.lan-pk{fill:var(--accent);transform:translate(var(--px),34px);animation:pktravel 2.6s linear infinite}
+@keyframes pktravel{from{transform:translate(var(--px),32px);opacity:0}
+  12%{opacity:1}88%{opacity:1}to{transform:translate(var(--px),84px);opacity:0}}
+.lan-dev{cursor:pointer}
+.lan-dev.ping rect,.lan-dev.ping path{filter:drop-shadow(0 0 8px var(--accent))}
+.lan-dev.ping .lan-lbl{fill:var(--accent)}
+.lan-status{margin-top:8px;font-family:var(--font-mono);font-size:9px;color:#8E99AF;
+  text-align:center;letter-spacing:.08em}
 .mw-marquee{display:block;overflow:hidden;margin-top:6px}
 .mw-marquee span{display:inline-block;white-space:nowrap;font-family:var(--font-mono);font-size:8px;
   color:#2C5AB0;animation:marq 7s linear infinite}
@@ -205,6 +224,31 @@ button{font-family:inherit;cursor:pointer}
   background:var(--washi);color:var(--ink);border-radius:999px;padding:6px 13px;white-space:nowrap;
   box-shadow:0 0 0 1px rgba(255,255,255,.15),0 10px 26px rgba(0,0,0,.45)}
 .leet-chip.sub{font-size:10.5px;font-weight:400;color:var(--ink-soft)}
+
+/* storefront creator (2023 Bea Brand) */
+.store{margin-top:14px}
+.store-prev{border:1.5px solid rgba(27,27,34,.25);border-radius:12px;overflow:hidden;background:#FFFDF7}
+.st-awning{height:16px;background:repeating-linear-gradient(90deg,var(--sc) 0 14px,#FFFDF7 14px 28px);
+  border-bottom:1.5px solid rgba(27,27,34,.2);transition:background .3s}
+.st-name{font-family:var(--font-display);font-weight:700;font-size:15px;padding:9px 12px 2px;color:var(--ink)}
+.st-name em{font-style:normal;font-family:var(--font-mono);font-weight:400;font-size:9.5px;color:var(--ink-soft)}
+.st-grid{display:flex;flex-wrap:wrap;gap:6px;padding:8px 12px}
+.st-grid i{display:grid;place-items:center;width:36px;height:36px;font-size:16px;font-style:normal;
+  background:#fff;border:1.5px solid var(--sc);border-radius:8px;transition:border-color .3s,transform .3s;
+  opacity:1}
+.st-grid i:not(.in):not(:nth-child(-n+3)){opacity:0;transform:scale(.5)}
+.st-grid i.in{opacity:1;transform:none}
+.st-add{width:36px;height:36px;font-size:17px;background:none;border:1.5px dashed rgba(27,27,34,.35);
+  border-radius:8px;color:var(--ink-soft);cursor:pointer}
+.st-add:hover{border-color:var(--sc);color:var(--sc)}
+.st-cta{margin:2px 12px 12px;display:inline-block;font-family:var(--font-mono);font-size:11px;font-weight:600;
+  background:var(--sc);color:#fff;border-radius:999px;padding:5px 14px;width:fit-content;transition:background .3s}
+.store-tools{display:flex;align-items:center;gap:7px;margin-top:10px;flex-wrap:wrap}
+.st-lbl{font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;color:var(--ink-soft);text-transform:uppercase}
+.swatch{width:20px;height:20px;border-radius:50%;border:2px solid #fff;cursor:pointer;
+  box-shadow:0 0 0 1.5px rgba(27,27,34,.3);transition:transform .15s}
+.swatch:hover{transform:scale(1.2)}
+.st-status{margin-left:auto;font-family:var(--font-mono);font-size:10px;color:var(--accent-deep)}
 
 /* quest log (2022 hackathons) */
 .quests{margin-top:14px;display:flex;flex-direction:column;gap:8px}
@@ -236,7 +280,7 @@ button{font-family:inherit;cursor:pointer}
 /* mini Android OS (2021) — the screen IS the card */
 .win-phone.card{padding:14px 12px 12px}
 .minios{background:#0F1512;position:relative;overflow:hidden;min-height:440px;
-  display:flex;flex-direction:column;border-radius:20px;margin-top:22px}
+  display:flex;flex-direction:column;border-radius:20px;margin-top:28px}
 .minios [data-screen]{padding:10px;position:relative;flex:1;display:flex;flex-direction:column}
 .minios [data-screen][hidden]{display:none}
 .minios .os-navbar{margin-top:auto}
@@ -247,8 +291,10 @@ button{font-family:inherit;cursor:pointer}
 .glance p{color:#9DB3A4 !important;font-size:12px !important;line-height:1.55 !important}
 .os-grid{margin-top:auto}
 .os-status{display:flex;align-items:center;justify-content:space-between;width:100%;
-  background:#0A0F0C;border:none;padding:5px 12px;cursor:pointer;font-family:var(--font-mono)}
-.os-time{font-size:10.5px;color:#DDE7E2;font-weight:600}
+  background:#0A0F0C;border:none;padding:8px 12px 6px;cursor:pointer;font-family:var(--font-mono)}
+.os-time{font-size:10.5px;color:#DDE7E2;font-weight:600;display:flex;align-items:center;gap:4px}
+.os-caret{font-style:normal;color:#7FD98A;font-size:11px;animation:caretbob 1.8s ease-in-out infinite}
+@keyframes caretbob{0%,100%{transform:translateY(-1px)}50%{transform:translateY(2px)}}
 .os-icons{font-size:8px;color:#7FA890;letter-spacing:2px}
 .os-shade{position:absolute;left:0;right:0;top:22px;z-index:4;background:#0A0F0Cf2;
   transform:translateY(-105%);transition:transform .3s cubic-bezier(.3,.8,.3,1);

@@ -7,6 +7,7 @@ import {
   initBoardy, initCastle, initQBlock, initCompile, initDeploy, createQuestsReveal,
   initMiniOS, createProctorStarter, initTools, initMigrate, createAgentChat,
   initEditorTabs, initRackPower, initStackWidget, initQueueWidget, initGraphBFS,
+  initStore, initLan,
 } from './setpieces';
 import { loadGithub, initSkillPanel } from './github';
 
@@ -118,6 +119,8 @@ initRackPower();
 initStackWidget();
 initQueueWidget();
 initGraphBFS();
+initStore();
+initLan();
 initSkillPanel(SITE.githubUser);
 const autoTools = initTools();
 let toolsPlayed = false;
