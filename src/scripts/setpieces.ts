@@ -70,9 +70,9 @@ export function initCompile(): void {
 export function initDeploy(): void {
   const btn = document.getElementById('deploy-btn');
   const log = document.getElementById('deploy-log');
-  const monitor = document.getElementById('out-monitor');
+  const devices = [...document.querySelectorAll<HTMLElement>('.dev2018')];
   const steps = [...document.querySelectorAll<HTMLElement>('#ci .ci-step')];
-  if (!btn || !log || !monitor) return;
+  if (!btn || !log || !devices.length) return;
   let deployed = false;
   btn.addEventListener('click', (e) => {
     e.stopPropagation();
@@ -90,7 +90,8 @@ export function initDeploy(): void {
       '\n<span class="ok">▸</span> ci: build ✓ test ✓ deploy ✓',
       '\n<span class="ok">✔</span> live on the internet!!',
     ], () => {
-      monitor.classList.add('live');
+      /* every screen in the house lights up, one by one */
+      devices.forEach((d, i) => setTimeout(() => d.classList.add('live'), i * 450));
       (btn as HTMLButtonElement).textContent = 'deployed ✓';
       (btn as HTMLButtonElement).disabled = true;
     });
@@ -123,6 +124,53 @@ export function initStackWidget(): void {
   });
   /* seed it */
   for (let i = 0; i < 3; i++) push.dispatchEvent(new Event('click'));
+}
+
+/* ---------- 2019: the queue, same energy, other end ---------- */
+export function initQueueWidget(): void {
+  const view = document.getElementById('dsq-view');
+  const enq = document.getElementById('dsq-in');
+  const deq = document.getElementById('dsq-out');
+  if (!view || !enq || !deq) return;
+  let n = 0;
+  const VALUES = [4, 9, 2, 11, 5, 16];
+  enq.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (view.children.length >= 5) return;
+    const b = document.createElement('i');
+    b.textContent = String(VALUES[n++ % VALUES.length]);
+    view.appendChild(b);
+    requestAnimationFrame(() => b.classList.add('in'));
+  });
+  deq.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const head = view.firstElementChild as HTMLElement | null;
+    if (!head) return;
+    head.classList.remove('in');
+    head.classList.add('out');
+    setTimeout(() => head.remove(), 350);
+  });
+  for (let i = 0; i < 3; i++) enq.dispatchEvent(new Event('click'));
+}
+
+/* ---------- 2019: BFS visiting the graph, on loop ---------- */
+export function initGraphBFS(): void {
+  const widget = document.getElementById('bfs');
+  if (!widget) return;
+  const nodes = [...widget.querySelectorAll<SVGCircleElement>('.bfs-n')];
+  const ORDER = [0, 1, 2, 3, 4, 5, 6]; // BFS of the drawn tree, level by level
+  let timer: ReturnType<typeof setTimeout>;
+  const run = () => {
+    clearTimeout(timer);
+    nodes.forEach((c) => c.classList.remove('lit'));
+    ORDER.forEach((i, k) => setTimeout(() => nodes[i].classList.add('lit'), 300 + k * 420));
+    timer = setTimeout(run, 300 + ORDER.length * 420 + 2200);
+  };
+  run();
+  widget.addEventListener('click', (e) => {
+    e.stopPropagation();
+    run();
+  });
 }
 
 /* ---------- 2022 quest log: reveal handled by CSS .lit; nothing to wire ---------- */
@@ -172,7 +220,9 @@ function initSnake(): void {
   const scoreEl = document.getElementById('snake-score');
   if (!cv || !scoreEl) return;
   const ctx = cv.getContext('2d')!;
-  const CW = 22, CH = 14, CELL = 10;
+  const CELL = 10;
+  const CW = cv.width / CELL;
+  const CH = cv.height / CELL;
   let snake: number[][], dir: number[], food: number[], score: number, dead: boolean, pendingDir: number[] | null;
 
   const spawnFood = () => {
@@ -640,23 +690,22 @@ export function initRackPower(): void {
     btn.classList.toggle('down', off);
     btn.setAttribute('aria-pressed', String(off));
   });
-  /* click a service row → ping it */
+  /* click a service → expand its dashboard strip (cpu/mem meters + a ping) */
   rack.addEventListener('click', (e) => {
     e.stopPropagation();
     if (rack.classList.contains('off')) return;
-    const row = (e.target as HTMLElement).closest('div');
-    const meta = row?.querySelector('b');
-    if (!row || !meta || row.dataset.pinging) return;
-    row.dataset.pinging = '1';
-    const original = meta.textContent!;
-    meta.textContent = 'ping…';
-    setTimeout(() => {
-      meta.textContent = `pong · ${(Math.random() * 3 + 0.4).toFixed(1)}ms ✓`;
-      setTimeout(() => {
-        meta.textContent = original;
-        delete row.dataset.pinging;
-      }, 1400);
-    }, 350);
+    const svc = (e.target as HTMLElement).closest<HTMLElement>('.svc');
+    if (!svc) return;
+    const wasOpen = svc.classList.contains('open');
+    rack.querySelectorAll('.svc.open').forEach((s) => s.classList.remove('open'));
+    if (!wasOpen) {
+      svc.classList.add('open');
+      const pill = svc.querySelector<HTMLElement>('.svc-pill');
+      if (pill) {
+        pill.textContent = `PING ${(Math.random() * 3 + 0.4).toFixed(1)}ms`;
+        setTimeout(() => (pill.textContent = 'RUNNING'), 1500);
+      }
+    }
   });
 }
 

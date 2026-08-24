@@ -141,6 +141,26 @@ button{font-family:inherit;cursor:pointer}
 .mm-stand{width:30px;height:16px;background:#23262F}
 .mm-base{width:70px;height:8px;background:#23262F;border-radius:3px}
 .win-browser{width:min(82vw,430px)}
+.mini-monitor{width:230px}
+/* the macbook and pocket phone — the rest of the device family */
+.macbook{width:215px;display:flex;flex-direction:column;align-items:center;
+  filter:drop-shadow(0 16px 26px rgba(0,0,0,.5))}
+.mb-screen{width:82%;aspect-ratio:16/10;background:#0B0E1A;border:5px solid #23262F;
+  border-radius:8px 8px 0 0;position:relative;overflow:hidden;display:grid;place-items:center;
+  box-shadow:inset 0 0 20px rgba(0,0,0,.7)}
+.mb-deck{width:100%;height:10px;background:linear-gradient(#3A3F4C,#23262F);border-radius:2px 2px 6px 6px}
+.macbook.live .mb-screen{background:#FDFAF2}
+.macbook .mm-page h4{font-size:10px}
+.macbook .mm-page p{font-size:8px !important}
+.macbook.live .mm-page{display:block;animation:fadein .5s ease}
+.macbook.live .mm-off-label{display:none}
+.ph2018{width:56px;filter:drop-shadow(0 10px 18px rgba(0,0,0,.5))}
+.p8-screen{width:100%;aspect-ratio:9/17;background:#0B0E1A;border:4px solid #23262F;border-radius:10px;
+  position:relative;overflow:hidden;display:grid;place-items:center}
+.ph2018 .mm-page h4{font-size:8px}
+.ph2018.live .p8-screen{background:#FDFAF2}
+.ph2018.live .mm-page{display:block;animation:fadein .5s ease}
+.ph2018.live .mm-off-label{display:none}
 
 /* interactive stack widget (2019) — from "07. Stack" in the DSA repo */
 .dsw{width:120px;background:var(--washi);border-radius:12px;padding:12px 12px 10px;text-align:center;
@@ -155,10 +175,24 @@ button{font-family:inherit;cursor:pointer}
   opacity:0;transform:translateY(-14px);transition:all .3s cubic-bezier(.3,.9,.4,1.2)}
 .dsw-view i.in{opacity:1;transform:none}
 .dsw-view i.out{opacity:0;transform:translateY(-18px)}
-.dsw-btns{display:flex;gap:5px;margin-top:8px;justify-content:center}
+.dsw-btns{display:flex;gap:5px;margin-top:8px;justify-content:center;flex-wrap:wrap}
 .dsw-btns button{font-family:var(--font-mono);font-size:10px;padding:4px 8px;border-radius:6px;
   border:1px solid rgba(27,27,34,.3);background:none;color:var(--ink);cursor:pointer}
 .dsw-btns button:hover{background:var(--ink);color:var(--washi)}
+/* queue variant — horizontal, exits stage left */
+.dsw.dsq{width:170px;transform:translate3d(-50%,-50%,var(--sz)) rotate(1.8deg)}
+.dsq-view{display:flex;gap:3px;justify-content:flex-start;min-height:24px;
+  border:1.5px dashed rgba(27,27,34,.3);border-left:none;border-right:none;padding:4px}
+.dsq-view i{display:grid;place-items:center;width:26px;height:16px;background:var(--accent-deep);
+  color:var(--washi);border-radius:4px;font-family:var(--font-mono);font-style:normal;font-size:10px;
+  font-weight:600;opacity:0;transform:translateX(14px);transition:all .3s cubic-bezier(.3,.9,.4,1.2)}
+.dsq-view i.in{opacity:1;transform:none}
+.dsq-view i.out{opacity:0;transform:translateX(-16px)}
+/* BFS graph — visits itself on loop, click to rerun */
+.dsw.dsg{width:140px;cursor:pointer;transform:translate3d(-50%,-50%,var(--sz)) rotate(2deg)}
+.dsg svg{display:block;margin:0 auto;color:var(--ink)}
+.bfs-n{fill:#FDFAF2;stroke:var(--ink);stroke-width:1.8;transition:fill .3s,stroke .3s}
+.bfs-n.lit{fill:var(--accent-deep);stroke:var(--accent-deep)}
 .sat-cap{display:block;text-align:center;font-family:var(--font-mono);font-size:9px;
   letter-spacing:.14em;color:var(--moon);margin-top:5px}
 .mw-marquee{display:block;overflow:hidden;margin-top:6px}
@@ -199,9 +233,19 @@ button{font-family:inherit;cursor:pointer}
 .app-scr{margin-top:14px;background:#EDF1EC;border:1px solid rgba(27,27,34,.2);border-radius:12px;
   overflow:hidden;position:relative;min-height:170px}
 
-/* mini Android OS (2021) */
-.minios{background:#0F1512;position:relative;overflow:hidden}
-.minios [data-screen]{padding:10px;position:relative}
+/* mini Android OS (2021) — the screen IS the card */
+.win-phone.card{padding:14px 12px 12px}
+.minios{background:#0F1512;position:relative;overflow:hidden;min-height:440px;
+  display:flex;flex-direction:column;border-radius:20px;margin-top:22px}
+.minios [data-screen]{padding:10px;position:relative;flex:1;display:flex;flex-direction:column}
+.minios [data-screen][hidden]{display:none}
+.minios .os-navbar{margin-top:auto}
+/* home-screen "at a glance" widget carries the chapter text */
+.glance{background:#16201Acc;border-radius:14px;padding:12px 14px;margin:6px 2px 2px;text-align:left}
+.glance .yr{color:#7FD98A;font-size:11px}
+.glance h2{color:#EDF3EE;font-size:21px !important;margin:5px 0 7px !important}
+.glance p{color:#9DB3A4 !important;font-size:12px !important;line-height:1.55 !important}
+.os-grid{margin-top:auto}
 .os-status{display:flex;align-items:center;justify-content:space-between;width:100%;
   background:#0A0F0C;border:none;padding:5px 12px;cursor:pointer;font-family:var(--font-mono)}
 .os-time{font-size:10.5px;color:#DDE7E2;font-weight:600}
@@ -231,6 +275,13 @@ button{font-family:inherit;cursor:pointer}
 .os-top .os-score{margin-left:auto;font-style:normal;font-size:9.5px;color:#7FD98A;font-weight:400}
 .os-navbar{width:70px;height:4px;border-radius:999px;background:#3A4A40;margin:2px auto 8px}
 #snake-cv{display:block;width:100%;background:#10231C;border-radius:8px;image-rendering:pixelated;cursor:pointer}
+/* app-info sheet floating beside the phone */
+.ph-side{width:150px;background:var(--washi);border-radius:12px;padding:12px 13px;
+  box-shadow:0 0 0 1px rgba(255,255,255,.14),0 16px 40px rgba(0,0,0,.5);
+  transform:translate3d(-50%,-50%,var(--sz)) rotate(2deg);text-align:left}
+.ph-side .tags{margin-top:8px}
+.ph-side .peek{display:inline-block;margin-top:10px;font-size:12px;color:var(--accent-deep);font-weight:600;text-decoration:none}
+.ph-side .peek:hover{text-decoration:underline}
 .dpad{display:flex;flex-direction:column;align-items:center;gap:3px;margin-top:8px}
 .dpad div{display:flex;gap:3px}
 .dpad button{width:34px;height:26px;background:#16201A;border:1px solid #2A3A30;border-radius:7px;
@@ -314,6 +365,21 @@ button{font-family:inherit;cursor:pointer}
 .mig.go .mig-slot:nth-of-type(3){transition-delay:1.6s}
 .mig-status{font-family:var(--font-mono);font-size:11px;color:var(--accent-deep)}
 
+/* GUS blueprint (2026) — the architecture draws itself */
+.bp{width:100%;max-width:360px;height:auto;margin-top:14px;overflow:visible;color:var(--accent-deep)}
+.bp-box rect{fill:none;stroke:currentColor;stroke-width:2;stroke-dasharray:300;stroke-dashoffset:300}
+.bp-box text{fill:var(--ink-soft);font-family:var(--font-mono);font-size:9.5px;text-anchor:middle;opacity:0}
+.bp-box.hero rect{stroke-width:2.6}
+.bp-box.hero text{fill:currentColor;font-weight:600}
+.bp-line{fill:none;stroke:currentColor;stroke-width:2;stroke-dasharray:50;stroke-dashoffset:50;
+  marker-end:none}
+.bp-note{fill:var(--ink-soft);font-family:var(--font-mono);font-size:9px;text-anchor:middle;
+  letter-spacing:.12em;opacity:0}
+.bp.lit .bp-box rect{animation:draw 1s ease var(--bd,0s) forwards}
+.bp.lit .bp-box text{animation:fadein .5s ease calc(var(--bd,0s) + .5s) forwards}
+.bp.lit .bp-line{animation:draw .6s ease var(--bd,0s) forwards}
+.bp.lit .bp-note{animation:fadein .8s ease var(--bd,0s) forwards}
+
 /* kenverse agent chat (2025) */
 .agent-log{margin-top:14px;display:flex;flex-direction:column;gap:8px}
 .agent-log .msg{max-width:88%;padding:8px 12px;border-radius:12px;font-size:12.5px;line-height:1.5;
@@ -342,6 +408,14 @@ button{font-family:inherit;cursor:pointer}
 .api-get:hover{border-color:var(--accent)}
 .api-out{margin-top:8px;background:#10131C;border-radius:8px;padding:10px 12px;font-family:var(--font-mono);
   font-size:11.5px;color:#F2A93B;white-space:pre;text-align:left;overflow-x:auto}
+
+/* campus polaroid (2020 Jamia) */
+.polaroid{width:150px;background:#FFFDF7;padding:7px 7px 4px;border-radius:3px;
+  box-shadow:0 0 0 1px rgba(255,255,255,.2),0 18px 44px rgba(0,0,0,.55);
+  transform:translate3d(-50%,-50%,var(--sz)) rotate(3.5deg)}
+.polaroid img{display:block;width:100%;height:150px;object-fit:cover;object-position:center 60%}
+.polaroid span{display:block;text-align:center;font-family:var(--font-mono);font-size:9.5px;
+  color:var(--ink-soft);padding:6px 0 4px}
 
 /* student id card (2020 Jamia) */
 .win-idcard{background:linear-gradient(160deg,#FDFAF2 0%,#F0E8D5 100%);border-top:10px solid #0E7A5C}
@@ -381,11 +455,29 @@ button{font-family:inherit;cursor:pointer}
 .rk-power.down{border-color:#5B667E;box-shadow:none}
 .rk-power.down::after{color:#5B667E}
 .win-rackmount .rack{border-color:rgba(255,255,255,.14);background:#10131A}
-.win-rackmount .rack div{color:#CFD6E4;border-color:rgba(255,255,255,.07)}
+.win-rackmount .svc-row{color:#CFD6E4}
+.win-rackmount .svc + .svc{border-top:1px solid rgba(255,255,255,.07)}
 .win-rackmount .rack b{color:#5B667E}
 .rack{transition:opacity .4s}
 .rack.off{opacity:.45}
 .rack.off .led{background:#5B667E;box-shadow:none;animation:none}
+/* expandable service units — click for the dashdot-style strip */
+.svc{cursor:pointer}
+.svc-row{display:flex;align-items:center;gap:10px;padding:9px 14px;
+  font-family:var(--font-mono);font-size:12.5px}
+.svc-detail{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 14px;overflow:hidden;
+  max-height:0;transition:max-height .35s ease,padding .35s ease}
+.svc.open .svc-detail{max-height:90px;padding-bottom:10px}
+.svc-pill{font-family:var(--font-mono);font-size:8.5px;letter-spacing:.12em;color:#7FD98A;
+  border:1px solid #2FA35B;border-radius:4px;padding:2px 6px}
+.svc-meter{display:flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:9px;
+  color:#5B667E;text-transform:uppercase}
+.svc-meter i{display:block;width:52px;height:5px;border-radius:99px;background:#232838;position:relative;overflow:hidden}
+.svc-meter i::after{content:"";position:absolute;left:0;top:0;bottom:0;width:0;border-radius:99px;
+  background:var(--accent);transition:width .8s .15s ease}
+.svc.open .svc-meter i::after{width:var(--mw,30%)}
+.svc-meter em{font-style:normal;color:#8E99AF;font-size:9.5px}
+.svc-x{width:100%;font-family:var(--font-mono);font-size:9.5px;color:#5B667E}
 
 /* castle crow — circles the tower once it's built */
 .castle-crow{position:absolute;left:50%;top:26px;opacity:0;pointer-events:none}
@@ -397,10 +489,13 @@ button{font-family:inherit;cursor:pointer}
   75%{transform:translateX(0) translateY(10px) scaleX(-1)}
   100%{transform:translateX(-70px) translateY(0) scaleX(1)}}
 
-/* skill → repos panel */
-#skillpanel{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:40;
-  width:min(92vw,380px);background:var(--washi);color:var(--ink);border-radius:14px;
-  box-shadow:0 0 0 1px rgba(255,255,255,.15),0 20px 60px rgba(0,0,0,.55);padding:14px 16px;text-align:left}
+/* skill → repos manifest — pokes in from the left edge, off the flight path */
+#skillpanel{position:fixed;left:0;top:50%;transform:translateY(-50%) rotate(.6deg);z-index:40;
+  width:min(86vw,320px);background:var(--washi);color:var(--ink);border-radius:0 16px 16px 0;
+  border-left:5px solid var(--accent-deep);
+  box-shadow:0 0 0 1px rgba(255,255,255,.15),24px 0 70px rgba(0,0,0,.5);padding:16px 18px 14px;text-align:left;
+  animation:drawerin .35s cubic-bezier(.2,.9,.3,1.1)}
+@keyframes drawerin{from{transform:translate(-105%,-50%)}to{transform:translate(0,-50%) rotate(.6deg)}}
 .sp-head{display:flex;align-items:center;gap:6px;font-size:13.5px;margin-bottom:9px}
 .sp-head b{font-family:var(--font-mono)}
 .sp-x{margin-left:auto;background:none;border:none;font-size:20px;color:var(--ink-soft);line-height:1;cursor:pointer}
@@ -443,10 +538,8 @@ button{font-family:inherit;cursor:pointer}
   box-shadow:0 0 18px 6px rgba(242,169,59,.55)}
 .castle.built .glow{opacity:1}
 .rack{margin-top:14px;border:1px solid rgba(27,27,34,.2);border-radius:12px;overflow:hidden}
-.rack div{display:flex;align-items:center;gap:10px;padding:9px 14px;
-  font-family:var(--font-mono);font-size:12.5px;color:var(--ink)}
-.rack div + div{border-top:1px solid rgba(27,27,34,.12)}
-.rack b{margin-left:auto;font-weight:400;font-size:11px;color:var(--ink-soft)}
+.svc + .svc{border-top:1px solid rgba(27,27,34,.12)}
+.rack b{margin-left:auto;font-weight:400;font-size:11px;color:var(--ink-soft);white-space:nowrap}
 .led{width:8px;height:8px;border-radius:50%;background:#2FA35B;box-shadow:0 0 8px rgba(47,163,91,.8);
   animation:blink 2.2s infinite}
 @keyframes blink{0%,92%,100%{opacity:1}96%{opacity:.25}}

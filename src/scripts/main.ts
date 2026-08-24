@@ -6,7 +6,7 @@ import { initSky } from './sky';
 import {
   initBoardy, initCastle, initQBlock, initCompile, initDeploy, createQuestsReveal,
   initMiniOS, createProctorStarter, initTools, initMigrate, createAgentChat,
-  initEditorTabs, initRackPower, initStackWidget,
+  initEditorTabs, initRackPower, initStackWidget, initQueueWidget, initGraphBFS,
 } from './setpieces';
 import { loadGithub, initSkillPanel } from './github';
 
@@ -116,6 +116,8 @@ initMigrate();
 initEditorTabs();
 initRackPower();
 initStackWidget();
+initQueueWidget();
+initGraphBFS();
 initSkillPanel(SITE.githubUser);
 const autoTools = initTools();
 let toolsPlayed = false;
@@ -213,7 +215,9 @@ function frame(t: number) {
     else if (rel > farEdge) op = (rel - farEdge) / (nearEdge - farEdge);
     else op = 0;
     n.style.opacity = op.toFixed(3);
-    n.classList.toggle('on', op > 0.06);
+    /* a node just flown past (rel > 70) is huge, faint, and stacked over the
+       scene behind it — it must never swallow clicks meant for that scene */
+    n.classList.toggle('on', op > 0.06 && rel < 70);
     if (op > 0)
       n.style.transform = `translate(-50%,-50%) translate3d(var(--dx,0px),var(--dy,0px),${rel.toFixed(1)}px)`;
   });
@@ -231,6 +235,7 @@ function frame(t: number) {
     if (it.set === 'quests') revealQuests();
     if (it.set === 'proctor') startProctor();
     if (it.set === 'agent') playAgentChat();
+    if (it.set === 'blueprint') document.getElementById('blueprint')?.classList.add('lit');
     if (it.set === 'castle' && castle) castle.classList.add('built');
   });
   for (let i = 0; i < ERAS.length; i++) {
