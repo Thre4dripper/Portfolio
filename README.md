@@ -70,6 +70,8 @@ bundle. Rebuild after publishing posts or joining orgs to refresh the data.
 
 - Campus photo: ["Centenary Gate, Jamia Millia Islamia"](https://commons.wikimedia.org/wiki/File:Centenary_Gate,_Jamia_Millia_Islamia.jpg)
   by Muntaqibah, Wikimedia Commons, CC BY-SA 4.0 (resized).
+- S&P photo: ["StandardPoors Headquarters"](https://commons.wikimedia.org/wiki/File:StandardPoors_Headquarters.JPG)
+  by B64, Wikimedia Commons, CC BY 3.0 (resized).
 
 ## Performance & SEO notes
 

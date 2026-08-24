@@ -24,13 +24,6 @@ const COMPILE_SATS = [
   { x: '-16%', y: '78%', z: -80, dur: 4, delay: 0.6, html: `<span class="leet-chip sub">// TODO: everything</span>` },
 ];
 
-/* real hardware floating around the homelab rack */
-const RACK_SATS = [
-  { x: '-26%', y: '16%', z: 110, dur: 5, delay: 0.3, html: `<svg viewBox="0 0 74 50" width="62"><rect x="2" y="4" width="70" height="42" rx="4" fill="#1D4A2F" stroke="currentColor" stroke-width="1.6"/><g fill="#F2A93B"><rect x="8" y="8" width="20" height="4" rx="1"/><rect x="8" y="14" width="20" height="4" rx="1"/></g><g fill="#C0C8D8"><rect x="52" y="8" width="14" height="10" rx="1"/><rect x="52" y="24" width="14" height="10" rx="1"/></g><circle cx="14" cy="34" r="4" fill="#0B0E1A" stroke="currentColor" stroke-width="1.2"/><rect x="30" y="26" width="14" height="14" rx="2" fill="#0B0E1A" stroke="currentColor" stroke-width="1.2"/></svg><span class="sat-cap">raspberry pi</span>` },
-  { x: '110%', y: '30%', z: 80, dur: 6, delay: 0.8, html: `<svg viewBox="0 0 46 60" width="38"><rect x="3" y="3" width="40" height="54" rx="4" fill="#20232E" stroke="currentColor" stroke-width="1.6"/><g fill="none" stroke="currentColor" stroke-width="1.4" opacity=".8"><rect x="8" y="10" width="30" height="9" rx="1.5"/><rect x="8" y="23" width="30" height="9" rx="1.5"/><rect x="8" y="36" width="30" height="9" rx="1.5"/></g><circle cx="34" cy="14.5" r="1.6" fill="#2FA35B"/><circle cx="34" cy="27.5" r="1.6" fill="#2FA35B"/><circle cx="34" cy="40.5" r="1.6" fill="#F2A93B"/></svg><span class="sat-cap">nas · 3 bays</span>` },
-  { x: '-18%', y: '76%', z: -70, dur: 7, delay: 1.2, html: `<svg viewBox="0 0 80 24" width="66"><path d="M4 12 H60" stroke="currentColor" stroke-width="2.4" stroke-dasharray="5 4"/><rect x="58" y="4" width="18" height="16" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M62 8 v8 M66 8 v8 M70 8 v8" stroke="currentColor" stroke-width="1.4"/></svg><span class="sat-cap">eth0 · 1Gbps</span>` },
-];
-
 /* extra floating grind-era elements around the DSA notebook */
 const GRIND_SATS = [
   { x: '-24%', y: '-12%', z: 120, dur: 5, delay: 0.2, html: `<span class="leet-chip">LeetCode · ${leet.total} solved</span>` },
@@ -528,6 +521,27 @@ int main() {
                 </div>
               </>
             )}
+            {item.set === 'store' && (
+              <div class="store" id="store">
+                <div class="store-prev" id="store-prev" style="--sc:#D8492B">
+                  <div class="st-awning" />
+                  <div class="st-name">bea·shop <em>· your brand here</em></div>
+                  <div class="st-grid" id="st-grid">
+                    <i>🧴</i><i>👜</i><i>🕯️</i>
+                    <button class="st-add" id="st-add" title="add product">+</button>
+                  </div>
+                  <div class="st-cta">shop now</div>
+                </div>
+                <div class="store-tools">
+                  <span class="st-lbl">theme</span>
+                  <button class="swatch" data-c="#D8492B" style="background:#D8492B" aria-label="red theme" />
+                  <button class="swatch" data-c="#2C5AB0" style="background:#2C5AB0" aria-label="blue theme" />
+                  <button class="swatch" data-c="#0E7A5C" style="background:#0E7A5C" aria-label="green theme" />
+                  <button class="swatch" data-c="#B4611B" style="background:#B4611B" aria-label="amber theme" />
+                  <span class="st-status" id="st-status">storefront · live in 30s</span>
+                </div>
+              </div>
+            )}
             {item.set === 'quests' && (
               <div class="quests" id="quests">
                 {HACKS.map((h, i) => (
@@ -542,7 +556,7 @@ int main() {
             {item.set === 'minios' && (
               <div class="app-scr minios" id="minios">
                 <button class="os-status" id="os-status" aria-label="notifications">
-                  <span class="os-time">21:07</span>
+                  <span class="os-time">21:07 <i class="os-caret">⌄</i></span>
                   <span class="os-icons">▽ ▲ ▮</span>
                 </button>
                 <div class="os-shade" id="os-shade">
@@ -658,6 +672,10 @@ int main() {
                   <button class="run-btn" id="migrate-btn">run migration</button>
                   <span class="mig-status" id="mig-status" role="status" />
                 </div>
+                <div class="polaroid out-el" style="--sx:124%;--sy:36%;--sz:70px" aria-hidden="true">
+                  <img src="/snp-hq.jpg" alt="Standard & Poor's headquarters, 55 Water Street" width="150" height="112" loading="lazy" style="height:112px" />
+                  <span>55 water st · HQ 📍</span>
+                </div>
               </div>
             )}
             {item.set === 'api' && (
@@ -684,26 +702,26 @@ int main() {
               </div>
             )}
             {item.set === 'blueprint' && (
-              <svg class="bp" id="blueprint" viewBox="0 0 360 150" role="img" aria-label="AI-native platform architecture sketch">
+              <svg class="bp" id="blueprint" viewBox="0 0 380 150" role="img" aria-label="AI-native platform architecture sketch">
                 <g class="bp-box" style="--bd:.2s">
-                  <rect x="8" y="46" width="88" height="58" rx="8" />
-                  <text x="52" y="70">60k students</text>
-                  <text x="52" y="86">30+ institutions</text>
+                  <rect x="6" y="44" width="104" height="62" rx="8" />
+                  <text x="58" y="70">60k students</text>
+                  <text x="58" y="86">30+ institutions</text>
                 </g>
-                <path class="bp-line" style="--bd:.9s" d="M96 75 H140" />
+                <path class="bp-line" style="--bd:.9s" d="M110 75 H144" />
                 <g class="bp-box" style="--bd:1.2s">
-                  <rect x="140" y="34" width="88" height="82" rx="8" />
-                  <text x="184" y="60">agent layer</text>
-                  <text x="184" y="76">RAG · workflows</text>
-                  <text x="184" y="92">guardrails</text>
+                  <rect x="144" y="32" width="104" height="86" rx="8" />
+                  <text x="196" y="58">agent layer</text>
+                  <text x="196" y="76">RAG · workflows</text>
+                  <text x="196" y="94">guardrails</text>
                 </g>
-                <path class="bp-line" style="--bd:1.9s" d="M228 75 H272" />
+                <path class="bp-line" style="--bd:1.9s" d="M248 75 H282" />
                 <g class="bp-box hero" style="--bd:2.2s">
-                  <rect x="272" y="46" width="82" height="58" rx="8" />
-                  <text x="313" y="70">AI-native</text>
-                  <text x="313" y="86">platform v1</text>
+                  <rect x="282" y="44" width="92" height="62" rx="8" />
+                  <text x="328" y="70">AI-native</text>
+                  <text x="328" y="86">platform v1</text>
                 </g>
-                <text class="bp-note" x="184" y="140" style="--bd:2.8s">blueprint · drawn from scratch, 2026</text>
+                <text class="bp-note" x="190" y="142" style="--bd:2.8s">blueprint · drawn from scratch, 2026</text>
               </svg>
             )}
             {item.set === 'draw' && (
@@ -727,12 +745,10 @@ int main() {
               <>
                 <div class="rack" title="click a service for live stats">
                   {[
-                    { n: 'argocd', d: 'gitops · 19 apps synced', cpu: 2, mem: '69.8 MB', mw: 34, x: '19/19 healthy · 504ms' },
-                    { n: 'traefik', d: 'ingress · 20 routes', cpu: 1, mem: '44.6 MB', mw: 24, x: '19 services · 3 middleware' },
-                    { n: 'jellyfin', d: 'media · streaming', cpu: 4, mem: '203 MB', mw: 62, x: 'transcoding? never say it' },
-                    { n: 'home-assistant', d: 'smart home hub', cpu: 3, mem: '331 MB', mw: 78, x: 'the lights obey' },
-                    { n: 'mongodb', d: 'replica set ×3 · k3s', cpu: 6, mem: '492 MB', mw: 90, x: 'PRIMARY + 2 SECONDARY' },
-                    { n: 'twingate', d: 'zero-trust vpn', cpu: 2, mem: '24.4 MB', mw: 16, x: 'tunnel warm · 0 intruders' },
+                    { n: 'argocd', d: 'gitops', cpu: 2, mem: '69.8 MB', mw: 34, x: '19/19 apps healthy · 504ms' },
+                    { n: 'traefik', d: 'ingress', cpu: 1, mem: '44.6 MB', mw: 24, x: '20 routers · 3 middleware' },
+                    { n: 'jellyfin', d: 'media', cpu: 4, mem: '203 MB', mw: 62, x: 'streaming · transcoding? shh' },
+                    { n: 'mongodb', d: 'db ×3 · k3s', cpu: 6, mem: '492 MB', mw: 90, x: 'PRIMARY + 2 SECONDARY' },
                   ].map((s, i) => (
                     <div class="svc">
                       <div class="svc-row">
@@ -749,11 +765,35 @@ int main() {
                     </div>
                   ))}
                 </div>
-                {RACK_SATS.map((g) => (
-                  <span class="sat" aria-hidden="true" style={`--sx:${g.x};--sy:${g.y};--sz:${g.z}px;--sdur:${g.dur}s;--sd:${g.delay}s`}>
-                    <i set:html={g.html} />
-                  </span>
-                ))}
+                <div class="dsw lan out-el" id="lan" style="--sx:-30%;--sy:44%;--sz:80px">
+                  <div class="dsw-title">LAN</div>
+                  <svg viewBox="0 0 140 128">
+                    <rect x="34" y="6" width="72" height="22" rx="4" fill="none" stroke="currentColor" stroke-width="2" />
+                    <g fill="currentColor">
+                      <rect x="44" y="20" width="8" height="5" /><rect x="66" y="20" width="8" height="5" /><rect x="88" y="20" width="8" height="5" />
+                    </g>
+                    <text class="lan-lbl" x="70" y="17">switch</text>
+                    <line class="lan-wire" x1="26" y1="28" x2="26" y2="86" /><line class="lan-wire" x1="70" y1="28" x2="70" y2="86" /><line class="lan-wire" x1="114" y1="28" x2="114" y2="86" />
+                    <circle class="lan-pk" style="--px:26px" cx="0" cy="0" r="2.6" />
+                    <circle class="lan-pk" style="--px:70px;animation-delay:.9s" cx="0" cy="0" r="2.6" />
+                    <circle class="lan-pk" style="--px:114px;animation-delay:1.7s" cx="0" cy="0" r="2.6" />
+                    <g class="lan-dev" data-dev="pi" tabindex="-1">
+                      <rect x="10" y="86" width="32" height="20" rx="3" fill="#1D4A2F" stroke="currentColor" stroke-width="1.6" />
+                      <rect x="15" y="91" width="9" height="4" fill="#F2A93B" /><circle cx="34" cy="96" r="3" fill="#0B0E1A" />
+                      <text class="lan-lbl" x="26" y="118">pi</text>
+                    </g>
+                    <g class="lan-dev" data-dev="nas" tabindex="-1">
+                      <rect x="56" y="84" width="28" height="24" rx="3" fill="#20232E" stroke="currentColor" stroke-width="1.6" />
+                      <line x1="60" y1="91" x2="80" y2="91" stroke="currentColor" stroke-width="1.6" /><line x1="60" y1="98" x2="80" y2="98" stroke="currentColor" stroke-width="1.6" />
+                      <text class="lan-lbl" x="70" y="118">nas</text>
+                    </g>
+                    <g class="lan-dev" data-dev="www" tabindex="-1">
+                      <path d="M102 98 a8 8 0 0 1 4 -14 a10 8 0 0 1 19 2 a7 7 0 0 1 -2 12 Z" fill="none" stroke="currentColor" stroke-width="1.8" />
+                      <text class="lan-lbl" x="114" y="118">www</text>
+                    </g>
+                  </svg>
+                  <div class="lan-status" id="lan-status">all links up · 1Gbps</div>
+                </div>
               </>
             )}
             {item.set !== 'minios' && (

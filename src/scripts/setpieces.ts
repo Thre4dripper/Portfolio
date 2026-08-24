@@ -173,6 +173,58 @@ export function initGraphBFS(): void {
   });
 }
 
+/* ---------- 2023 Bea Brand: the on-the-go storefront creator ---------- */
+export function initStore(): void {
+  const prev = document.getElementById('store-prev');
+  const status = document.getElementById('st-status');
+  const grid = document.getElementById('st-grid');
+  const add = document.getElementById('st-add');
+  if (!prev || !status || !grid || !add) return;
+  const say = (msg: string) => {
+    status.textContent = msg;
+  };
+  document.querySelectorAll<HTMLButtonElement>('.swatch').forEach((b) =>
+    b.addEventListener('click', (e) => {
+      e.stopPropagation();
+      prev.style.setProperty('--sc', b.dataset.c!);
+      say('theme applied ✓ zero deploys');
+    }),
+  );
+  const POOL = ['🧢', '☕', '🕶️', '📿', '🧦', '💄', '🍯'];
+  let p = 0;
+  add.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (grid.children.length >= 9) {
+      say('catalog full — a good problem');
+      return;
+    }
+    const item = document.createElement('i');
+    item.textContent = POOL[p++ % POOL.length];
+    grid.insertBefore(item, add);
+    requestAnimationFrame(() => item.classList.add('in'));
+    say(`product #${grid.children.length - 1} listed ✓`);
+  });
+}
+
+/* ---------- 2025 homelab: the LAN panel ---------- */
+export function initLan(): void {
+  const lan = document.getElementById('lan');
+  const status = document.getElementById('lan-status');
+  if (!lan || !status) return;
+  lan.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const dev = (e.target as Element).closest<SVGGElement>('.lan-dev');
+    if (!dev) return;
+    lan.querySelectorAll('.lan-dev').forEach((d) => d.classList.remove('ping'));
+    dev.classList.add('ping');
+    status.textContent = `${dev.dataset.dev} · link ok · ${(Math.random() * 2 + 0.3).toFixed(1)}ms`;
+    setTimeout(() => {
+      dev.classList.remove('ping');
+      status.textContent = 'all links up · 1Gbps';
+    }, 1800);
+  });
+}
+
 /* ---------- 2022 quest log: reveal handled by CSS .lit; nothing to wire ---------- */
 export function createQuestsReveal(): () => void {
   let done = false;

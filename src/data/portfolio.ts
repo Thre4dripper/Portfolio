@@ -35,7 +35,7 @@ export const NOTES: string[] = [
 export type SetPiece =
   | 'ascii' | 'draw' | 'term' | 'castle' | 'rack'
   | 'compile' | 'deploy' | 'quests' | 'minios' | 'api'
-  | 'proctor' | 'tools' | 'migrate' | 'agent' | 'blueprint';
+  | 'proctor' | 'tools' | 'migrate' | 'agent' | 'blueprint' | 'store';
 
 /** Window chrome a chapter renders in — variety beyond the washi card. */
 export type Frame = 'terminal' | 'browser' | 'notebook' | 'phone' | 'editor' | 'rackmount' | 'idcard';
@@ -110,6 +110,10 @@ const RAW_TIMELINE: TimelineItem[] = [
   {
     type: 'ch', yr: '2022', t: 'Going full stack', skills: ['TypeScript', 'React', 'Node.js'], frame: 'editor', set: 'api',
     body: 'Followed the data past the screen — into APIs, databases, sockets, and everything between.',
+  },
+  {
+    type: 'ch', yr: '2023', t: 'Bea Brand — the internship', skills: ['Kafka', 'MySQL', 'FCM'], set: 'store',
+    body: 'Where everything clicked. Intern building a B2B SaaS for brands: Kafka + FCM notifications, an S3 cloud drive — and an on-the-go storefront creator.',
   },
   {
     type: 'ch', yr: '2023', t: 'Boardy', skills: ['Next.js', 'Canvas API'],
@@ -249,7 +253,8 @@ export const EXPERIENCE = [
   {
     org: 'Bea Brand', where: 'Gurugram', role: 'Software Development Intern', when: 'Jan 2023 — Jul 2024',
     points: [
-      'Node.js (Express) + TypeScript with MySQL on Amazon RDS for an e-commerce platform.',
+      'B2B SaaS for brands — Node.js (Express) + TypeScript with MySQL on Amazon RDS.',
+      'On-the-go storefront creator so brands could spin up shops in minutes.',
       'Push and email notification service with Apache Kafka and Firebase Cloud Messaging.',
       'Cloud drive on Amazon S3 with RDS as the metadata store.',
     ],
