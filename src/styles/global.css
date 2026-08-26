@@ -12,6 +12,7 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{height:100%;overflow:hidden;background:#0B0E1A;color:var(--washi);
   font-family:var(--font-body);-webkit-font-smoothing:antialiased}
+html.scrollable,html.scrollable body{height:auto;overflow:auto}
 button{font-family:inherit;cursor:pointer}
 
 #sky{position:fixed;inset:0;z-index:0}
@@ -890,6 +891,9 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
 .flat-in .skills span,.flat-in .notes-list span{font-family:var(--font-mono);font-size:12px;
   padding:5px 12px;border:1px solid rgba(27,27,34,.3);border-radius:999px}
 #flat .rm-note{margin-top:40px;font-size:13px;color:var(--ink-soft);font-style:italic}
+.int-links a{font-family:var(--font-mono);font-size:12px;padding:6px 13px;border:1px solid rgba(27,27,34,.3);
+  border-radius:999px;color:var(--ink);text-decoration:none;transition:all .15s}
+.int-links a:hover{background:#D8492B;border-color:#D8492B;color:var(--washi)}
 
 @media (max-width:640px){
   #rail{right:12px;gap:10px}

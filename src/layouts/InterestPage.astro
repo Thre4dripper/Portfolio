@@ -1,0 +1,75 @@
+---
+/* Shared shell for the interest pages (/sketches, /movies, /games, /anime):
+   back link, eyebrow, title, cross-navigation, footer. Each page brings its
+   own scenery via the default slot and scoped styles. */
+import Base from './Base.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  eyebrow: string;
+  heading: string;
+  sub?: string;
+  /** page background + text color, so the chrome matches each world */
+  dark?: boolean;
+}
+const { title, description, eyebrow, heading, sub, dark = false } = Astro.props;
+const NAV = [
+  { href: '/sketches', label: 'sketchbook' },
+  { href: '/movies', label: 'movies' },
+  { href: '/games', label: 'games' },
+  { href: '/anime', label: 'anime' },
+];
+const here = Astro.url.pathname.replace(/\/$/, '');
+---
+
+<Base title={title} description={description} scroll>
+  <div class={`ip ${dark ? 'ip-dark' : 'ip-light'}`}>
+    <header class="ip-head">
+      <a class="ip-back" href="/">← back to the flight</a>
+      <nav class="ip-nav" aria-label="Interests">
+        {NAV.map((n) => (
+          <a href={n.href} class={here === n.href ? 'cur' : undefined}>{n.label}</a>
+        ))}
+      </nav>
+    </header>
+    <div class="ip-hero">
+      <div class="ip-eyebrow">{eyebrow}</div>
+      <h1>{heading}</h1>
+      {sub && <p class="ip-sub">{sub}</p>}
+    </div>
+    <main class="ip-main">
+      <slot />
+    </main>
+    <footer class="ip-foot">
+      <a href="/">ijlal ahmad — a portfolio you fly through ✈</a>
+    </footer>
+  </div>
+</Base>
+
+<style is:global>
+  .ip{min-height:100vh;padding:28px clamp(16px,4vw,48px) 60px}
+  .ip-light{background:var(--washi);color:var(--ink)}
+  .ip-dark{background:#0B0E1A;color:var(--washi)}
+  .ip-head{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
+    max-width:1080px;margin:0 auto}
+  .ip-back{font-family:var(--font-mono);font-size:12px;text-decoration:none;border-radius:999px;
+    padding:8px 14px;border:1px solid currentColor;color:inherit;opacity:.8}
+  .ip-back:hover{opacity:1}
+  .ip-nav{display:flex;gap:4px;flex-wrap:wrap}
+  .ip-nav a{font-family:var(--font-mono);font-size:12px;color:inherit;opacity:.6;text-decoration:none;
+    padding:7px 12px;border-radius:999px}
+  .ip-nav a:hover{opacity:1}
+  .ip-nav a.cur{opacity:1;border:1px solid currentColor}
+  .ip-hero{max-width:1080px;margin:44px auto 30px}
+  .ip-eyebrow{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.3em;text-transform:uppercase;
+    color:#D8492B}
+  .ip-dark .ip-eyebrow{color:var(--accent)}
+  .ip-hero h1{font-family:var(--font-display);font-weight:800;font-size:clamp(34px,6vw,60px);
+    letter-spacing:-.02em;margin-top:8px}
+  .ip-sub{margin-top:10px;font-size:16px;opacity:.75;max-width:640px;line-height:1.6}
+  .ip-main{max-width:1080px;margin:0 auto}
+  .ip-foot{max-width:1080px;margin:70px auto 0;padding-top:18px;border-top:1px solid currentColor;opacity:.55}
+  .ip-foot a{font-family:var(--font-mono);font-size:11.5px;color:inherit;text-decoration:none}
+  .ip-foot a:hover{text-decoration:underline}
+</style>

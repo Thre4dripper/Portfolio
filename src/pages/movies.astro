@@ -1,0 +1,153 @@
+---
+/* The movie log — parsed at build from the Notion CSV export in src/data. */
+import InterestPage from '../layouts/InterestPage.astro';
+import raw from '../data/movies.csv?raw';
+
+interface Movie {
+  name: string;
+  year: number | null;
+}
+
+function parseCSV(text: string): string[][] {
+  const rows: string[][] = [];
+  let row: string[] = [];
+  let field = '';
+  let q = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (q) {
+      if (c === '"' && text[i + 1] === '"') { field += '"'; i++; }
+      else if (c === '"') q = false;
+      else field += c;
+    } else if (c === '"') q = true;
+    else if (c === ',') { row.push(field); field = ''; }
+    else if (c === '\n' || c === '\r') {
+      if (c === '\r' && text[i + 1] === '\n') i++;
+      row.push(field); field = '';
+      if (row.some((f) => f.trim())) rows.push(row);
+      row = [];
+    } else field += c;
+  }
+  if (field || row.length) { row.push(field); if (row.some((f) => f.trim())) rows.push(row); }
+  return rows;
+}
+
+const rows = parseCSV(raw.replace(/^﻿/, '')).slice(1);
+const movies: Movie[] = rows
+  .map((r) => ({ name: r[0]?.trim() ?? '', year: /^\d{4}$/.test(r[2]?.trim() ?? '') ? Number(r[2].trim()) : null }))
+  .filter((m) => m.name);
+
+const total = movies.length;
+const years = movies.filter((m) => m.year).map((m) => m.year!) as number[];
+const span: [number, number] = [Math.min(...years), Math.max(...years)];
+
+const byDecade = new Map<string, Movie[]>();
+for (const m of movies) {
+  const key = m.year ? `${Math.floor(m.year / 10) * 10}s` : 'undated';
+  if (!byDecade.has(key)) byDecade.set(key, []);
+  byDecade.get(key)!.push(m);
+}
+const decades = [...byDecade.entries()]
+  .sort((a, b) => (a[0] === 'undated' ? 1 : b[0] === 'undated' ? -1 : b[0].localeCompare(a[0])))
+  .map(([d, list]) => [d, list.sort((a, b) => a.name.localeCompare(b.name))] as const);
+const topDecade = decades.reduce((best, d) => (d[1].length > best[1].length ? d : best));
+---
+
+<InterestPage
+  title="Movie Log — Ijlal Ahmad"
+  description={`Every film Ijlal Ahmad has logged — ${total} movies spanning ${span[0]} to ${span[1]}.`}
+  eyebrow="interests · 02"
+  heading="The movie log"
+  sub="Every film that made it into the database. No ratings, no reviews — if it's here, it was worth the runtime."
+  dark
+>
+  <div class="marquee">
+    <span class="mq-lbl">NOW SHOWING</span>
+    <b id="mq-title">…</b>
+    <button id="mq-btn" title="another one">⟳</button>
+  </div>
+
+  <div class="mv-stats">
+    <span><b>{total}</b> films logged</span>
+    <span><b>{span[0]} — {span[1]}</b> release span</span>
+    <span><b>the {topDecade[0]}</b> won · {topDecade[1].length} films</span>
+  </div>
+
+  <input class="mv-search" id="mv-search" type="search" placeholder={`search ${total} films…`} aria-label="Search films" />
+
+  {
+    decades.map(([decade, list]) => (
+      <section class="dec">
+        <h2>{decade}<small>{list.length}</small></h2>
+        <div class="mv-grid">
+          {list.map((m) => (
+            <span class="mv">{m.name}{m.year && <em>{String(m.year).slice(-2)}</em>}</span>
+          ))}
+        </div>
+      </section>
+    ))
+  }
+  <p class="mv-none" id="mv-none" hidden>nothing in the archive matches that. yet.</p>
+</InterestPage>
+
+<style>
+  .marquee{display:flex;align-items:center;gap:14px;background:linear-gradient(160deg,#141722,#1B1030);
+    border:1px solid rgba(244,159,182,.35);border-radius:14px;padding:16px 20px;
+    box-shadow:0 0 40px rgba(244,159,182,.12),inset 0 0 30px rgba(0,0,0,.4)}
+  .mq-lbl{font-family:var(--font-mono);font-size:10px;letter-spacing:.35em;color:#F49FB6;
+    animation:blink 2.2s infinite;flex:none}
+  .marquee b{font-family:var(--font-display);font-weight:700;font-size:clamp(16px,3vw,24px);flex:1;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #mq-btn{background:none;border:1px solid rgba(245,239,226,.35);color:var(--washi);width:34px;height:34px;
+    border-radius:50%;font-size:15px;cursor:pointer;flex:none}
+  #mq-btn:hover{border-color:#F49FB6;color:#F49FB6}
+  .mv-stats{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0 8px}
+  .mv-stats span{font-family:var(--font-mono);font-size:11.5px;color:var(--moon);
+    border:1px solid rgba(174,184,200,.3);border-radius:999px;padding:6px 14px}
+  .mv-stats b{color:var(--washi)}
+  .mv-search{width:100%;max-width:420px;margin:14px 0 6px;background:rgba(245,239,226,.06);
+    border:1px solid rgba(245,239,226,.25);border-radius:10px;padding:11px 16px;color:var(--washi);
+    font-family:var(--font-mono);font-size:13px}
+  .mv-search:focus{outline:none;border-color:#F49FB6}
+  .dec h2{font-family:var(--font-display);font-weight:800;font-size:26px;margin:34px 0 12px;
+    display:flex;align-items:baseline;gap:10px}
+  .dec h2 small{font-family:var(--font-mono);font-size:11px;color:var(--moon);font-weight:400}
+  .mv-grid{display:flex;flex-wrap:wrap;gap:7px}
+  .mv{font-size:13px;color:#CBD2E0;background:rgba(245,239,226,.05);border:1px solid rgba(245,239,226,.12);
+    border-radius:8px;padding:6px 11px;line-height:1.3}
+  .mv em{font-style:normal;font-family:var(--font-mono);font-size:10px;color:#6C7A96;margin-left:6px}
+  .mv.hit{border-color:#F49FB6;color:var(--washi)}
+  .mv-none{margin-top:26px;font-family:var(--font-mono);font-size:13px;color:var(--moon)}
+</style>
+
+<script>
+  /* now showing — random pick */
+  const titles = [...document.querySelectorAll<HTMLElement>('.mv')];
+  const mq = document.getElementById('mq-title')!;
+  const pick = () => {
+    mq.textContent = titles[Math.floor(Math.random() * titles.length)].childNodes[0].textContent;
+  };
+  pick();
+  document.getElementById('mq-btn')!.addEventListener('click', pick);
+
+  /* search filter */
+  const input = document.getElementById('mv-search') as HTMLInputElement;
+  const sections = [...document.querySelectorAll<HTMLElement>('.dec')];
+  const none = document.getElementById('mv-none')!;
+  input.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    let any = false;
+    for (const sec of sections) {
+      let secAny = false;
+      sec.querySelectorAll<HTMLElement>('.mv').forEach((el) => {
+        const hit = !q || el.textContent!.toLowerCase().includes(q);
+        el.hidden = !hit;
+        el.classList.toggle('hit', Boolean(q) && hit);
+        if (hit) secAny = true;
+      });
+      sec.hidden = !secAny;
+      if (secAny) any = true;
+    }
+    none.hidden = any;
+  });
+</script>
