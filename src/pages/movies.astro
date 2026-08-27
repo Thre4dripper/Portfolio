@@ -1,42 +1,15 @@
 ---
-/* The movie log — parsed at build from the Notion CSV export in src/data. */
+/* The movie log — src/data/movies.json is the single source of truth.
+   Edit the JSON (by hand or by agent); the page just renders it. */
 import InterestPage from '../layouts/InterestPage.astro';
-import raw from '../data/movies.csv?raw';
+import moviesData from '../data/movies.json';
 
 interface Movie {
   name: string;
   year: number | null;
 }
 
-function parseCSV(text: string): string[][] {
-  const rows: string[][] = [];
-  let row: string[] = [];
-  let field = '';
-  let q = false;
-  for (let i = 0; i < text.length; i++) {
-    const c = text[i];
-    if (q) {
-      if (c === '"' && text[i + 1] === '"') { field += '"'; i++; }
-      else if (c === '"') q = false;
-      else field += c;
-    } else if (c === '"') q = true;
-    else if (c === ',') { row.push(field); field = ''; }
-    else if (c === '\n' || c === '\r') {
-      if (c === '\r' && text[i + 1] === '\n') i++;
-      row.push(field); field = '';
-      if (row.some((f) => f.trim())) rows.push(row);
-      row = [];
-    } else field += c;
-  }
-  if (field || row.length) { row.push(field); if (row.some((f) => f.trim())) rows.push(row); }
-  return rows;
-}
-
-const rows = parseCSV(raw.replace(/^﻿/, '')).slice(1);
-const movies: Movie[] = rows
-  .map((r) => ({ name: r[0]?.trim() ?? '', year: /^\d{4}$/.test(r[2]?.trim() ?? '') ? Number(r[2].trim()) : null }))
-  .filter((m) => m.name);
-
+const movies = moviesData as Movie[];
 const total = movies.length;
 const years = movies.filter((m) => m.year).map((m) => m.year!) as number[];
 const span: [number, number] = [Math.min(...years), Math.max(...years)];

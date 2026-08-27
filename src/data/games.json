@@ -1,0 +1,255 @@
+{
+  "series": [
+    {
+      "name": "ASSASSINS CREED",
+      "games": [
+        "Assassin's Creed",
+        "Assassin's Creed II",
+        "Assassin's Creed Brotherhood",
+        "Assassin's Creed Revelations",
+        "AC Liberation HD",
+        "Assassin's Creed - Odyssey",
+        "Assassin's Creed Syndicate",
+        "Assassin's Creed III Remastered",
+        "Assassin's Creed IV Black Flag Complete Edition",
+        "Assassin's Creed Origins Gold Edition",
+        "Assassin's Creed Unity",
+        "Assassin's Creed Valhalla",
+        "Assassin's Creed Rogue"
+      ]
+    },
+    {
+      "name": "Call of Duty",
+      "games": [
+        "Black.Ops.III",
+        "Call of Duty + United Offensive",
+        "Call of Duty - Black Ops 2",
+        "Call of Duty - Black Ops",
+        "Call of Duty Advanced Warfare",
+        "Call of Duty Modern Warfare 3 Complete Edition",
+        "Call of Duty WWII",
+        "Call of Duty - Ghosts",
+        "Call of Duty - Infinite Warfare",
+        "Call of Duty 4 Modern Warfare - Remastered"
+      ]
+    },
+    {
+      "name": "PLATFORMERS",
+      "games": [
+        "Formula Fusion",
+        "Little Nightmares II - Deluxe Edition",
+        "My Friend Pedro 1.1GB",
+        "Oxygen Not Included",
+        "The Pedestrian",
+        "Unravel",
+        "Unravel Two",
+        "Inside",
+        "Limbo",
+        "MX Nitro"
+      ]
+    },
+    {
+      "name": "Need for Speed Anthology",
+      "games": [
+        "Need for Speed - Most Wanted",
+        "Need for Speed - Payback",
+        "Need For Speed Heat",
+        "Need for Speed Hot Pursuit",
+        "Need for Speed Rivals",
+        "Need for Speed The Run - Limited Edition",
+        "Need For Speed Most Wanted Limited Edition CorePack",
+        "Need for Speed - Most Wanted"
+      ]
+    },
+    {
+      "name": "GTA GAMES",
+      "games": [
+        "Grand Theft Auto",
+        "Grand Theft Auto London 1969 & 1961",
+        "Grand Theft Auto 2",
+        "Grand Theft Auto 3",
+        "Grand Theft Auto Vice City",
+        "Grand Theft Auto - San Andreas",
+        "Grand Theft Auto IV",
+        "Grand Theft Auto V"
+      ]
+    },
+    {
+      "name": "Battlefield Anthology",
+      "games": [
+        "Battlefield Bad Company 2",
+        "Battlefield 3",
+        "Battlefield 4",
+        "Battlefield 1 Digital Deluxe Edition",
+        "Battlefield Hardline Digital Deluxe Edition",
+        "Battlefield V - Deluxe Edition"
+      ]
+    },
+    {
+      "name": "Batman - Arkham",
+      "games": [
+        "Batman - Arkham Asylum",
+        "Batman - Arkham Knight -CP",
+        "Batman Arkham City GOTY",
+        "Batman Arkham Origins"
+      ]
+    },
+    {
+      "name": "FAR CRY",
+      "games": [
+        "Far Cry - New Dawn",
+        "Far Cry 3 Inc. Blood Dragon",
+        "Far Cry 4 Complete Edition",
+        "Far Cry 5 - Main Files"
+      ]
+    },
+    {
+      "name": "Just Cause",
+      "games": [
+        "Just Cause 2",
+        "Just Cause 3 - XL Edition",
+        "Just Cause 4 Complete Edition",
+        "Just Cause"
+      ]
+    },
+    {
+      "name": "Trine Quadlogy",
+      "games": [
+        "Trine",
+        "Trine 2 Complete Story",
+        "TRINE 4 THE NIGHTMARE PRINCE - + 2 DLCS + MULTIPLAYER",
+        "Trine 3 - The Artifacts of Power"
+      ]
+    },
+    {
+      "name": "City Building Games",
+      "games": [
+        "Cities - Skylines",
+        "Jurassic World - Evolution",
+        "SimCity"
+      ]
+    },
+    {
+      "name": "MAFIA",
+      "games": [
+        "Mafia - Definitive Edition",
+        "Mafia 3 - Definitive Edition",
+        "Mafia II - Definitive Edition"
+      ]
+    },
+    {
+      "name": "ROCKSTAR GAMES",
+      "games": [
+        "L.A. Noire",
+        "MaxPayne 2",
+        "Max Payne 3"
+      ]
+    },
+    {
+      "name": "Saints Row",
+      "games": [
+        "AGENTS OF MAYHEM - + ALL DLCS",
+        "Saints Row IV",
+        "Saints Row The Third"
+      ]
+    },
+    {
+      "name": "Tom Clancy's",
+      "games": [
+        "Tom Clancy's Ghost Recon Wildlands - Ultimate Edition",
+        "Splinter Cell - Blacklist",
+        "Splinter Cell - Conviction"
+      ]
+    },
+    {
+      "name": "Tomb Raider",
+      "games": [
+        "Shadow of the Tomb Raider Definitive Edition",
+        "Rise of the Tomb Raider",
+        "Tomb Raider"
+      ]
+    },
+    {
+      "name": "EA GAMES",
+      "games": [
+        "A Way Out",
+        "TITANFALL 2"
+      ]
+    },
+    {
+      "name": "Middle-Earth",
+      "games": [
+        "Middle-earth Shadow of War - Definitive Edition",
+        "Middle-Earth - Shadow of Mordor"
+      ]
+    },
+    {
+      "name": "PROTOTYPE",
+      "games": [
+        "PROTOTYPE",
+        "PROTOTYPE 2"
+      ]
+    },
+    {
+      "name": "Red Dead",
+      "games": [
+        "Red Dead Redemption",
+        "Red Dead Redemption 2 Ultimate Edition"
+      ]
+    },
+    {
+      "name": "watchdogs",
+      "games": [
+        "Watch Dogs 2 Gold Edition",
+        "Watch Dogs Complete Edition"
+      ]
+    },
+    {
+      "name": "WB Games",
+      "games": [
+        "Injustice 2 - Legendary Edition",
+        "Mortal.Kombat.XL"
+      ]
+    },
+    {
+      "name": "ORI Duology",
+      "games": [
+        "Ori and the Will of the Wisps",
+        "Ori.and.The.Blind.Forest.Definitive.Edition-ZAZIX"
+      ]
+    },
+    {
+      "name": "Trials Dilogy",
+      "games": [
+        "Trials Evolution - Gold Edition",
+        "Trials Fusion"
+      ]
+    },
+    {
+      "name": "MARVEL GAMES",
+      "games": [
+        "The Amazing Spiderman 2",
+        "Deadpool"
+      ]
+    }
+  ],
+  "singles": [
+    "Days Gone",
+    "Driver San Francisco",
+    "Forza Horizon 4 - Ultimate Edition",
+    "Homefront - The Revolution",
+    "Horizon - Zero Dawn CE",
+    "Mad Max - Road Warrior",
+    "Mad Max",
+    "Quantum Break Steam Edition",
+    "ReCore - Definitive Edition",
+    "Ryse - Son of Rome",
+    "Sekiro Shadows Die Twice - Game of the Year Edition",
+    "Sleeping Dogs Pack",
+    "SnowRunner",
+    "Syndicate",
+    "The Evil Within 2",
+    "The Surge",
+    "The Witcher 3 Wild Hunt Complete Edition"
+  ]
+}

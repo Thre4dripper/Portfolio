@@ -1,7 +1,8 @@
 ---
-/* The anime log — ink banners on washi, matching the worldmaker act. */
+/* The anime log — src/data/anime.json is the single source of truth.
+   Add shows to the JSON (by hand or by agent); the page just renders it. */
 import InterestPage from '../layouts/InterestPage.astro';
-import { ANIME } from '../data/anime';
+import ANIME from '../data/anime.json';
 ---
 
 <InterestPage

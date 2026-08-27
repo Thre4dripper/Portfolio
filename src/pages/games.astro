@@ -1,72 +1,11 @@
 ---
-/* The game shelf — parsed at build from the Notion export. The list is a
-   hoarder's archive of repack folder names, so titles get scrubbed of
-   [FitGirl]/[DODI]/CorePack/version noise before display. */
+/* The game shelf — src/data/games.json is the single source of truth.
+   Edit the JSON (by hand or by agent); the page just renders it. */
 import InterestPage from '../layouts/InterestPage.astro';
-import raw from '../data/games.md?raw';
+import gamesData from '../data/games.json';
 
-const JUNK = /^(tools|add on|save|crack|trainer|map|cheat.*|base game|mp and zombies)$/i;
-
-function clean(name: string): string {
-  return name
-    .replace(/^Z\.{2,}\s*/i, '') // "Z......... NAME" sort-to-bottom hack
-    .replace(/\.{3,}/g, ' ')
-    .replace(/\{\d+\}/g, '')
-    .replace(/\[[^\]]*\]/g, '')
-    .replace(/\([^)]*\)/g, '')
-    .replace(/--.*?--/g, '')
-    .replace(/\b(R\.G\.\s*Mechanics|Core[Pp]ack|FitGirl|DODI|EMPRESS|Repack|Selective Download|Fast Install|Day 1 Patch|CrackFix( V\d+)?|Crackfix|MULTi\d*|Multi\d+|v[\d.]+|Update \d+|From [\d.]+ GB|[\d.]+ GB|-CP|-BB|SERIES)\b/gi, '')
-    .replace(/[_*\\]/g, ' ')
-    .replace(/\s*[-+·]\s*(?=$|\s*-)/g, ' ')
-    .replace(/\s{2,}/g, ' ')
-    .replace(/^[\s\-+.,]+|[\s\-+.,]+$/g, '')
-    .trim();
-}
-
-interface Node { depth: number; name: string; children: Node[] }
-const root: Node = { depth: -1, name: '', children: [] };
-const stack: Node[] = [root];
-for (const line of raw.split('\n')) {
-  const m = line.match(/^(\s*)(?:-|\d+\.)\s+(.*)$/);
-  if (!m) continue;
-  const depth = Math.floor(m[1].length / 4);
-  const node: Node = { depth, name: m[2].trim(), children: [] };
-  while (stack.length > 1 && stack[stack.length - 1].depth >= depth) stack.pop();
-  stack[stack.length - 1].children.push(node);
-  stack.push(node);
-}
-
-interface Shelf { name: string; games: string[] }
-const shelves: Shelf[] = [];
-const singles: string[] = [];
-
-function leaves(n: Node): string[] {
-  const out: string[] = [];
-  for (const c of n.children) {
-    const cn = clean(c.name);
-    if (!cn || JUNK.test(cn)) continue;
-    if (c.children.length && c.children.some((g) => !JUNK.test(clean(g.name)) && clean(g.name))) continue; // sub-series handled separately
-    out.push(cn);
-  }
-  return out;
-}
-
-function walk(n: Node) {
-  for (const c of n.children) {
-    const name = clean(c.name);
-    if (!name || JUNK.test(name)) continue;
-    const kids = c.children.filter((k) => clean(k.name) && !JUNK.test(clean(k.name)));
-    if (kids.length) {
-      const games = leaves(c);
-      if (games.length) shelves.push({ name, games });
-      walk(c); // promote nested sub-series to their own shelves
-    } else if (c.depth === 0) {
-      singles.push(name);
-    }
-  }
-}
-walk(root);
-shelves.sort((a, b) => b.games.length - a.games.length);
+const shelves = gamesData.series;
+const singles = gamesData.singles;
 const totalGames = shelves.reduce((n, s) => n + s.games.length, 0) + singles.length;
 ---
 
