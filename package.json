@@ -8,7 +8,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "sketches": "node scripts/build-sketches.mjs"
+    "sketches": "node scripts/build-sketches.mjs",
+    "sync:notion": "node --env-file-if-exists=.env scripts/sync-notion.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.4.1",

@@ -50,6 +50,16 @@ src/
   feed at build time and server-rendered as airmail postcards (plus listed in
   flat mode). A dead feed never breaks the build.
 
+### Notion sync (movies, more later)
+
+Notion is the editing console; the site never calls it at runtime. The worker
+`scripts/sync-notion.mjs` (locally: `pnpm sync:notion`, in CI: the daily
+`refresh data` action) pulls the Notion databases into `src/data/*.json` —
+the committed JSON stays authoritative if Notion is unreachable or empty.
+Set `NOTION_TOKEN` + `NOTION_MOVIES_DB` in `.env` (see `.env.example`), and
+as repository secrets once the repo is on GitHub (plus `GH_STORY_TOKEN` for
+the journey's org data — Actions reserves the name `GITHUB_TOKEN`).
+
 ### GitHub token (optional, recommended)
 
 Org memberships are private to the public API. Copy `.env.example` to `.env`
