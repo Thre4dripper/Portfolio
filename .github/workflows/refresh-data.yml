@@ -1,0 +1,55 @@
+# Daily data refresh: pull Notion (and any future sources) into src/data/*.json,
+# commit if anything changed, and verify the site still builds.
+# The site itself never calls these APIs at runtime — this worker is the only
+# thing that does.
+#
+# Setup once the repo is on GitHub:
+#   Settings → Secrets and variables → Actions → New repository secret
+#     NOTION_TOKEN      (integration secret)
+#     NOTION_MOVIES_DB  (database id)
+name: refresh data
+
+on:
+  schedule:
+    - cron: '30 1 * * *' # daily, 07:00 IST
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      - name: sync Notion → src/data
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_MOVIES_DB: ${{ secrets.NOTION_MOVIES_DB }}
+        run: node scripts/sync-notion.mjs
+
+      - name: build (also refreshes GitHub/LeetCode/blog data baked at build time)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_STORY_TOKEN }}
+        run: pnpm build
+
+      - name: commit data changes
+        run: |
+          git config user.name "data-worker"
+          git config user.email "actions@users.noreply.github.com"
+          git add src/data
+          git diff --cached --quiet && echo "no data changes" && exit 0
+          git commit -m "data: daily refresh $(date -u +%F)"
+          git push
+
+      # TODO once a host is chosen: trigger the deploy hook here, e.g.
+      # - run: curl -sf -X POST "$DEPLOY_HOOK_URL"
