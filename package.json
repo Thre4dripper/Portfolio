@@ -18,7 +18,7 @@
     "@fontsource-variable/jetbrains-mono": "^5.2.5",
     "@fontsource-variable/syne": "^5.2.5",
     "@tailwindcss/vite": "^4.3.3",
-    "astro": "^5.12.0",
+    "astro": "^7.2.7",
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
