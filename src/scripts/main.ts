@@ -7,7 +7,7 @@ import {
   initBoardy, initCastle, initQBlock, initCompile, initDeploy, createQuestsReveal,
   initMiniOS, createProctorStarter, initTools, initMigrate, createAgentChat,
   initEditorTabs, initRackPower, initStackWidget, initQueueWidget, initGraphBFS,
-  initStore, initLan,
+  initStore, initLan, initKaiConsole,
 } from './setpieces';
 import { loadGithub, initSkillPanel } from './github';
 
@@ -121,6 +121,7 @@ initQueueWidget();
 initGraphBFS();
 initStore();
 initLan();
+initKaiConsole();
 initSkillPanel(SITE.githubUser);
 const autoTools = initTools();
 let toolsPlayed = false;
@@ -150,14 +151,35 @@ setTimeout(() => {
 }, 1400);
 const eraSaid = ERAS.map(() => false);
 
-/* the rocket answers when poked — a different line each time */
+/* the rocket answers when poked — quip, thruster burst, exhaust sparks */
 let quipIdx = Math.floor(Math.random() * BUDDY.quips.length);
 buddy.addEventListener('click', () => {
   say(BUDDY.quips[quipIdx % BUDDY.quips.length], 3200);
   quipIdx++;
   buddy.classList.add('poked');
-  setTimeout(() => buddy.classList.remove('poked'), 500);
+  setTimeout(() => buddy.classList.remove('poked'), 900);
+  const r = buddy.getBoundingClientRect();
+  for (let i = 0; i < 6; i++) {
+    const s = document.createElement('span');
+    s.className = 'rspark';
+    s.style.left = `${r.left + r.width / 2 - 3}px`;
+    s.style.top = `${r.bottom - 14}px`;
+    s.style.setProperty('--dx', `${(Math.random() - 0.5) * 44}px`);
+    s.style.animationDelay = `${i * 0.05}s`;
+    document.body.appendChild(s);
+    setTimeout(() => s.remove(), 1300);
+  }
 });
+
+/* one-liner chips for the other critters */
+function critterSay(el: HTMLElement, msg: string) {
+  el.querySelector('.critter-say')?.remove();
+  const chip = document.createElement('span');
+  chip.className = 'critter-say';
+  chip.textContent = msg;
+  el.appendChild(chip);
+  setTimeout(() => chip.remove(), 1300);
+}
 
 /* ================= era critters & passing visitors ================= */
 const bot = document.getElementById('bot')!;
@@ -165,6 +187,28 @@ const train = document.getElementById('train')!;
 const satDrift = document.getElementById('sat-drift')!;
 const ufo = document.getElementById('ufo')!;
 const balloon = document.getElementById('balloon')!;
+
+/* train: toot + steam + a burst of speed in the wheels */
+train.addEventListener('click', () => {
+  critterSay(train, '🚂 toooot!');
+  train.classList.add('rush');
+  setTimeout(() => train.classList.remove('rush'), 2600);
+  for (let i = 0; i < 3; i++) {
+    const p = document.createElement('span');
+    p.className = 'puff';
+    p.style.left = `${14 + i * 9}px`;
+    p.style.animationDelay = `${i * 0.16}s`;
+    train.appendChild(p);
+    setTimeout(() => p.remove(), 1400);
+  }
+});
+
+/* balloon: fire the burner, lift a little */
+balloon.addEventListener('click', () => {
+  critterSay(balloon, '🔥 whoosh');
+  balloon.classList.add('lift');
+  setTimeout(() => balloon.classList.remove('lift'), 1600);
+});
 /* visitors live in a camera-depth window, fading in and out at its edges */
 const zoneOpacity = (z: number, a: number, b: number, fade = 800) =>
   Math.max(0, Math.min(1, (z - a) / fade, (b - z) / fade));
@@ -186,6 +230,24 @@ if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
   document.getElementById('rm-note')!.hidden = false;
 }
 
+/* ================= era cursors — one old-school pointer per act ================= */
+const cur = (svg: string, x: number, y: number) =>
+  `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">${svg}</svg>`)}") ${x} ${y}, auto`;
+const ERA_CURSORS = [
+  /* I — the retro OS arrow the first PC booted with */
+  cur('<polygon points="3,1 3,19 8,14.5 11,21.5 13.6,20.4 10.6,13.6 17,13.6" fill="#1B1B22"/><polygon points="4.4,4 4.4,15.7 8,12.2 11.4,19.4 12,19.1 8.8,12.2 13.6,12.2" fill="#F5EFE2"/>', 3, 1),
+  /* II — the terminal block cursor */
+  cur('<rect x="4" y="2" width="11" height="17" fill="#7FB4FF" stroke="#0A0F22" stroke-width="2"/><rect x="4" y="21" width="11" height="2" fill="#7FB4FF"/>', 9, 10),
+  /* III — the precision crosshair of the builder */
+  cur('<g stroke="#06110D" stroke-width="4.5"><line x1="12" y1="1" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="23"/><line x1="1" y1="12" x2="9" y2="12"/><line x1="15" y1="12" x2="23" y2="12"/></g><g stroke="#4FE0B0" stroke-width="2"><line x1="12" y1="1" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="23"/><line x1="1" y1="12" x2="9" y2="12"/><line x1="15" y1="12" x2="23" y2="12"/></g><rect x="11" y="11" width="2" height="2" fill="#4FE0B0"/>', 12, 12),
+  /* IV — a sakura bloom */
+  cur('<g fill="#F49FB6" stroke="#1B1B22" stroke-width="1.2"><circle cx="12" cy="6.5" r="4"/><circle cx="17.5" cy="10.5" r="4"/><circle cx="15.4" cy="17" r="4"/><circle cx="8.6" cy="17" r="4"/><circle cx="6.5" cy="10.5" r="4"/></g><circle cx="12" cy="12" r="3" fill="#F2A93B" stroke="#1B1B22" stroke-width="1.2"/>', 12, 12),
+  /* V — the golden star of now */
+  cur('<path d="M12 1 L15 9 L23 12 L15 15 L12 23 L9 15 L1 12 L9 9 Z" fill="#FFC66E" stroke="#1B1B22" stroke-width="1.5"/>', 12, 12),
+];
+let cursorEra = -1;
+const finePointer = matchMedia('(pointer: fine)').matches;
+
 /* ================= main loop ================= */
 const hint2 = document.getElementById('hint2')!;
 const finale = document.querySelector('.finale')!;
@@ -198,6 +260,16 @@ function frame(t: number) {
   computeEra(cam);
   applyTheme();
   sky.draw(t, cam);
+
+  /* swap the pointer itself as acts change */
+  if (finePointer) {
+    let era = 0;
+    for (let i = 1; i < eraW.length; i++) if (eraW[i] > eraW[era]) era = i;
+    if (era !== cursorEra) {
+      cursorEra = era;
+      document.documentElement.style.cursor = ERA_CURSORS[era];
+    }
+  }
 
   /* rail current */
   let cur = 0;
@@ -272,8 +344,12 @@ function frame(t: number) {
   }
   train.style.opacity = (eraW[1] * 0.9).toFixed(2);
   satDrift.style.opacity = (eraW[4] * 0.9).toFixed(2);
+  const balloonW = zoneOpacity(cam, MAXZ * 0.52, MAXZ * 0.68);
   ufo.style.opacity = (zoneOpacity(cam, MAXZ * 0.24, MAXZ * 0.4) * 0.9).toFixed(2);
-  balloon.style.opacity = (zoneOpacity(cam, MAXZ * 0.52, MAXZ * 0.68) * 0.9).toFixed(2);
+  balloon.style.opacity = (balloonW * 0.9).toFixed(2);
+  /* only clickable while actually visible */
+  train.style.pointerEvents = eraW[1] > 0.3 ? 'auto' : 'none';
+  balloon.style.pointerEvents = balloonW > 0.3 ? 'auto' : 'none';
 
   /* edge scenery — cross-fade by era, parallax by progress through the era */
   edgeGroups.forEach((g, i) => {
