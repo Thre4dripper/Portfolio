@@ -117,7 +117,7 @@ const RAW_TIMELINE: TimelineItem[] = [
   },
   {
     type: 'ch', yr: '2023', t: 'Boardy', skills: ['Next.js', 'Canvas API'],
-    body: 'A feature-rich drawing and design app. My own canvas — try it, this one actually works.',
+    body: 'A feature-rich drawing and design app — my own canvas, grown out of a whole era of particle toys. Draw below; this one actually works.',
     set: 'draw',
     link: ['https://github.com/Thre4dripper/Boardy-WebApp', 'View Boardy on GitHub →'],
   },
@@ -153,8 +153,8 @@ const RAW_TIMELINE: TimelineItem[] = [
   { type: 'fact', n: 6 },
   { type: 'gate', era: 4 },
   {
-    type: 'ch', yr: '2025', t: 'Kenverse — AI platform', skills: ['LLM agents', 'IAM', 'Multi-tenancy'], set: 'agent',
-    body: 'SDE at Kenverse (TurboStart): a multi-tenant AI platform — LLM chat & voice agents, Casbin-based IAM, white-labeled tenant deployments.',
+    type: 'ch', yr: '2025', t: 'Kenverse — building KAI', skills: ['LLM agents', 'IAM', 'Multi-tenancy'], set: 'agent',
+    body: 'SDE at Kenverse (TurboStart), building KAI — an AI-native platform for chat & calling agents: Casbin-based IAM, white-labeled multi-tenant deployments.',
   },
   { type: 'fact', n: 7 },
   {

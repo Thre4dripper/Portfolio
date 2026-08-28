@@ -569,7 +569,51 @@ export function initMigrate(): void {
   });
 }
 
-/* ---------- 2025 Kenverse: agent chat ---------- */
+/* ---------- 2025 Kenverse: the KAI console — ask it for things ---------- */
+const KAI_REPLIES: Record<string, string[]> = {
+  voice: [
+    '📞 voice agent live — barge-in enabled, 180ms first-token',
+    '📞 second line up. it does hold music now. sorry.',
+  ],
+  tenant: [
+    '🏢 tenant “zen-u” provisioned — policies, branding, sandbox in 3.1s',
+    '🏢 another one?! fine. tenant isolated, keys minted, docs emailed.',
+  ],
+  secrets: [
+    '🔐 12 credentials re-encrypted, zero downtime. RSA says hi.',
+    '🔐 rotated again. the old keys have been yeeted into the void.',
+  ],
+};
+
+export function initKaiConsole(): void {
+  const chips = document.getElementById('kai-chips');
+  const log = document.getElementById('agent-log');
+  if (!chips || !log) return;
+  const counts: Record<string, number> = {};
+  chips.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-kai]');
+    if (!btn || btn.disabled) return;
+    btn.disabled = true;
+    setTimeout(() => (btn.disabled = false), 1600);
+    const kind = btn.dataset.kai!;
+    const ask = document.createElement('div');
+    ask.className = 'msg user';
+    ask.textContent = btn.textContent!.replace(/^\S+\s/, '');
+    log.appendChild(ask);
+    requestAnimationFrame(() => ask.classList.add('in'));
+    const reply = document.createElement('div');
+    reply.className = 'msg bot ok';
+    reply.textContent = KAI_REPLIES[kind][(counts[kind] = ((counts[kind] ?? -1) + 1)) % KAI_REPLIES[kind].length];
+    setTimeout(() => {
+      log.appendChild(reply);
+      requestAnimationFrame(() => reply.classList.add('in'));
+      /* keep the console tidy — trim old exchanges */
+      while (log.children.length > 7) log.firstElementChild!.remove();
+    }, 700);
+  });
+}
+
 export function createAgentChat(): () => void {
   let played = false;
   return () => {
@@ -582,8 +626,96 @@ export function createAgentChat(): () => void {
   };
 }
 
+/* ---------- Boardy's satellites: live miniatures of the Canvas-* era ---------- */
+
+/* Canvas-Sparkles: 4-point stars bloom where the cursor wanders (and idly on their own) */
+function initSparklesApp(): void {
+  const cv = document.getElementById('capp-sparkles') as HTMLCanvasElement | null;
+  if (!cv) return;
+  const ctx = cv.getContext('2d')!;
+  const card = cv.closest<HTMLElement>('.card');
+  interface Spark { x: number; y: number; r: number; max: number; a: number; hue: string }
+  const sparks: Spark[] = [];
+  const HUES = ['#D8492B', '#F2A93B', '#2C5AB0', '#0E7A5C'];
+  const spawn = (x: number, y: number) =>
+    sparks.length < 40 &&
+    sparks.push({ x, y, r: 0, max: 3 + Math.random() * 6, a: 1, hue: HUES[Math.floor(Math.random() * HUES.length)] });
+  cv.addEventListener('pointermove', (e) => {
+    const r = cv.getBoundingClientRect();
+    spawn(((e.clientX - r.left) * cv.width) / r.width, ((e.clientY - r.top) * cv.height) / r.height);
+  });
+  let idle = 0;
+  (function tick() {
+    requestAnimationFrame(tick);
+    if (card && parseFloat(card.style.opacity || '1') < 0.05) return;
+    if (++idle % 22 === 0) spawn(Math.random() * cv.width, Math.random() * cv.height);
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    for (let i = sparks.length - 1; i >= 0; i--) {
+      const s = sparks[i];
+      s.r += (s.max - s.r) * 0.14;
+      s.a -= 0.016;
+      if (s.a <= 0) { sparks.splice(i, 1); continue; }
+      ctx.strokeStyle = s.hue;
+      ctx.globalAlpha = s.a;
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(s.x - s.r * 2, s.y); ctx.lineTo(s.x + s.r * 2, s.y);
+      ctx.moveTo(s.x, s.y - s.r * 2); ctx.lineTo(s.x, s.y + s.r * 2);
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+  })();
+}
+
+/* Canvas-Gravity: balls under gravity with wall bounces — click to drop more */
+function initGravityApp(): void {
+  const cv = document.getElementById('capp-gravity') as HTMLCanvasElement | null;
+  if (!cv) return;
+  const ctx = cv.getContext('2d')!;
+  const card = cv.closest<HTMLElement>('.card');
+  interface Ball { x: number; y: number; vx: number; vy: number; r: number; hue: string }
+  const HUES = ['#D8492B', '#F2A93B', '#2C5AB0', '#0E7A5C', '#B03A66'];
+  const balls: Ball[] = [];
+  const drop = (x: number) =>
+    balls.push({
+      x, y: 8, vx: (Math.random() - 0.5) * 2.4, vy: 0,
+      r: 4 + Math.random() * 5, hue: HUES[balls.length % HUES.length],
+    });
+  for (let i = 0; i < 3; i++) drop(20 + i * 50);
+  cv.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const r = cv.getBoundingClientRect();
+    if (balls.length >= 10) balls.shift();
+    drop(((e.clientX - r.left) * cv.width) / r.width);
+  });
+  (function tick() {
+    requestAnimationFrame(tick);
+    if (card && parseFloat(card.style.opacity || '1') < 0.05) return;
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    for (const b of balls) {
+      b.vy += 0.22; // gravity
+      b.x += b.vx;
+      b.y += b.vy;
+      if (b.y + b.r > cv.height) { b.y = cv.height - b.r; b.vy *= -0.82; b.vx *= 0.99; }
+      if (b.x - b.r < 0) { b.x = b.r; b.vx *= -0.9; }
+      if (b.x + b.r > cv.width) { b.x = cv.width - b.r; b.vx *= -0.9; }
+      /* perpetual motion: re-launch a ball that has come to rest */
+      if (Math.abs(b.vy) < 0.4 && b.y + b.r > cv.height - 1 && Math.abs(b.vx) < 0.1) {
+        b.vy = -(4 + Math.random() * 3);
+        b.vx = (Math.random() - 0.5) * 3;
+      }
+      ctx.beginPath();
+      ctx.arc(b.x, b.y, b.r, 0, 6.29);
+      ctx.fillStyle = b.hue;
+      ctx.fill();
+    }
+  })();
+}
+
 /* ---------- Boardy drawing canvas (2023) ---------- */
 export function initBoardy(): void {
+  initSparklesApp();
+  initGravityApp();
   const bc = document.getElementById('boardy') as HTMLCanvasElement | null;
   if (!bc) return;
   const bctx = bc.getContext('2d')!;

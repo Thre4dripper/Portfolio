@@ -231,36 +231,55 @@ const satellites = (idx: number, zCam: number) => {
                 aria-label="Timeline of GitHub, blog and LinkedIn milestones as a transit map"
               >
                 {JLINES.map((l, li) => (
-                  <g class="jline" style={`--lc:${l.color}`}>
+                  <g class={`jline${l.name === 'BLOG' ? ' jl-blog' : ''}`} style={`--lc:${l.color}`}>
                     <path class="jl-path" d={`M 18 ${l.y + 30} L 50 ${l.y} H 762`} style={`animation-delay:${li * 0.25}s`} />
                     <text class="jl-name" x="20" y={l.y + 44}>{l.name}</text>
-                    {l.stations.map((s, i) => {
-                      const x = stationX(i, l.stations.length, li);
-                      const above = labelAbove(i, li);
-                      const clipId = `jclip-${li}-${i}`;
-                      return (
-                        <g class="jstn" style={`--d:${(0.5 + li * 0.25 + i * 0.16).toFixed(2)}s`} transform={`translate(${x.toFixed(0)} ${l.y})`}>
-                          <title>{s.title ?? `${s.yr} ${s.label}`.trim()}</title>
-                          {s.img ? (
-                            <>
-                              <clipPath id={clipId}>
-                                <circle r="10" />
-                              </clipPath>
-                              <circle class="js-c" r="12" />
-                              <image href={`${s.img}&s=48`} x="-10" y="-10" width="20" height="20" clip-path={`url(#${clipId})`} />
-                            </>
-                          ) : (
-                            <circle class="js-c" r="7" />
-                          )}
-                          <text class="js-yr" y={above ? -20 : 30}>{s.yr}</text>
-                          <text class="js-lb" y={above ? -34 : 44}>{s.label}</text>
-                        </g>
-                      );
-                    })}
+                    {l.name === 'BLOG' && <rect class="jl-hit" x="55" y={l.y - 42} width="710" height="90" fill="transparent" />}
+                    <g class="jsum">
+                      {l.stations.map((s, i) => {
+                        const x = stationX(i, l.stations.length, li);
+                        const above = labelAbove(i, li);
+                        const clipId = `jclip-${li}-${i}`;
+                        return (
+                          <g class="jstn" style={`--d:${(0.5 + li * 0.25 + i * 0.16).toFixed(2)}s`} transform={`translate(${x.toFixed(0)} ${l.y})`}>
+                            <title>{s.title ?? `${s.yr} ${s.label}`.trim()}</title>
+                            {s.img ? (
+                              <>
+                                <clipPath id={clipId}>
+                                  <circle r="10" />
+                                </clipPath>
+                                <circle class="js-c" r="12" />
+                                <image href={`${s.img}&s=48`} x="-10" y="-10" width="20" height="20" clip-path={`url(#${clipId})`} />
+                              </>
+                            ) : (
+                              <circle class="js-c" r="7" />
+                            )}
+                            <text class="js-yr" y={above ? -20 : 30}>{s.yr}</text>
+                            <text class="js-lb" y={above ? -34 : 44}>{s.label}</text>
+                          </g>
+                        );
+                      })}
+                    </g>
+                    {l.name === 'BLOG' && (
+                      <g class="jfull" aria-hidden="true">
+                        {[...posts].reverse().map((p, i, arr) => {
+                          const x = arr.length === 1 ? 420 : 140 + (i * 560) / (arr.length - 1);
+                          const above = i % 2 === 0;
+                          return (
+                            <g class="jstn2" transform={`translate(${x.toFixed(0)} ${l.y})`}>
+                              <title>{`${p.title} — ${p.date}`}</title>
+                              <circle class="js-c" r="5" />
+                              <text class="js-yr" y={above ? -18 : 26}>’{p.year.slice(-2)}</text>
+                              <text class="js-lb" y={above ? -31 : 40}>{short(p.title, 17)}</text>
+                            </g>
+                          );
+                        })}
+                      </g>
+                    )}
                   </g>
                 ))}
               </svg>
-              <p class="jhint">hover a station for the fine print</p>
+              <p class="jhint">hover a station for the fine print · hover the blog line for every report</p>
             </section>
           );
 
@@ -670,9 +689,9 @@ int main() {
                   <button class="run-btn" id="migrate-btn">run migration</button>
                   <span class="mig-status" id="mig-status" role="status" />
                 </div>
-                <div class="polaroid out-el" style="--sx:124%;--sy:36%;--sz:70px" aria-hidden="true">
-                  <img src="/snp-hq.jpg" alt="Standard & Poor's headquarters, 55 Water Street" width="150" height="112" loading="lazy" style="height:112px" />
-                  <span>55 water st · HQ 📍</span>
+                <div class="logo-card out-el" style="--sx:124%;--sy:36%;--sz:70px" aria-hidden="true">
+                  <img src="/logos/snp.webp" alt="S&P Global logo" width="140" loading="lazy" />
+                  <span>market intelligence · iLevel</span>
                 </div>
               </div>
             )}
@@ -693,11 +712,19 @@ int main() {
               </>
             )}
             {item.set === 'agent' && (
-              <div class="agent-log" id="agent-log">
-                <div class="msg user">spin up a support agent for tenant “acme”, voice + chat</div>
-                <div class="msg bot">provisioning… casbin policies attached, secrets mounted</div>
-                <div class="msg bot ok">✔ agent live — isolated, white-labeled, 240ms cold start</div>
-              </div>
+              <>
+                <div class="kai-head"><span class="live-dot" /> KAI · console</div>
+                <div class="agent-log" id="agent-log">
+                  <div class="msg user">spin up a support agent for tenant “acme”, voice + chat</div>
+                  <div class="msg bot">provisioning… casbin policies attached, secrets mounted</div>
+                  <div class="msg bot ok">✔ agent live — isolated, white-labeled, 240ms cold start</div>
+                </div>
+                <div class="kai-chips" id="kai-chips">
+                  <button data-kai="voice">📞 deploy a voice agent</button>
+                  <button data-kai="tenant">🏢 onboard a tenant</button>
+                  <button data-kai="secrets">🔐 rotate secrets</button>
+                </div>
+              </>
             )}
             {item.set === 'blueprint' && (
               <svg class="bp" id="blueprint" viewBox="0 0 380 150" role="img" aria-label="AI-native platform architecture sketch">
@@ -722,11 +749,42 @@ int main() {
                 <text class="bp-note" x="190" y="142" style="--bd:2.8s">blueprint · drawn from scratch, 2026</text>
               </svg>
             )}
-            {item.set === 'draw' && (
-              <div class="draw-wrap">
-                <canvas id="boardy" width="700" height="260" />
-                <span class="lbl">draw here — go on</span>
+            {item.set === 'blueprint' && (
+              <div class="logo-card out-el" style="--sx:-26%;--sy:32%;--sz:80px" aria-hidden="true">
+                <img src="/logos/gus.webp" alt="Global University Systems logo" width="140" loading="lazy" />
+                <span>global university systems</span>
               </div>
+            )}
+            {item.set === 'agent' && (
+              <div class="logo-card out-el" style="--sx:126%;--sy:28%;--sz:70px" aria-hidden="true">
+                <svg viewBox="0 0 210 64" width="150" role="img" aria-label="Kenverse logo">
+                  <circle cx="182" cy="22" r="17" fill="#B0474F" />
+                  <circle cx="170" cy="32" r="9" fill="#D2683F" />
+                  <circle cx="168" cy="34" r="8" fill="#FFFDF7" />
+                  <text x="8" y="46" font-family="Instrument Sans Variable, sans-serif" font-weight="700" font-size="34" letter-spacing="-1" fill="#1B1330">kenverse</text>
+                </svg>
+                <span>KAI · an AI venture · TurboStart</span>
+              </div>
+            )}
+            {item.set === 'draw' && (
+              <>
+                <div class="draw-wrap">
+                  <canvas id="boardy" width="700" height="260" />
+                  <span class="lbl">draw here — go on</span>
+                </div>
+                <div class="capp out-el" style="--sx:-29%;--sy:28%;--sz:90px;--crot:-3deg">
+                  <canvas id="capp-sparkles" width="150" height="100" />
+                  <a href="https://github.com/Thre4dripper/Canvas-Sparkles-WebApp" target="_blank" rel="noopener">Canvas-Sparkles ↗</a>
+                </div>
+                <div class="capp out-el" style="--sx:128%;--sy:62%;--sz:70px;--crot:2.5deg" title="click to drop a ball">
+                  <canvas id="capp-gravity" width="150" height="100" />
+                  <a href="https://github.com/Thre4dripper/Canvas-Gravity-WebApp" target="_blank" rel="noopener">Canvas-Gravity ↗</a>
+                </div>
+                <div class="capp capp-list out-el" style="--sx:120%;--sy:2%;--sz:-60px;--crot:2deg">
+                  <span>+ particles · particle-text · particle-image</span>
+                  <a href="https://github.com/Thre4dripper?tab=repositories&q=Canvas" target="_blank" rel="noopener">the whole canvas era ↗</a>
+                </div>
+              </>
             )}
             {item.set === 'castle' && (
               <div class="castle" id="castle" title="click to rebuild">
