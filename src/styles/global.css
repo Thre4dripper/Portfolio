@@ -1,3 +1,23 @@
+@import 'tailwindcss';
+
+/* Tailwind carries layout and responsive work (see the interest pages and the
+   breakpoints at the bottom of this file). The flight itself stays hand-written
+   CSS on purpose: its scenes are driven by per-element custom properties that
+   JS rewrites every frame (--dx/--dy/--sz/--accent) plus multi-step keyframes
+   and 3D transforms — utilities can't express that, and forcing them through
+   arbitrary-value classes would be strictly worse to read and maintain. */
+
+@theme {
+  --color-washi: #F5EFE2;
+  --color-ink: #1B1B22;
+  --color-ink-soft: #4A4A55;
+  --color-moon: #AEB8C8;
+  --color-night: #0B0E1A;
+  --font-display: 'Syne Variable', Syne, sans-serif;
+  --font-body: 'Instrument Sans Variable', 'Instrument Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', monospace;
+}
+
 :root{
   --washi:#F5EFE2;
   --ink:#1B1B22;
@@ -15,9 +35,19 @@ html,body{height:100%;overflow:hidden;background:#0B0E1A;color:var(--washi);
 html.scrollable,html.scrollable body{height:auto;overflow:auto}
 button{font-family:inherit;cursor:pointer}
 
-#sky{position:fixed;inset:0;z-index:0}
+/* canvas is a replaced element: with width/height:auto it paints at its
+   intrinsic buffer size, so inset:0 alone leaves it short whenever the buffer
+   is smaller than the viewport (low-end devices render at 0.72x). The explicit
+   size stretches that smaller buffer back over the whole screen. */
+#sky{position:fixed;inset:0;z-index:0;width:100%;height:100%}
 
-#stage{position:fixed;inset:0;z-index:1;perspective:1000px;perspective-origin:50% 46%;overflow:hidden}
+/* touch-action:none is load-bearing — without it mobile browsers claim the
+   vertical pan, fire pointercancel, and the flight drag dies after a few px */
+/* stacking order: sky (0) → edge scenery (1) → the flight's cards (2) → HUD (4+).
+   The edges are set dressing and must stay behind the content — above it they
+   painted circuit traces straight across the cards on narrow screens. */
+#stage{position:fixed;inset:0;z-index:2;perspective:1000px;perspective-origin:50% 46%;
+  overflow:hidden;touch-action:none}
 /* #world's own plane sits at z=0 and the camera docks cards a fraction of a
    pixel BEHIND it — if it took pointer events it would eat every card click.
    Nodes opt back in via .on; drags fall through to #stage. */
@@ -26,8 +56,16 @@ button{font-family:inherit;cursor:pointer}
 /* Nodes are server-rendered; --dx/--dy come from inline styles, the camera
    script animates depth per frame. Default transform keeps the intro centered
    (and painted for LCP) before the script takes over. */
-.node{position:absolute;left:50%;top:50%;will-change:transform,opacity;opacity:0;pointer-events:none;
+/* will-change is scoped to live scenes only: as a blanket rule it pinned a
+   compositor layer for all ~36 nodes at once, which mobile GPUs can't hold. */
+/* --dxs (sign) and --dxm (magnitude) come from the markup; --dxk lets each
+   breakpoint dial the whole fan-out down without touching the data. */
+.node{--dxk:1;--dx:calc(var(--dxs,0) * var(--dxm,0px) * var(--dxk));
+  position:absolute;left:50%;top:50%;opacity:0;pointer-events:none;
   transform:translate(-50%,-50%) translate3d(var(--dx,0px),var(--dy,0px),0)}
+.node:not(.culled){will-change:transform,opacity}
+/* JS adds .culled, so a no-JS visitor still sees every scene */
+.node.culled{display:none}
 .node.on{pointer-events:auto}
 .node.intro{opacity:1}
 
@@ -623,7 +661,9 @@ button{font-family:inherit;cursor:pointer}
 .finale h2{font-family:var(--font-display);font-weight:800;font-size:clamp(30px,5.4vw,52px);letter-spacing:-.02em}
 .finale h2 em{font-style:normal;color:var(--accent)}
 .finale p{color:var(--moon);margin-top:12px;font-size:16px}
-.finale svg{width:100%;max-width:640px;height:auto;margin-top:10px}
+/* the constellation gains a row per five skills, so it has to be capped by
+   viewport height or the finale's text and contact links fall off screen */
+.finale svg{width:100%;max-width:640px;height:auto;max-height:52vh;margin-top:10px}
 .finale .c-line{stroke:rgba(174,184,200,.28);stroke-width:1;stroke-dasharray:200;stroke-dashoffset:200}
 .finale .c-dot{fill:var(--accent);opacity:0}
 .finale .c-txt{fill:var(--moon);font-family:var(--font-mono);font-size:10.5px;opacity:0}
@@ -826,7 +866,7 @@ button{font-family:inherit;cursor:pointer}
 .bn-fallback{color:var(--moon);font-size:15px;margin-bottom:6px}
 
 /* ---------- edge scenery: era set dressing poking in from the borders ---------- */
-#edges{position:fixed;inset:0;z-index:2;pointer-events:none;overflow:hidden}
+#edges{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
 .edge-era{position:absolute;inset:0;opacity:0;will-change:opacity}
 .edge-era[data-era="0"]{color:#F49FB6}
 .edge-era[data-era="1"]{color:#7FB4FF}
@@ -971,22 +1011,149 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
   border-radius:999px;color:var(--ink);text-decoration:none;transition:all .15s}
 .int-links a:hover{background:#D8492B;border-color:#D8492B;color:var(--washi)}
 
+/* ---------- tablet ---------- */
+@media (max-width:1180px){
+  /* the fan-out reads as lopsided once the viewport narrows — the empty side
+     is obvious, so pull the offset planes back toward centre */
+  .node{--dxk:.45}
+}
+@media (max-width:900px){
+  .node{--dxk:.3}
+  .card,.blognode,.obsv,.journeys{width:min(86vw,440px)}
+  /* satellites orbit tighter so they stop colliding with the card */
+  .out-el{--sz:40px}
+  .logo-card,.capp,.ph-side,.polaroid{width:130px}
+  .dsw{width:110px}
+  .mini-monitor,.macbook{width:150px}
+  .ph2018{display:none}
+  /* the dock grows all flight long — keep it to three rows here too */
+  #dock .tags{max-height:76px;overflow:hidden;
+    mask-image:linear-gradient(180deg,#000 65%,transparent);
+    -webkit-mask-image:linear-gradient(180deg,#000 65%,transparent)}
+}
+
+/* ---------- phone ---------- */
 @media (max-width:640px){
-  #rail{right:12px;gap:10px}
-  #skip{top:14px;right:14px;padding:8px 12px;font-size:11px}
-  #hud-name{top:14px;left:16px}
-  #dock{left:16px;max-width:60vw}
-  .card{padding:20px 20px 18px}
-  .fr-bar,.fr-tabs,.rk-bar{margin:-20px -20px 14px}
-  .id-head{margin:-10px -20px 12px}
-  .win-phone{padding-top:34px}
+  #rail{right:10px;gap:9px}
+  #rail button{width:8px;height:8px}
+  #rail button::after{display:none} /* labels have nowhere to go */
+  #skip{top:12px;right:12px;padding:8px 12px;font-size:11px}
+  #hud-name{top:12px;left:14px;font-size:13px}
+  #hud-name small{font-size:9px}
+  /* by the final act the dock holds ~30 skills — unclamped that's half the
+     phone screen painted over the card, so it keeps two rows and fades out */
+  #dock{left:14px;bottom:14px;max-width:62vw}
+  #dock .dl{font-size:9px;margin-bottom:5px}
+  #dock .tags{max-height:48px;overflow:hidden;
+    mask-image:linear-gradient(180deg,#000 55%,transparent);
+    -webkit-mask-image:linear-gradient(180deg,#000 55%,transparent)}
+  #dock .tags span,#dock .tags button{font-size:10px;padding:2px 7px}
+  #hint2{bottom:14px;font-size:10px}
+
+  .card{width:min(88vw,380px);padding:18px 18px 16px}
+  .card h2{font-size:22px}
+  .card p{font-size:14px}
+  .fr-bar,.fr-tabs,.rk-bar{margin:-18px -18px 12px}
+  .id-head{margin:-8px -18px 12px}
+  .win-phone{width:min(84vw,300px);padding-top:32px}
+  .minios{min-height:390px}
   .deploy-wrap{flex-direction:column}
-  .mini-monitor{width:130px;align-self:center}
-  #buddy{width:46px;right:44px;bottom:92px}
-  #bubble{right:80px;bottom:164px;font-size:12px;max-width:180px}
-  #train{width:150px}
+
+  /* the horizontal fan-out is desktop breathing room; on a phone it just
+     shoves cards off the edge, so every plane centers */
+  .node{--dxk:0;--dy:0px !important}
+
+  /* On a phone there is no room beside the card: the satellites that carry
+     real content stack under it instead of overlapping, and the purely
+     decorative ones step out of the way entirely. */
+  .out-el{position:relative;left:auto;top:auto;transform:none;
+    width:100%;max-width:none;margin:12px 0 0}
+  .dsw.lan{width:min(60vw,190px);margin-inline:auto}
+  .capp canvas{height:110px}
+  .polaroid img{height:150px;object-fit:cover}
+  .mini-monitor,.macbook,.ph2018,.dsw.dsg,.capp-list{display:none}
   .sat{display:none}
-  .poke svg{max-width:34vw;height:auto}
-  .jbrace{font-size:120px}
-  .ringworld{width:70vw;height:70vw}
+
+  #buddy{width:40px;right:12px;bottom:70px}
+  /* the bubble can't sit beside the rocket on a narrow screen without landing
+     on the card — it becomes a banner in the reliably-empty strip up top */
+  #bubble{top:62px;bottom:auto;left:50%;right:auto;transform:translate(-50%,-8px) scale(.96);
+    transform-origin:50% 0;max-width:min(84vw,320px);font-size:11.5px;padding:9px 13px 8px;
+    border-radius:12px}
+  #bubble.show{transform:translate(-50%,0) scale(1)}
+  #bubble::after{display:none}
+  #train{width:140px}
+  #balloon{width:46px}
+  #ufo{width:62px}
+  .poke svg{max-width:30vw;height:auto}
+  .jbrace{font-size:96px}
+  .ringworld{width:78vw;height:78vw}
+
+  /* the skill drawer becomes a bottom sheet — it was covering the whole card */
+  #skillpanel{top:auto;bottom:0;left:0;right:0;width:auto;max-height:52vh;overflow-y:auto;
+    transform:none;border-radius:16px 16px 0 0;border-left:none;border-top:5px solid var(--accent-deep);
+    animation:sheetup .3s cubic-bezier(.2,.9,.3,1.05)}
+  /* the constellation grows a row per five skills — cap it so the finale's
+     text and contact links stay on screen */
+  .finale{width:min(92vw,420px)}
+  .finale h2{font-size:26px}
+  .finale p{font-size:14px;margin-top:8px}
+  .finale svg{max-height:38vh;margin-top:6px}
+  .finale .c-txt{font-size:9px}
+  .contact{gap:8px;margin-top:16px}
+  .contact a{font-size:12px;padding:9px 15px}
+  .jmap{min-width:660px} /* let the transit map scroll rather than crush */
+  .journeys{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .proctor{grid-template-columns:repeat(2,1fr);gap:5px}
+  .proctor-status{font-size:10px;margin-top:7px}
+  .ttt-board{grid-template-columns:repeat(3,40px)}
+  .ttt-board button{width:40px;height:40px}
+  .calc-pad button{height:30px}
+}
+@keyframes sheetup{from{transform:translateY(100%)}to{transform:translateY(0)}}
+
+/* ---------- small phones (SE-class) and short screens ---------- */
+@media (max-width:380px),(max-height:640px){
+  /* stacked mini-apps are the first thing to go — they double a card's height
+     and the scene still reads without them */
+  .capp,.polaroid,.logo-card,.dsw{display:none}
+  .card{padding:15px 15px 13px}
+  .card h2{font-size:20px}
+  .card p{font-size:13px;line-height:1.55}
+  .draw-wrap canvas{height:110px}
+  .minios{min-height:330px}
+  .os-grid{gap:8px;padding:12px 4px 6px}
+  .os-ic{width:38px;height:38px;font-size:16px}
+  .glance h2{font-size:18px !important}
+  .kai-head{margin-top:10px}
+  .kai-chips{gap:4px;margin-top:8px}
+  .kai-chips button{font-size:9.5px;padding:5px 9px}
+  .agent-log{gap:6px;margin-top:8px}
+  .agent-log .msg{font-size:11px;padding:6px 10px;line-height:1.45}
+  #dock .tags{max-height:26px}
+  .finale svg{max-height:30vh}
+  .finale h2{font-size:22px}
+  /* two reports is the most that fits; the rest are one tap away */
+  .postcards .postcard:nth-child(n+3){display:none}
+  .postcard{padding:10px 12px 9px}
+  .postcard h3{font-size:14px;margin:6px 0}
+  .blognode h2,.obsv h2,.journeys h2{font-size:20px !important;margin:6px 0 12px}
+}
+
+/* ---------- landscape phones ---------- */
+@media (max-height:520px){
+  #dock,#hint2{display:none}
+  #buddy{width:36px;bottom:58px}
+  #bubble{top:52px;max-width:min(70vw,280px)}
+  /* landscape has almost no vertical room: trim the finale to its essentials */
+  .finale svg{max-height:26vh}
+  .finale h2{font-size:19px}
+  .finale p{display:none}
+  .card p{font-size:12.5px}
+  .minios{min-height:250px}
+  /* nothing fits in 320px of height — let a card scroll inside itself rather
+     than run off both edges (pan-y so the flight drag still works elsewhere) */
+  /* the tall scenes aren't .card, so they need the same guard */
+  .card,.blognode,.obsv,.journeys,.finale{padding:12px 14px 10px;max-height:92vh;
+    overflow-y:auto;touch-action:pan-y}
 }
