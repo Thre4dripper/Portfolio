@@ -39,7 +39,7 @@ jobs:
 
       - name: sync blog / LeetCode / GitHub → src/data
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_STORY_TOKEN }}
+          GH_PAT: ${{ secrets.GH_STORY_TOKEN }}
         run: node scripts/sync-data.mjs
 
       - name: build (pure render of committed JSON — no network)

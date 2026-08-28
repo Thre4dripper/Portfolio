@@ -4,7 +4,9 @@
    or locally via `pnpm sync:data`) is the only thing that talks to them.
 
    Stale-while-revalidate: a failed or empty source keeps the committed JSON.
-   Env: GITHUB_TOKEN (optional — unlocks org memberships + higher rate limit). */
+   Env: GH_PAT (optional — unlocks org memberships + higher rate limit).
+   Named GH_PAT because GitHub Actions reserves GITHUB_TOKEN for its own
+   auto-injected token; GITHUB_TOKEN is still accepted for local .env use. */
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -109,7 +111,7 @@ async function gh(path, token) {
 }
 
 async function fetchGithub() {
-  const token = cleanToken(process.env.GITHUB_TOKEN);
+  const token = cleanToken(process.env.GH_PAT ?? process.env.GITHUB_TOKEN);
   try {
     const [user, repos] = await Promise.all([
       gh(`/users/${GITHUB_USER}`, token),

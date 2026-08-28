@@ -81,10 +81,14 @@ the journey's org data — Actions reserves the name `GITHUB_TOKEN`).
 ### GitHub token (optional, recommended)
 
 Org memberships are private to the public API. Copy `.env.example` to `.env`
-and set `GITHUB_TOKEN` to a personal access token with the `read:org` scope —
-the Journey Log's GitHub line will then include your org stations. The token
-is read only during `astro build` on the server; it never reaches the client
-bundle. Rebuild after publishing posts or joining orgs to refresh the data.
+and set `GH_PAT` to a personal access token with the `read:org` scope — the
+Journey Log's GitHub line will then include your org stations. In CI the same
+value is the `GH_STORY_TOKEN` secret, passed to the worker as `GH_PAT`
+(Actions reserves the name `GITHUB_TOKEN` for its own auto-injected token).
+
+The token is read only by `scripts/sync-data.mjs`; it never reaches
+`astro build` or the client bundle. Re-run `pnpm sync:data` after publishing
+posts or joining orgs to refresh the committed JSON.
 
 ## Before you deploy — TODOs
 
