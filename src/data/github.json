@@ -1,0 +1,794 @@
+{
+  "syncedAt": "2026-08-28T15:06:39.336Z",
+  "user": {
+    "login": "Thre4dripper",
+    "avatar_url": "https://avatars.githubusercontent.com/u/82382156?v=4",
+    "followers": 55,
+    "public_repos": 76
+  },
+  "story": {
+    "joinedYear": 2021,
+    "firstRepo": {
+      "name": "FractionalPower-Cplusplus",
+      "year": 2021
+    },
+    "orgs": [
+      {
+        "login": "EpicGames",
+        "avatar_url": "https://avatars.githubusercontent.com/u/6615685?v=4"
+      },
+      {
+        "login": "EnK-r-yPT",
+        "avatar_url": "https://avatars.githubusercontent.com/u/101165251?v=4"
+      },
+      {
+        "login": "BeA-Brand",
+        "avatar_url": "https://avatars.githubusercontent.com/u/112765450?v=4"
+      }
+    ],
+    "totalStars": 69,
+    "publicRepos": 76
+  },
+  "repos": [
+    {
+      "name": "FractionalPower-Cplusplus",
+      "html_url": "https://github.com/Thre4dripper/FractionalPower-Cplusplus",
+      "description": null,
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "C++",
+      "fork": false,
+      "pushed_at": "2021-05-08T09:57:08Z"
+    },
+    {
+      "name": "LargeFactorial-Cplusplus",
+      "html_url": "https://github.com/Thre4dripper/LargeFactorial-Cplusplus",
+      "description": null,
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "C++",
+      "fork": false,
+      "pushed_at": "2021-05-08T10:09:32Z"
+    },
+    {
+      "name": "nthRoot-Cplusplus",
+      "html_url": "https://github.com/Thre4dripper/nthRoot-Cplusplus",
+      "description": null,
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "C++",
+      "fork": false,
+      "pushed_at": "2021-05-08T10:11:11Z"
+    },
+    {
+      "name": "NumberConvertor-Cplusplus",
+      "html_url": "https://github.com/Thre4dripper/NumberConvertor-Cplusplus",
+      "description": null,
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "C++",
+      "fork": false,
+      "pushed_at": "2021-05-08T10:20:25Z"
+    },
+    {
+      "name": "Compound-Cplusplus",
+      "html_url": "https://github.com/Thre4dripper/Compound-Cplusplus",
+      "description": null,
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "C++",
+      "fork": false,
+      "pushed_at": "2021-05-08T10:22:05Z"
+    },
+    {
+      "name": "Multinomial-JAVA",
+      "html_url": "https://github.com/Thre4dripper/Multinomial-JAVA",
+      "description": null,
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "Java",
+      "fork": false,
+      "pushed_at": "2021-05-08T10:52:57Z"
+    },
+    {
+      "name": "SevenSegement-JAVA",
+      "html_url": "https://github.com/Thre4dripper/SevenSegement-JAVA",
+      "description": null,
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "Java",
+      "fork": false,
+      "pushed_at": "2021-05-08T10:54:32Z"
+    },
+    {
+      "name": "TicTacToe-JAVA",
+      "html_url": "https://github.com/Thre4dripper/TicTacToe-JAVA",
+      "description": null,
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "Java",
+      "fork": false,
+      "pushed_at": "2021-05-08T10:55:46Z"
+    },
+    {
+      "name": "TrigonometricExpansion-JAVA",
+      "html_url": "https://github.com/Thre4dripper/TrigonometricExpansion-JAVA",
+      "description": null,
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "Java",
+      "fork": false,
+      "pushed_at": "2021-05-08T10:57:05Z"
+    },
+    {
+      "name": "MatrixCalculator-AndroidApp",
+      "html_url": "https://github.com/Thre4dripper/MatrixCalculator-AndroidApp",
+      "description": null,
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "Java",
+      "fork": false,
+      "pushed_at": "2022-06-01T18:51:00Z"
+    },
+    {
+      "name": "A.P.nthFormulas-Cplusplus",
+      "html_url": "https://github.com/Thre4dripper/A.P.nthFormulas-Cplusplus",
+      "description": null,
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "C++",
+      "fork": false,
+      "pushed_at": "2021-05-17T17:44:39Z"
+    },
+    {
+      "name": "CalenderMaker-Cplusplus",
+      "html_url": "https://github.com/Thre4dripper/CalenderMaker-Cplusplus",
+      "description": null,
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "C++",
+      "fork": false,
+      "pushed_at": "2021-05-17T17:59:18Z"
+    },
+    {
+      "name": "GraphicalClock-Cplusplus",
+      "html_url": "https://github.com/Thre4dripper/GraphicalClock-Cplusplus",
+      "description": null,
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "C++",
+      "fork": false,
+      "pushed_at": "2021-05-17T18:01:10Z"
+    },
+    {
+      "name": "AnalogClock-Cplusplus",
+      "html_url": "https://github.com/Thre4dripper/AnalogClock-Cplusplus",
+      "description": null,
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "C++",
+      "fork": false,
+      "pushed_at": "2021-05-17T18:02:43Z"
+    },
+    {
+      "name": "StarPatternNames-Cplusplus",
+      "html_url": "https://github.com/Thre4dripper/StarPatternNames-Cplusplus",
+      "description": null,
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "C++",
+      "fork": false,
+      "pushed_at": "2021-05-17T18:06:13Z"
+    },
+    {
+      "name": "DigitsConvertor-Cplusplus",
+      "html_url": "https://github.com/Thre4dripper/DigitsConvertor-Cplusplus",
+      "description": null,
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "C++",
+      "fork": false,
+      "pushed_at": "2021-05-18T08:59:19Z"
+    },
+    {
+      "name": "Paint-Cplusplus",
+      "html_url": "https://github.com/Thre4dripper/Paint-Cplusplus",
+      "description": null,
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "C++",
+      "fork": false,
+      "pushed_at": "2021-05-18T09:01:02Z"
+    },
+    {
+      "name": "Binomial-JAVA",
+      "html_url": "https://github.com/Thre4dripper/Binomial-JAVA",
+      "description": null,
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "Java",
+      "fork": false,
+      "pushed_at": "2021-05-20T11:52:31Z"
+    },
+    {
+      "name": "Clock-JAVA",
+      "html_url": "https://github.com/Thre4dripper/Clock-JAVA",
+      "description": null,
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "Java",
+      "fork": false,
+      "pushed_at": "2022-06-01T18:52:00Z"
+    },
+    {
+      "name": "Paint-JAVA",
+      "html_url": "https://github.com/Thre4dripper/Paint-JAVA",
+      "description": null,
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "Java",
+      "fork": false,
+      "pushed_at": "2021-05-20T11:54:40Z"
+    },
+    {
+      "name": "CalcuatorChatbot-NodeJS",
+      "html_url": "https://github.com/Thre4dripper/CalcuatorChatbot-NodeJS",
+      "description": null,
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "JavaScript",
+      "fork": false,
+      "pushed_at": "2021-11-05T10:06:59Z"
+    },
+    {
+      "name": "BingoChatbot-NodeJS",
+      "html_url": "https://github.com/Thre4dripper/BingoChatbot-NodeJS",
+      "description": null,
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "JavaScript",
+      "fork": false,
+      "pushed_at": "2021-05-24T04:15:22Z"
+    },
+    {
+      "name": "EyantraHackathon-CovidMe-WebApp",
+      "html_url": "https://github.com/Thre4dripper/EyantraHackathon-CovidMe-WebApp",
+      "description": null,
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "JavaScript",
+      "fork": false,
+      "pushed_at": "2022-06-01T18:51:38Z"
+    },
+    {
+      "name": "DSA-Programs",
+      "html_url": "https://github.com/Thre4dripper/DSA-Programs",
+      "description": "DSA-Programs is a collection of Data Structures and Algorithms. It provides practical examples, detailed explanations, and ASCII diagrams to help you learn and master key DSA concepts like Arrays, Linked Lists, Stacks, Trees, Graphs, and sorting algorithms.",
+      "stargazers_count": 24,
+      "forks_count": 0,
+      "language": "C++",
+      "fork": false,
+      "pushed_at": "2025-01-26T07:00:03Z"
+    },
+    {
+      "name": "Udacity-AndroidBeginnerApps",
+      "html_url": "https://github.com/Thre4dripper/Udacity-AndroidBeginnerApps",
+      "description": "These are Udacity Beginner Android Development Course apps with 2021 Compatibility and Simplified Code.",
+      "stargazers_count": 1,
+      "forks_count": 0,
+      "language": null,
+      "fork": false,
+      "pushed_at": "2022-06-01T18:51:43Z"
+    },
+    {
+      "name": "HolyQuranAndroidApp",
+      "html_url": "https://github.com/Thre4dripper/HolyQuranAndroidApp",
+      "description": null,
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "Java",
+      "fork": false,
+      "pushed_at": "2023-03-14T16:15:29Z"
+    },
+    {
+      "name": "PM-Healthcare-AndroidApp",
+      "html_url": "https://github.com/Thre4dripper/PM-Healthcare-AndroidApp",
+      "description": "This is a Android app based on PM Digital Health Mission with Cloud Databse and Cloud storage Functionality",
+      "stargazers_count": 1,
+      "forks_count": 0,
+      "language": "Java",
+      "fork": false,
+      "pushed_at": "2022-06-01T18:52:03Z"
+    },
+    {
+      "name": "Matscape-AndroidApp",
+      "html_url": "https://github.com/Thre4dripper/Matscape-AndroidApp",
+      "description": "Matscape is a powerful, feature-rich matrix calculator for Android that transforms complex matrix calculations into simple, intuitive operations. Work with multiple matrices (A-Z), perform advanced operations like determinants, inverses, and transposes, and see real-time results with beautiful Material Design UI.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "Java",
+      "fork": false,
+      "pushed_at": "2026-08-15T01:30:57Z"
+    },
+    {
+      "name": "SpiritLevel-AndroidApp",
+      "html_url": "https://github.com/Thre4dripper/SpiritLevel-AndroidApp",
+      "description": null,
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "Kotlin",
+      "fork": false,
+      "pushed_at": "2023-03-14T17:20:59Z"
+    },
+    {
+      "name": "GithubBrowser-AndroidApp",
+      "html_url": "https://github.com/Thre4dripper/GithubBrowser-AndroidApp",
+      "description": "This is Simple Github Clone Android App in which you can add public repos by their public repo link and this app will display its details like branches, commits, issues etc.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "Kotlin",
+      "fork": false,
+      "pushed_at": "2023-03-14T16:10:19Z"
+    },
+    {
+      "name": "LeetCode",
+      "html_url": "https://github.com/Thre4dripper/LeetCode",
+      "description": "Collection of LeetCode questions to ace the coding interview! - Created using [LeetHub](https://github.com/QasimWani/LeetHub)",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "C++",
+      "fork": false,
+      "pushed_at": "2023-09-10T17:10:56Z"
+    },
+    {
+      "name": "NotesApp-AndroidApp",
+      "html_url": "https://github.com/Thre4dripper/NotesApp-AndroidApp",
+      "description": "This is simple notes android app created by kotlin and based on MVVM model",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "Kotlin",
+      "fork": false,
+      "pushed_at": "2023-03-14T16:20:42Z"
+    },
+    {
+      "name": "Calculator-WebApp",
+      "html_url": "https://github.com/Thre4dripper/Calculator-WebApp",
+      "description": "A Simple Calculator Site",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "JavaScript",
+      "fork": false,
+      "pushed_at": "2022-07-02T17:48:14Z"
+    },
+    {
+      "name": "DrumKit-WebApp",
+      "html_url": "https://github.com/Thre4dripper/DrumKit-WebApp",
+      "description": "A simple drumkit app based on Javascript 30",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "HTML",
+      "fork": false,
+      "pushed_at": "2022-07-02T17:45:44Z"
+    },
+    {
+      "name": "Clock-WebApp",
+      "html_url": "https://github.com/Thre4dripper/Clock-WebApp",
+      "description": "A Simple Wall Clock by Vanilla HTML, CSS and JS",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "CSS",
+      "fork": false,
+      "pushed_at": "2022-07-02T17:45:24Z"
+    },
+    {
+      "name": "MemoryGame-WebApp",
+      "html_url": "https://github.com/Thre4dripper/MemoryGame-WebApp",
+      "description": "A simple memory game by plain HTML, CSS & JS",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "JavaScript",
+      "fork": false,
+      "pushed_at": "2022-07-02T17:45:01Z"
+    },
+    {
+      "name": "Tailwind3.0-Starter-Template",
+      "html_url": "https://github.com/Thre4dripper/Tailwind3.0-Starter-Template",
+      "description": "Starter Template for tailwindcss v3.0 for plain html installation through node (Also optimised for Production)",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "HTML",
+      "fork": false,
+      "pushed_at": "2022-06-22T14:15:12Z"
+    },
+    {
+      "name": "TicTacToe-WebApp",
+      "html_url": "https://github.com/Thre4dripper/TicTacToe-WebApp",
+      "description": "A responsive Tic Tac Toe Webapp made by Tailwind and jQuery",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "JavaScript",
+      "fork": false,
+      "pushed_at": "2022-06-18T19:38:24Z"
+    },
+    {
+      "name": "Whack-A-Mole-WebApp",
+      "html_url": "https://github.com/Thre4dripper/Whack-A-Mole-WebApp",
+      "description": "A simple carnival game - Whack A Mole!!",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "HTML",
+      "fork": false,
+      "pushed_at": "2022-06-18T19:37:29Z"
+    },
+    {
+      "name": "DBMS-Project",
+      "html_url": "https://github.com/Thre4dripper/DBMS-Project",
+      "description": "Our 2nd Year DBMS Full Stack Project",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "JavaScript",
+      "fork": false,
+      "pushed_at": "2022-05-14T19:54:33Z"
+    },
+    {
+      "name": "Canvas-Particles-WebApp",
+      "html_url": "https://github.com/Thre4dripper/Canvas-Particles-WebApp",
+      "description": "Attractive particle effects using html 5 canvas",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "JavaScript",
+      "fork": false,
+      "pushed_at": "2022-07-06T07:32:20Z"
+    },
+    {
+      "name": "Canvas-Sparkles-WebApp",
+      "html_url": "https://github.com/Thre4dripper/Canvas-Sparkles-WebApp",
+      "description": "Attractive sparkles effects using html 5 canvas",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "JavaScript",
+      "fork": false,
+      "pushed_at": "2022-07-07T11:54:25Z"
+    },
+    {
+      "name": "Canvas-Gravity-WebApp",
+      "html_url": "https://github.com/Thre4dripper/Canvas-Gravity-WebApp",
+      "description": "Attractive Gravity Physics effects using html 5 canvas",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "JavaScript",
+      "fork": false,
+      "pushed_at": "2022-07-07T11:55:23Z"
+    },
+    {
+      "name": "Thre4dripper",
+      "html_url": "https://github.com/Thre4dripper/Thre4dripper",
+      "description": null,
+      "stargazers_count": 0,
+      "forks_count": 1,
+      "language": null,
+      "fork": false,
+      "pushed_at": "2026-08-28T10:43:06Z"
+    },
+    {
+      "name": "Canvas-ParticleText-WebApp",
+      "html_url": "https://github.com/Thre4dripper/Canvas-ParticleText-WebApp",
+      "description": "Attractive particle text effects using html 5 canvas",
+      "stargazers_count": 0,
+      "forks_count": 1,
+      "language": "JavaScript",
+      "fork": false,
+      "pushed_at": "2022-07-07T11:55:50Z"
+    },
+    {
+      "name": "Canvas-ParticleImage-WebApp",
+      "html_url": "https://github.com/Thre4dripper/Canvas-ParticleImage-WebApp",
+      "description": "Attractive particle image effects using html 5 canvas",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "JavaScript",
+      "fork": false,
+      "pushed_at": "2022-07-10T11:18:48Z"
+    },
+    {
+      "name": "SIH-Enkrypt-Front-End",
+      "html_url": "https://github.com/Thre4dripper/SIH-Enkrypt-Front-End",
+      "description": "Smart India Hackathon Project Frontend",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": null,
+      "fork": true,
+      "pushed_at": "2022-08-26T12:03:59Z"
+    },
+    {
+      "name": "SIH-Enkrypt-Back-end",
+      "html_url": "https://github.com/Thre4dripper/SIH-Enkrypt-Back-end",
+      "description": "Smart India Hackathon Project Backend",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "JavaScript",
+      "fork": true,
+      "pushed_at": "2025-03-29T17:46:44Z"
+    },
+    {
+      "name": "Socket-Programming",
+      "html_url": "https://github.com/Thre4dripper/Socket-Programming",
+      "description": "Implementation of Sockets using various programming languages",
+      "stargazers_count": 0,
+      "forks_count": 3,
+      "language": "Java",
+      "fork": false,
+      "pushed_at": "2022-10-27T19:37:52Z"
+    },
+    {
+      "name": "Computer-Networks-Mini-Projects",
+      "html_url": "https://github.com/Thre4dripper/Computer-Networks-Mini-Projects",
+      "description": "A repository for the team assignments given for socket cross platform programming.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "Rust",
+      "fork": true,
+      "pushed_at": "2025-10-06T06:15:11Z"
+    },
+    {
+      "name": "RemoteMouse-AndroidApp",
+      "html_url": "https://github.com/Thre4dripper/RemoteMouse-AndroidApp",
+      "description": "Remote Mouse controller App with realtime Java Kotlin socket connection",
+      "stargazers_count": 0,
+      "forks_count": 1,
+      "language": "Kotlin",
+      "fork": false,
+      "pushed_at": "2023-03-14T17:10:07Z"
+    },
+    {
+      "name": "GyroMouse-AndroidApp",
+      "html_url": "https://github.com/Thre4dripper/GyroMouse-AndroidApp",
+      "description": "gyro mouse controller app with java kotlin cross communication socket",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "Kotlin",
+      "fork": false,
+      "pushed_at": "2022-10-15T19:46:10Z"
+    },
+    {
+      "name": "Discussions-AndroidApp",
+      "html_url": "https://github.com/Thre4dripper/Discussions-AndroidApp",
+      "description": "General Discussions app for social interactions and solving queries on the go.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "Kotlin",
+      "fork": false,
+      "pushed_at": "2024-02-07T17:26:26Z"
+    },
+    {
+      "name": "RemoteDesktop-AndroidApp",
+      "html_url": "https://github.com/Thre4dripper/RemoteDesktop-AndroidApp",
+      "description": "A simple remote desktop android app made with native tools over tcp/ip socket connection without using any library",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "Kotlin",
+      "fork": false,
+      "pushed_at": "2023-03-14T16:23:14Z"
+    },
+    {
+      "name": "Android-Socket-Apps",
+      "html_url": "https://github.com/Thre4dripper/Android-Socket-Apps",
+      "description": "Android-Desktop cross platform socket apps with Kotlin-Java cross language communication",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": null,
+      "fork": false,
+      "pushed_at": "2022-10-16T20:49:42Z"
+    },
+    {
+      "name": "Enkrypt-AndroidApp",
+      "html_url": "https://github.com/Thre4dripper/Enkrypt-AndroidApp",
+      "description": "Smart India Hackathon project android app",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "Java",
+      "fork": false,
+      "pushed_at": "2023-02-17T20:26:01Z"
+    },
+    {
+      "name": "Chit-Chat-AndroidApp",
+      "html_url": "https://github.com/Thre4dripper/Chit-Chat-AndroidApp",
+      "description": "Native Android chat app built with Kotlin & Jetpack Compose — DMs, group chats, image sharing, animated stickers, FCM push notifications, and live online status. Pairs with the Chit-Chat Web App on the same Firestore backend.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "Kotlin",
+      "fork": false,
+      "pushed_at": "2026-05-24T19:37:20Z"
+    },
+    {
+      "name": "Exam-Portal",
+      "html_url": "https://github.com/Thre4dripper/Exam-Portal",
+      "description": null,
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "JavaScript",
+      "fork": false,
+      "pushed_at": "2023-08-06T11:30:15Z"
+    },
+    {
+      "name": "Chit-Chat-WebApp",
+      "html_url": "https://github.com/Thre4dripper/Chit-Chat-WebApp",
+      "description": "Real-time chat web app built with React 19 & Firebase — DMs, group chats, image sharing, animated stickers, FCM push notifications, and live online status. Pairs with the Chit-Chat Android app on the same Firestore backend.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "TypeScript",
+      "fork": false,
+      "pushed_at": "2026-07-22T21:02:19Z"
+    },
+    {
+      "name": "Sih-2023-Backend",
+      "html_url": "https://github.com/Thre4dripper/Sih-2023-Backend",
+      "description": null,
+      "stargazers_count": 1,
+      "forks_count": 2,
+      "language": "TypeScript",
+      "fork": false,
+      "pushed_at": "2025-03-28T16:47:47Z"
+    },
+    {
+      "name": "Sih-2023-Frontend",
+      "html_url": "https://github.com/Thre4dripper/Sih-2023-Frontend",
+      "description": "Frontend for sih 2023",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": null,
+      "fork": true,
+      "pushed_at": "2023-12-24T14:49:34Z"
+    },
+    {
+      "name": "NodeTs-Express-Service-Based-Template",
+      "html_url": "https://github.com/Thre4dripper/NodeTs-Express-Service-Based-Template",
+      "description": "Node + Typescript + Express + Sequelize + Mongoose + Validations + Socket + CronJobs + gRpc + Redis + Docker + Swagger + Service Based Template",
+      "stargazers_count": 9,
+      "forks_count": 5,
+      "language": "TypeScript",
+      "fork": false,
+      "pushed_at": "2026-08-26T11:27:29Z"
+    },
+    {
+      "name": "express-master-controller",
+      "html_url": "https://github.com/Thre4dripper/express-master-controller",
+      "description": "Npm package for master controller based express package that can help you create apis and sockets super fast.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "TypeScript",
+      "fork": false,
+      "pushed_at": "2026-07-10T16:27:30Z"
+    },
+    {
+      "name": "node-server-init",
+      "html_url": "https://github.com/Thre4dripper/node-server-init",
+      "description": "Npm package for initializing node project with custom configurations on the go.",
+      "stargazers_count": 5,
+      "forks_count": 0,
+      "language": "TypeScript",
+      "fork": false,
+      "pushed_at": "2026-07-10T14:58:33Z"
+    },
+    {
+      "name": "StableDiffusion-WebApp",
+      "html_url": "https://github.com/Thre4dripper/StableDiffusion-WebApp",
+      "description": "Image Generator Web App using stable diffusion model wizmodel and stability api",
+      "stargazers_count": 1,
+      "forks_count": 0,
+      "language": "TypeScript",
+      "fork": false,
+      "pushed_at": "2025-03-29T16:50:55Z"
+    },
+    {
+      "name": "Boardy-WebApp",
+      "html_url": "https://github.com/Thre4dripper/Boardy-WebApp",
+      "description": "A versatile and feature-rich drawing and design app built with Next.js, offering powerful tools for creative canvas manipulation and design.",
+      "stargazers_count": 10,
+      "forks_count": 3,
+      "language": "TypeScript",
+      "fork": false,
+      "pushed_at": "2026-07-22T18:41:19Z"
+    },
+    {
+      "name": "Hashnode-Blogs",
+      "html_url": "https://github.com/Thre4dripper/Hashnode-Blogs",
+      "description": "This Repo contains the backup of hashnode blogs and can be used to publish blogs to hashnode also",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "JavaScript",
+      "fork": false,
+      "pushed_at": "2025-07-01T17:45:25Z"
+    },
+    {
+      "name": "appwrite-function-templates",
+      "html_url": "https://github.com/Thre4dripper/appwrite-function-templates",
+      "description": "Templates for Appwrite Functions ⚡️🌩️",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "JavaScript",
+      "fork": true,
+      "pushed_at": "2025-03-28T23:57:37Z"
+    },
+    {
+      "name": "FCM-Notification-Service",
+      "html_url": "https://github.com/Thre4dripper/FCM-Notification-Service",
+      "description": "This AWS Lambda Function as a service is one shot solution for FCM notifications",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "TypeScript",
+      "fork": false,
+      "pushed_at": "2026-05-25T04:48:47Z"
+    },
+    {
+      "name": "remix-express-aws-template",
+      "html_url": "https://github.com/Thre4dripper/remix-express-aws-template",
+      "description": "A robust remix template for aws amplify deployment with testing frameworks and react 19",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "TypeScript",
+      "fork": false,
+      "pushed_at": "2025-04-26T19:10:49Z"
+    },
+    {
+      "name": "play-console-info",
+      "html_url": "https://github.com/Thre4dripper/play-console-info",
+      "description": "Fetch tracks, APKs, bundles, listings, and more from Google Play Console — as a GitHub Action or a standalone native CLI binary.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "TypeScript",
+      "fork": false,
+      "pushed_at": "2026-08-24T03:56:43Z"
+    },
+    {
+      "name": "Reusable-Atomic-Workflows",
+      "html_url": "https://github.com/Thre4dripper/Reusable-Atomic-Workflows",
+      "description": "A comprehensive collection of reusable GitHub Actions workflows for modern development - CI/CD, quality checks, documentation generation, and deployment automation.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "TypeScript",
+      "fork": false,
+      "pushed_at": "2025-11-16T14:49:17Z"
+    },
+    {
+      "name": "Home-Server-Lab",
+      "html_url": "https://github.com/Thre4dripper/Home-Server-Lab",
+      "description": "🏠 A comprehensive collection of self-hosted services for home labs - featuring enterprise-grade applications optimized for Raspberry Pi and single-board computers. Deploy your own private cloud with Docker containers for development, media, file sharing, monitoring, and automation.",
+      "stargazers_count": 2,
+      "forks_count": 0,
+      "language": "Shell",
+      "fork": false,
+      "pushed_at": "2026-08-27T19:41:19Z"
+    },
+    {
+      "name": "tidefetch",
+      "html_url": "https://github.com/Thre4dripper/tidefetch",
+      "description": "Tidefetch is a keyboard-first terminal UI for the aria2 download engine, built for people who live in a shell. The same binary also serves a self-hosted web UI, so headless servers and homelabs get a browser dashboard on demand.",
+      "stargazers_count": 1,
+      "forks_count": 0,
+      "language": "Go",
+      "fork": false,
+      "pushed_at": "2026-08-06T19:02:02Z"
+    },
+    {
+      "name": "Infinity-Castle-ThreeJs",
+      "html_url": "https://github.com/Thre4dripper/Infinity-Castle-ThreeJs",
+      "description": "🏮 An infinite, self-assembling Japanese castle in your browser. Fly through it as a crow — procedural architecture, weather and sound, zero art assets. Pure Three.js. 無限城",
+      "stargazers_count": 14,
+      "forks_count": 0,
+      "language": "TypeScript",
+      "fork": false,
+      "pushed_at": "2026-08-10T06:22:28Z"
+    },
+    {
+      "name": "homebrew-tap",
+      "html_url": "https://github.com/Thre4dripper/homebrew-tap",
+      "description": "Homebrew tap containing formulas for Thre4dripper's developer tools and utilities.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "Ruby",
+      "fork": false,
+      "pushed_at": "2026-08-08T02:32:40Z"
+    }
+  ]
+}

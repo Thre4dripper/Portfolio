@@ -1,0 +1,51 @@
+[
+  {
+    "title": "Production-Grade MongoDB Replica Set on k3s — for Homelabs, Raspberry Pis, and Beyond",
+    "link": "https://blogs.ijlalahmad.dev/mongodb-replica-set-k3s-homelab",
+    "date": "May 28, 2026",
+    "year": "2026",
+    "category": "Kubernetes"
+  },
+  {
+    "title": "Generate Apk using Github Actions",
+    "link": "https://blogs.ijlalahmad.dev/generate-apk-using-github-actions",
+    "date": "Mar 20, 2025",
+    "year": "2025",
+    "category": "Android"
+  },
+  {
+    "title": "Notification Microservice using Kafka and FCM",
+    "link": "https://blogs.ijlalahmad.dev/notification-microservice-using-kafka-and-fcm",
+    "date": "Nov 30, 2024",
+    "year": "2024",
+    "category": "kafka"
+  },
+  {
+    "title": "Deeply Nested Comments Architecture",
+    "link": "https://blogs.ijlalahmad.dev/deeply-nested-comments-architecture",
+    "date": "Feb 21, 2024",
+    "year": "2024",
+    "category": "comments"
+  },
+  {
+    "title": "Evolution of List Rendering in Android",
+    "link": "https://blogs.ijlalahmad.dev/evolution-of-list-rendering-in-android",
+    "date": "Feb 6, 2024",
+    "year": "2024",
+    "category": "scrollview"
+  },
+  {
+    "title": "Crafting Hybrid NPM Packages with TypeScript: A Comprehensive Guide",
+    "link": "https://blogs.ijlalahmad.dev/crafting-hybrid-npm-packages-with-typescript-a-comprehensive-guide",
+    "date": "Jan 15, 2024",
+    "year": "2024",
+    "category": "npm"
+  },
+  {
+    "title": "Why Developers Should Blog?",
+    "link": "https://blogs.ijlalahmad.dev/why-developers-should-blog",
+    "date": "Dec 31, 2023",
+    "year": "2023",
+    "category": "Developer"
+  }
+]
