@@ -98,8 +98,9 @@ bundle. Rebuild after publishing posts or joining orgs to refresh the data.
 
 - Campus photo: ["Centenary Gate, Jamia Millia Islamia"](https://commons.wikimedia.org/wiki/File:Centenary_Gate,_Jamia_Millia_Islamia.jpg)
   by Muntaqibah, Wikimedia Commons, CC BY-SA 4.0 (resized).
-- S&P photo: ["StandardPoors Headquarters"](https://commons.wikimedia.org/wiki/File:StandardPoors_Headquarters.JPG)
-  by B64, Wikimedia Commons, CC BY 3.0 (resized).
+- S&P Global logo: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:S%26P_Global_logo.svg),
+  public-domain text logo; GUS logo from globaluniversitysystems.com — both shown
+  to identify former/current employers (nominative use).
 
 ## Performance & SEO notes
 
