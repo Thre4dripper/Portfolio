@@ -36,6 +36,24 @@ src/
     github.ts            ← live GitHub API → orbital repo system
 ```
 
+## Data architecture — one rule
+
+**`src/data/*.json` is the only data layer.** Workers write it, the app only
+renders it; `astro build` needs no network and the browser calls no APIs.
+
+| file            | source                    | written by                              |
+| --------------- | ------------------------- | --------------------------------------- |
+| `blog.json`     | Hashnode RSS              | `pnpm sync:data` / daily Action         |
+| `github.json`   | GitHub API (story+repos)  | `pnpm sync:data` / daily Action         |
+| `leetcode.json` | LeetCode GraphQL          | `pnpm sync:data` / daily Action         |
+| `movies.json`   | Notion database           | `pnpm sync:notion` / daily Action       |
+| `sketches.json` | `content/` originals      | `pnpm sketches` (manual, on new art)    |
+| `games.json`, `anime.json` | hand/agent-edited JSON | you (or an AI agent)          |
+| `portfolio.ts`  | site copy & timeline      | code — edited like code                 |
+
+Every worker is stale-safe: a failed or empty source keeps the committed JSON,
+so the site always builds from the last good snapshot.
+
 ## Live integrations
 
 - **Journey Log** — a transit-map scene with three lines: GitHub milestones

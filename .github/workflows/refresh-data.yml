@@ -37,9 +37,12 @@ jobs:
           NOTION_MOVIES_DB: ${{ secrets.NOTION_MOVIES_DB }}
         run: node scripts/sync-notion.mjs
 
-      - name: build (also refreshes GitHub/LeetCode/blog data baked at build time)
+      - name: sync blog / LeetCode / GitHub → src/data
         env:
           GITHUB_TOKEN: ${{ secrets.GH_STORY_TOKEN }}
+        run: node scripts/sync-data.mjs
+
+      - name: build (pure render of committed JSON — no network)
         run: pnpm build
 
       - name: commit data changes

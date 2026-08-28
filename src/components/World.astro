@@ -6,9 +6,7 @@
  * viewport units — the CSS equivalent of the old innerWidth math.
  */
 import { TIMELINE, ERAS, NOTES, ALL_SKILLS, GATE_CAM, SITE, LINKEDIN_MILESTONES, HACKS } from '../data/portfolio';
-import type { BlogPost } from '../lib/blog';
-import type { GhStory } from '../lib/github-story';
-import type { LeetStats } from '../lib/leetcode';
+import type { BlogPost, GhStory, LeetStats } from '../lib/types';
 
 interface Props {
   posts: BlogPost[];
@@ -298,11 +296,11 @@ const satellites = (idx: number, zCam: number) => {
             <section class="node obsv" data-z={z} data-near="1" style={style} aria-label="Live GitHub repositories">
               <div class="bn-eyebrow">
                 <span class="live-dot" />
-                LIVE TELEMETRY · GITHUB API
+                GITHUB TELEMETRY · SYNCED DAILY
               </div>
               <h2>Mission Control</h2>
-              <p class="obsv-sub">Real repositories in real orbits — sized by stars, colored by language, fetched the moment you flew in.</p>
-              <div id="orbit-sys" data-user={SITE.githubUser}>
+              <p class="obsv-sub">Real repositories in real orbits — sized by stars, colored by language, refreshed every morning by the data worker.</p>
+              <div id="orbit-sys">
                 <div class="orbit-status" id="orbit-status">establishing uplink…</div>
               </div>
               <div class="obsv-stats" id="gh-stats" aria-live="polite" />

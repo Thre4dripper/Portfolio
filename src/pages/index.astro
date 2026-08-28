@@ -4,16 +4,11 @@ import World from '../components/World.astro';
 import Overlays from '../components/Overlays.astro';
 import FlatMode from '../components/FlatMode.astro';
 import Edges from '../components/Edges.astro';
-import { fetchPosts } from '../lib/blog';
-import { fetchGhStory } from '../lib/github-story';
-import { fetchLeetStats } from '../lib/leetcode';
-import { SITE } from '../data/portfolio';
+import posts from '../data/blog.json';
+import github from '../data/github.json';
+import leet from '../data/leetcode.json';
 
-const [posts, ghStory, leet] = await Promise.all([
-  fetchPosts(SITE.blogRss),
-  fetchGhStory(SITE.githubUser),
-  fetchLeetStats(SITE.leetcode),
-]);
+const ghStory = github.story;
 ---
 
 <Base>

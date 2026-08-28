@@ -1,12 +1,5 @@
 /// <reference types="astro/client" />
 
-interface ImportMetaEnv {
-  /** Optional GitHub personal access token, used server-side at build time
-   *  to read org memberships and raise the API rate limit. Never shipped
-   *  to the browser. Set it in a local `.env` file. */
-  readonly GITHUB_TOKEN?: string;
-}
-
-interface ImportMeta {
-  readonly env: ImportMetaEnv;
-}
+/* No env vars are read at build time — the site is a pure render of
+   src/data/*.json. Secrets (NOTION_TOKEN, GITHUB_TOKEN, …) belong to the
+   sync workers in scripts/, which read process.env. See .env.example. */
