@@ -7,11 +7,15 @@
 import sharp from 'sharp';
 import { readdirSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const SRC = new URL('../content/', import.meta.url).pathname;
-const OUT_THUMB = new URL('../public/sketches/thumb/', import.meta.url).pathname;
-const OUT_FULL = new URL('../public/sketches/full/', import.meta.url).pathname;
-const MANIFEST = new URL('../src/data/sketches.json', import.meta.url).pathname;
+/* fileURLToPath, not .pathname — .pathname keeps percent-encoding (a path with
+   a space arrives as %20) and prefixes a slash on Windows drive letters. */
+const here = (rel) => fileURLToPath(new URL(rel, import.meta.url));
+const SRC = here('../content/');
+const OUT_THUMB = here('../public/sketches/thumb/');
+const OUT_FULL = here('../public/sketches/full/');
+const MANIFEST = here('../src/data/sketches.json');
 
 mkdirSync(OUT_THUMB, { recursive: true });
 mkdirSync(OUT_FULL, { recursive: true });

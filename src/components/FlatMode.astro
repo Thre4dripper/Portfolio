@@ -7,6 +7,7 @@
 import {
   NOTES, ALL_SKILLS, SITE, EXPERIENCE, EDUCATION, ACHIEVEMENTS,
 } from '../data/portfolio';
+import movies from '../data/movies.json';
 import type { BlogPost } from '../lib/blog';
 
 interface Props {
@@ -136,7 +137,7 @@ const projects: { yr: string; title: string; body: string; href?: string }[] = [
     <h3 id="s-int">Interests</h3>
     <div class="notes-list int-links">
       <a href="/sketches">🖊 the sketchbook wall →</a>
-      <a href="/movies">🎬 777 movies logged →</a>
+      <a href="/movies">🎬 {movies.length} movies logged →</a>
       <a href="/games">🎮 the game shelf →</a>
       <a href="/anime">⛩ the anime log →</a>
     </div>

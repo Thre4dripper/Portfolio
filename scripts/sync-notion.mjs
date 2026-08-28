@@ -13,8 +13,12 @@
      NOTION_MOVIES_DB  — database id of the "Movies Watched" DB
      NOTION_GAMES_DB   — optional, same pattern, for later */
 import { readFileSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const ROOT = new URL('../', import.meta.url).pathname;
+/* fileURLToPath, not .pathname — .pathname keeps percent-encoding (a path with
+   a space arrives as %20) and prefixes a slash on Windows drive letters. */
+const DATA_DIR = fileURLToPath(new URL('../src/data/', import.meta.url));
 const TOKEN = (process.env.NOTION_TOKEN ?? '').trim();
 const NOTION_VERSION = '2022-06-28';
 
@@ -55,7 +59,7 @@ const titleOf = (page) => {
 };
 
 function writeIfBetter(file, data, label) {
-  const path = `${ROOT}src/data/${file}`;
+  const path = join(DATA_DIR, file);
   const prev = JSON.parse(readFileSync(path, 'utf8'));
   const prevCount = Array.isArray(prev) ? prev.length : 0;
   if (data.length === 0) {
