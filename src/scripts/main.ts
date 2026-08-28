@@ -52,21 +52,49 @@ addEventListener(
   { passive: true },
 );
 
+/* Touch needs a much higher gain than a mouse: the whole flight is ~38k deep,
+   so at mouse gain a phone would need a dozen full-screen swipes. Flicks also
+   get inertia, which the wheel doesn't need. */
+const coarse = matchMedia('(pointer: coarse)').matches;
+const DRAG_GAIN = coarse ? 7 : 4.2;
 let dragging = false;
 let lastY = 0;
+let lastMoveT = 0;
+let flickV = 0; // z per frame, decayed after release
+
 stage.addEventListener('pointerdown', (e) => {
   if ((e.target as HTMLElement).closest('#boardy,#qblock,a,button,canvas')) return;
   dragging = true;
   lastY = e.clientY;
+  lastMoveT = performance.now();
+  flickV = 0;
 });
 addEventListener('pointermove', (e) => {
   if (!dragging) return;
-  target = clampT(target + (lastY - e.clientY) * 4.2);
+  const dz = (lastY - e.clientY) * DRAG_GAIN;
+  target = clampT(target + dz);
+  const now = performance.now();
+  const dt = Math.max(8, now - lastMoveT);
+  /* smoothed velocity so a flick keeps travelling after the finger lifts */
+  flickV = flickV * 0.6 + (dz / dt) * 16 * 0.4;
   lastY = e.clientY;
+  lastMoveT = now;
   scrolled = true;
-  lastInput = performance.now();
+  lastInput = now;
 });
-addEventListener('pointerup', () => (dragging = false));
+function endDrag() {
+  if (!dragging) return;
+  dragging = false;
+  /* only a genuine flick coasts; a slow drag just stops */
+  if (Math.abs(flickV) > 8) {
+    target = clampT(target + Math.max(-2600, Math.min(2600, flickV * 6)));
+    lastInput = performance.now();
+  }
+  flickV = 0;
+}
+addEventListener('pointerup', endDrag);
+/* without this the browser's own pan gesture silently kills the drag */
+addEventListener('pointercancel', endDrag);
 
 addEventListener('keydown', (e) => {
   if (flat.classList.contains('open')) return;
@@ -248,6 +276,11 @@ const ERA_CURSORS = [
 let cursorEra = -1;
 const finePointer = matchMedia('(pointer: fine)').matches;
 
+/* depth-of-field tuning; weaker on low-end devices, where blur is the most
+   expensive thing we could ask a mobile GPU to re-raster */
+const FOCUS_RANGE = 170;
+const MAX_BLUR = coarse || (navigator.hardwareConcurrency ?? 8) <= 4 ? 3.5 : 6;
+
 /* ================= main loop ================= */
 const hint2 = document.getElementById('hint2')!;
 const finale = document.querySelector('.finale')!;
@@ -289,12 +322,34 @@ function frame(t: number) {
     else if (rel > nearEdge) op = 1;
     else if (rel > farEdge) op = (rel - farEdge) / (nearEdge - farEdge);
     else op = 0;
+    /* Fully faded scenes are display:none'd, not just transparent. Left in the
+       tree they keep every LED, orbit and floating satellite animating on the
+       compositor — by the finale that was 120+ off-screen animations and a
+       permanent layer per node, which is what made phones flicker and drop
+       elements. Culling also lets us skip the per-frame style writes. */
+    const culled = op <= 0.004;
+    n.classList.toggle('culled', culled);
+    if (culled) {
+      n.classList.remove('on');
+      return;
+    }
     n.style.opacity = op.toFixed(3);
     /* a node just flown past (rel > 70) is huge, faint, and stacked over the
        scene behind it — it must never swallow clicks meant for that scene */
     n.classList.toggle('on', op > 0.06 && rel < 70);
-    if (op > 0)
-      n.style.transform = `translate(-50%,-50%) translate3d(var(--dx,0px),var(--dy,0px),${rel.toFixed(1)}px)`;
+    n.style.transform = `translate(-50%,-50%) translate3d(var(--dx,0px),var(--dy,0px),${rel.toFixed(1)}px)`;
+
+    /* Depth of field: whatever you're parked on stays sharp, everything else
+       softens with distance so the eye isn't split between two scenes.
+       Quantised to 0.5px because each distinct blur radius costs a fresh
+       raster — smooth values would re-rasterise the layer every frame. */
+    const dist = Math.abs(rel);
+    const blur = dist < FOCUS_RANGE ? 0 : Math.min(MAX_BLUR, (dist - FOCUS_RANGE) / 110);
+    const q = Math.round(blur * 2) / 2;
+    if (n.dataset.blur !== String(q)) {
+      n.dataset.blur = String(q);
+      n.style.filter = q ? `blur(${q}px)` : '';
+    }
   });
 
   /* triggers — fire while the scene is flying in, so everything is already

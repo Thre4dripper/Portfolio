@@ -21,6 +21,7 @@ const jsonLd = JSON.stringify({
   name: SITE.name,
   jobTitle: SITE.role,
   email: `mailto:${SITE.email}`,
+  image: new URL('/icon.png', Astro.site).href,
   url: canonical.href,
   sameAs: [SITE.github, SITE.linkedin, SITE.blog],
   worksFor: { '@type': 'Organization', name: 'GUS Global (Global University Systems)' },
@@ -39,7 +40,9 @@ const jsonLd = JSON.stringify({
     <meta name="description" content={description} />
     <meta name="author" content={SITE.name} />
     <link rel="canonical" href={canonical.href} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="400x400" href="/icon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="theme-color" content="#0B0E1A" />
 
@@ -49,13 +52,16 @@ const jsonLd = JSON.stringify({
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:site_name" content={SITE.name} />
-    <!-- TODO: add a 1200x630 raster image at public/og.png and uncomment:
-    <meta property="og:image" content={new URL('/og.png', Astro.site).href} /> -->
+    <meta property="og:image" content={new URL('/og.jpg', Astro.site).href} />
+    <meta property="og:image:width" content="400" />
+    <meta property="og:image:height" content="400" />
+    <meta property="og:image:alt" content={`${SITE.name} — ${SITE.role}`} />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL('/og.jpg', Astro.site).href} />
 
     <script is:inline type="application/ld+json" set:html={jsonLd} />
   </head>

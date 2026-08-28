@@ -18,9 +18,12 @@ let rendered = false;
 
 export function loadGithub(): void {
   if (rendered) return;
-  rendered = true;
   const sys = document.getElementById('orbit-sys');
   if (!sys) return;
+  /* the scene is display:none'd until it is close enough to see, and a hidden
+     element measures 0 — wait for a real width or the orbits collapse */
+  if (!sys.clientWidth) return;
+  rendered = true;
 
   const top = repos
     .filter((r) => !r.fork)

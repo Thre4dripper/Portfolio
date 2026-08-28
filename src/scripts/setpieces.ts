@@ -312,7 +312,8 @@ function initSnake(): void {
     }
   };
   setInterval(() => {
-    if (dead || (document.getElementById('scr-snake') as HTMLElement)?.hidden) return;
+    /* don't tick while the phone screen is closed or the whole scene is culled */
+    if (dead || (document.getElementById('scr-snake') as HTMLElement)?.hidden || !cv.offsetWidth) return;
     if (pendingDir) {
       dir = pendingDir;
       pendingDir = null;
@@ -481,7 +482,9 @@ export function createProctorStarter(): () => void {
     /* the bot walks tile to tile; whatever it inspects, it sometimes flags */
     let at = 0;
     const patrol = () => {
-      if (!bot) return;
+      /* offsetWidth is 0 while the scene is culled — skip rather than teleport
+         the bot to the origin */
+      if (!bot || !wall.offsetWidth) return;
       const next = (at + 1 + Math.floor(Math.random() * (tiles.length - 1))) % tiles.length;
       at = next;
       const t = tiles[at];
@@ -647,7 +650,8 @@ function initSparklesApp(): void {
   let idle = 0;
   (function tick() {
     requestAnimationFrame(tick);
-    if (card && parseFloat(card.style.opacity || '1') < 0.05) return;
+    /* offsetWidth is 0 while the scene is culled — cheapest visibility gate */
+    if (!cv.offsetWidth || (card && parseFloat(card.style.opacity || '1') < 0.05)) return;
     if (++idle % 22 === 0) spawn(Math.random() * cv.width, Math.random() * cv.height);
     ctx.clearRect(0, 0, cv.width, cv.height);
     for (let i = sparks.length - 1; i >= 0; i--) {
@@ -690,7 +694,7 @@ function initGravityApp(): void {
   });
   (function tick() {
     requestAnimationFrame(tick);
-    if (card && parseFloat(card.style.opacity || '1') < 0.05) return;
+    if (!cv.offsetWidth || (card && parseFloat(card.style.opacity || '1') < 0.05)) return;
     ctx.clearRect(0, 0, cv.width, cv.height);
     for (const b of balls) {
       b.vy += 0.22; // gravity

@@ -98,25 +98,28 @@ const points = ALL_SKILLS.map((s, i) => {
 });
 const constH = 58 + (Math.ceil(ALL_SKILLS.length / 5) - 1) * 88 + 50;
 
+/* Horizontal fan-out is emitted as sign + magnitude so CSS can scale the whole
+   layout per breakpoint (--dxk): full on desktop, gentler on tablets where the
+   asymmetry is obvious, zero on phones. --dx itself is composed in global.css. */
 const offset = (idx: number, item: (typeof TIMELINE)[number]) => {
   if (item.type === 'fact') {
-    const mag = 'min(27vw, 310px)';
     return {
-      dx: idx % 2 ? mag : `calc(-1 * ${mag})`,
+      sign: idx % 2 ? 1 : -1,
+      mag: 'min(27vw, 310px)',
       dy: `${((idx % 3) - 1) * 55 - 20}px`,
     };
   }
   if (item.type === 'block') {
-    return { dx: 'calc(-1 * min(18vw, 200px))', dy: '-180px' };
+    return { sign: -1, mag: 'min(18vw, 200px)', dy: '-180px' };
   }
   if (item.type === 'ch') {
-    const mag = 'min(14vw, 170px)';
     return {
-      dx: idx % 2 ? `calc(-1 * ${mag})` : mag,
+      sign: idx % 2 ? -1 : 1,
+      mag: 'min(14vw, 170px)',
       dy: `${((idx % 3) - 1) * 24}px`,
     };
   }
-  return { dx: '0px', dy: '0px' };
+  return { sign: 0, mag: '0px', dy: '0px' };
 };
 
 const factRotation = (idx: number) => `${(idx % 2 ? 1 : -1) * (2 + (idx % 3))}deg`;
@@ -165,8 +168,8 @@ const satellites = (idx: number, zCam: number) => {
   <div id="world">
     {
       TIMELINE.map((item) => {
-        const { dx, dy } = offset(item.idx, item);
-        const style = `--dx:${dx};--dy:${dy}`;
+        const { sign, mag, dy } = offset(item.idx, item);
+        const style = `--dxs:${sign};--dxm:${mag};--dy:${dy}`;
         const z = -item.zCam;
 
         if (item.type === 'intro')
@@ -290,7 +293,9 @@ const satellites = (idx: number, zCam: number) => {
               <h2>Written from the lab</h2>
               {posts.length > 0 ? (
                 <div class="postcards">
-                  {posts.map((p, i) => (
+                  {/* the flight shows the three latest; the journey map's blog
+                      line and flat mode carry the full archive */}
+                  {posts.slice(0, 3).map((p, i) => (
                     <a class="postcard" href={p.link} target="_blank" rel="noopener" style={`--pr:${i % 2 ? 2.2 : -2.4}deg`}>
                       <div class="pc-top">
                         <span class="pc-date">{p.date}</span>
