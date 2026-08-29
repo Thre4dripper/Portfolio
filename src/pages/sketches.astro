@@ -98,6 +98,17 @@ const tilt = (i: number) => ((i * 137) % 7) - 3 + (i % 2 ? 0.6 : -0.4);
   .lb-x{position:fixed;top:18px;right:22px;background:none;border:none;color:var(--washi);
     font-size:34px;line-height:1;cursor:pointer;opacity:.8;z-index:61}
   .lb-x:hover{opacity:1}
+
+  /* phones: two columns of pinned pages, tighter board */
+  @media (max-width:640px){
+    .board{columns:2;column-gap:12px;padding:14px 12px;border-radius:14px}
+    .pinned{margin-bottom:12px;padding:6px 6px 3px}
+    .pin{width:10px;height:10px;top:-5px}
+    .tape{width:34px;height:12px;top:-6px;right:8px}
+    .cap{font-size:8.5px;letter-spacing:.14em;padding:4px 0 2px}
+    .lb{padding:12px}
+    .lb-x{top:8px;right:12px;font-size:30px}
+  }
 </style>
 
 <script>

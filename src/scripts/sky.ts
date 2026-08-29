@@ -7,13 +7,24 @@ const F = 620;
 const R = (n: number) => Math.random() * n;
 const GLYPHSET = 'アイウエオカキクケコ01<>{}#*+';
 
+/* Phones and low-core machines get a lighter sky: fewer particles and a
+   slightly lower-resolution canvas (upscaled by CSS). The sky redraws every
+   frame no matter what else is on screen, so it dominates the frame budget
+   on weak GPUs. */
+const LOW =
+  typeof matchMedia !== 'undefined' &&
+  (matchMedia('(pointer: coarse)').matches || (navigator.hardwareConcurrency ?? 8) <= 4);
+/** particle count: full on desktop, reduced on low-end */
+const N = (hi: number, lo: number) => (LOW ? lo : hi);
+const RES = LOW ? 0.72 : 1;
+
 export function initSky(sky: HTMLCanvasElement) {
   const sctx = sky.getContext('2d')!;
   let W = 0, H = 0, CX = 0, CY = 0;
 
   function resize() {
-    W = sky.width = innerWidth;
-    H = sky.height = innerHeight;
+    W = sky.width = Math.round(innerWidth * RES);
+    H = sky.height = Math.round(innerHeight * RES);
     CX = W / 2;
     CY = H * 0.46;
   }
@@ -24,43 +35,44 @@ export function initSky(sky: HTMLCanvasElement) {
   let mx = -9999, my = -9999;
   const bits: { x: number; y: number; vx: number; vy: number; ch: string; life: number }[] = [];
   addEventListener('pointermove', (e) => {
-    mx = e.clientX;
-    my = e.clientY;
+    /* canvas space, not CSS space — RES may shrink the backing store */
+    mx = e.clientX * RES;
+    my = e.clientY * RES;
   });
   addEventListener('pointerleave', () => { mx = -9999; my = -9999; });
 
   /* a personal swarm of fireflies that gathers at the cursor in Act I */
-  const cfire = Array.from({ length: 20 }, () => ({
+  const cfire = Array.from({ length: N(20, 12) }, () => ({
     x: R(1) * 800, y: R(1) * 600, ang: R(6.28), rad: 16 + R(52), spd: 0.015 + R(0.03),
   }));
 
   /* lattice visibility eases out while the camera is moving, back in at rest */
   let prevCamS = 0, latticeA = 0;
 
-  const stars = Array.from({ length: 300 }, () => ({
+  const stars = Array.from({ length: N(300, 130) }, () => ({
     x: (Math.random() - 0.5) * 2600,
     y: (Math.random() - 0.5) * 1700,
     off: Math.random() * FAR,
     tw: Math.random() * 6.28,
   }));
 
-  const fire = Array.from({ length: 36 }, () => ({ x: R(1), y: R(1), p: R(6.28), s: 0.2 + R(0.5) }));
-  const cols = Array.from({ length: 16 }, (_, i) => ({
+  const fire = Array.from({ length: N(36, 18) }, () => ({ x: R(1), y: R(1), p: R(6.28), s: 0.2 + R(0.5) }));
+  const cols = Array.from({ length: N(16, 8) }, (_, i) => ({
     x: i < 8 ? R(0.16) : 0.84 + R(0.16),
     y: R(1.4) - 0.4,
     spd: 0.0015 + R(0.003),
     ch: Array.from({ length: 10 }, () => GLYPHSET[Math.floor(R(GLYPHSET.length))]),
   }));
-  const sparks = Array.from({ length: 30 }, () => ({ x: R(1), y: 0.6 + R(0.5), spd: 0.002 + R(0.004), len: 6 + R(10) }));
-  const petals = Array.from({ length: 26 }, () => ({
+  const sparks = Array.from({ length: N(30, 15) }, () => ({ x: R(1), y: 0.6 + R(0.5), spd: 0.002 + R(0.004), len: 6 + R(10) }));
+  const petals = Array.from({ length: N(26, 13) }, () => ({
     x: R(1), y: R(1), r: R(6.28), vr: 0.01 + R(0.03),
     vx: -0.0006 - R(0.001), vy: 0.0008 + R(0.0012), sz: 3 + R(4), k: Math.random() < 0.5,
   }));
-  const lants = Array.from({ length: 6 }, (_, i) => ({
+  const lants = Array.from({ length: N(6, 3) }, (_, i) => ({
     x: i < 3 ? 0.04 + R(0.1) : 0.86 + R(0.1),
     y: R(1.3), spd: 0.0006 + R(0.0008), sz: 8 + R(8), p: R(6.28),
   }));
-  const dust = Array.from({ length: 42 }, () => ({
+  const dust = Array.from({ length: N(42, 20) }, () => ({
     x: R(1), y: R(1.2), spd: 0.001 + R(0.002), p: R(6.28),
     off: R(60), hold: 0, rel: 0,
   }));
@@ -149,7 +161,7 @@ export function initSky(sky: HTMLCanvasElement) {
       }
     }
     /* era 1 — the cursor gently spits binary in all directions */
-    if (eraW[1] > 0.05 && mx > -100 && bits.length < 52 && Math.random() < 0.55) {
+    if (eraW[1] > 0.05 && mx > -100 && bits.length < N(52, 26) && Math.random() < 0.55) {
       const ang = R(6.28);
       const spd = 0.35 + R(0.9);
       bits.push({

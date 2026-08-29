@@ -21,13 +21,13 @@ jobs:
   refresh:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
         with:
           version: 11
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
-          node-version: 22
+          node-version: 22.12
           cache: pnpm
       - run: pnpm install --frozen-lockfile
 
@@ -39,7 +39,7 @@ jobs:
 
       - name: sync blog / LeetCode / GitHub → src/data
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_STORY_TOKEN }}
+          GH_PAT: ${{ secrets.GH_STORY_TOKEN }}
         run: node scripts/sync-data.mjs
 
       - name: build (pure render of committed JSON — no network)

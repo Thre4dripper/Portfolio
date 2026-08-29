@@ -1,0 +1,60 @@
+version: 2
+
+# Dependabot keeps this site's dependencies fresh.
+# Two ecosystems only: the GitHub Actions that run the data workers, and the
+# npm/pnpm packages that build the site. Minor + patch bumps are grouped into
+# a single PR each week so the inbox stays quiet; majors come in alone so they
+# get read properly.
+#
+# Docs: https://docs.github.com/en/code-security/dependabot
+
+updates:
+  # ─── GitHub Actions used by the data-refresh workflow ─────────
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Asia/Kolkata"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "github-actions"
+    groups:
+      actions-minor-patch:
+        update-types: ["minor", "patch"]
+
+  # ─── npm / pnpm packages (Astro, sharp, tooling) ──────────────
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Asia/Kolkata"
+    open-pull-requests-limit: 5
+    versioning-strategy: increase
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "javascript"
+    groups:
+      # everything safe lands as one PR a week
+      minor-and-patch:
+        update-types: ["minor", "patch"]
+      # the Astro toolchain moves together — keep it in one PR
+      astro:
+        patterns:
+          - "astro"
+          - "@astrojs/*"
+    ignore:
+      # sharp ships prebuilt binaries; majors need a manual `pnpm sketches` run
+      # to confirm the image pipeline still produces identical output
+      - dependency-name: "sharp"
+        update-types: ["version-update:semver-major"]
