@@ -23,6 +23,8 @@ Forking this to build your own portfolio is encouraged — see the note in
 
 ## Getting set up
 
+Requires **Node 22.12 or newer** (Astro 7's floor) and pnpm.
+
 ```bash
 pnpm install     # pnpm, not npm — the lockfile is pnpm's
 pnpm dev         # dev server at localhost:4321
