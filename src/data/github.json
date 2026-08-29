@@ -1,5 +1,5 @@
 {
-  "syncedAt": "2026-08-28T22:21:49.116Z",
+  "syncedAt": "2026-08-29T07:59:34.692Z",
   "user": {
     "login": "Thre4dripper",
     "avatar_url": "https://avatars.githubusercontent.com/u/82382156?v=4",
@@ -12,20 +12,7 @@
       "name": "FractionalPower-Cplusplus",
       "year": 2021
     },
-    "orgs": [
-      {
-        "login": "EpicGames",
-        "avatar_url": "https://avatars.githubusercontent.com/u/6615685?v=4"
-      },
-      {
-        "login": "EnK-r-yPT",
-        "avatar_url": "https://avatars.githubusercontent.com/u/101165251?v=4"
-      },
-      {
-        "login": "BeA-Brand",
-        "avatar_url": "https://avatars.githubusercontent.com/u/112765450?v=4"
-      }
-    ],
+    "orgs": [],
     "totalStars": 69,
     "publicRepos": 76
   },
@@ -468,7 +455,7 @@
       "forks_count": 1,
       "language": null,
       "fork": false,
-      "pushed_at": "2026-08-28T10:43:06Z"
+      "pushed_at": "2026-08-29T06:30:02Z"
     },
     {
       "name": "Canvas-ParticleText-WebApp",
