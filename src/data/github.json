@@ -1,10 +1,10 @@
 {
-  "syncedAt": "2026-08-29T07:59:34.692Z",
+  "syncedAt": "2026-09-02T06:04:09.321Z",
   "user": {
     "login": "Thre4dripper",
     "avatar_url": "https://avatars.githubusercontent.com/u/82382156?v=4",
     "followers": 55,
-    "public_repos": 76
+    "public_repos": 77
   },
   "story": {
     "joinedYear": 2021,
@@ -14,7 +14,7 @@
     },
     "orgs": [],
     "totalStars": 69,
-    "publicRepos": 76
+    "publicRepos": 77
   },
   "repos": [
     {
@@ -453,9 +453,9 @@
       "description": null,
       "stargazers_count": 0,
       "forks_count": 1,
-      "language": null,
+      "language": "JavaScript",
       "fork": false,
-      "pushed_at": "2026-08-29T06:30:02Z"
+      "pushed_at": "2026-09-02T03:49:49Z"
     },
     {
       "name": "Canvas-ParticleText-WebApp",
@@ -655,7 +655,7 @@
       "forks_count": 0,
       "language": "TypeScript",
       "fork": false,
-      "pushed_at": "2026-07-10T14:58:33Z"
+      "pushed_at": "2026-08-30T17:38:56Z"
     },
     {
       "name": "StableDiffusion-WebApp",
@@ -725,7 +725,7 @@
       "forks_count": 0,
       "language": "TypeScript",
       "fork": false,
-      "pushed_at": "2026-08-24T03:56:43Z"
+      "pushed_at": "2026-08-31T03:56:42Z"
     },
     {
       "name": "Reusable-Atomic-Workflows",
@@ -745,7 +745,7 @@
       "forks_count": 0,
       "language": "Shell",
       "fork": false,
-      "pushed_at": "2026-08-27T19:41:19Z"
+      "pushed_at": "2026-08-31T06:13:23Z"
     },
     {
       "name": "tidefetch",
@@ -765,7 +765,7 @@
       "forks_count": 0,
       "language": "TypeScript",
       "fork": false,
-      "pushed_at": "2026-08-10T06:22:28Z"
+      "pushed_at": "2026-09-01T21:19:01Z"
     },
     {
       "name": "homebrew-tap",
@@ -776,6 +776,16 @@
       "language": "Ruby",
       "fork": false,
       "pushed_at": "2026-08-08T02:32:40Z"
+    },
+    {
+      "name": "Portfolio",
+      "html_url": "https://github.com/Thre4dripper/Portfolio",
+      "description": "✈️ A portfolio you fly through — five acts, twelve interactive scenes, zero framework JS. Astro + vanilla TS.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "Astro",
+      "fork": false,
+      "pushed_at": "2026-09-01T14:22:43Z"
     }
   ]
 }
