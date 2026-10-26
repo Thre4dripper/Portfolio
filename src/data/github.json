@@ -1,5 +1,5 @@
 {
-  "syncedAt": "2026-10-25T06:26:09.007Z",
+  "syncedAt": "2026-10-26T06:35:48.627Z",
   "user": {
     "login": "Thre4dripper",
     "avatar_url": "https://avatars.githubusercontent.com/u/82382156?v=4",
@@ -455,7 +455,7 @@
       "forks_count": 1,
       "language": "JavaScript",
       "fork": false,
-      "pushed_at": "2026-10-25T03:59:51Z"
+      "pushed_at": "2026-10-26T04:04:45Z"
     },
     {
       "name": "Canvas-ParticleText-WebApp",
@@ -512,9 +512,9 @@
       "html_url": "https://github.com/Thre4dripper/Computer-Networks-Mini-Projects",
       "description": "A repository for the team assignments given for socket cross platform programming.",
       "stargazers_count": 0,
-      "forks_count": 0,
+      "forks_count": 2,
       "language": "Rust",
-      "fork": true,
+      "fork": false,
       "pushed_at": "2025-10-06T06:15:11Z"
     },
     {
@@ -612,7 +612,7 @@
       "html_url": "https://github.com/Thre4dripper/Sih-2023-Backend",
       "description": null,
       "stargazers_count": 1,
-      "forks_count": 2,
+      "forks_count": 1,
       "language": "TypeScript",
       "fork": false,
       "pushed_at": "2025-03-28T16:47:47Z"
@@ -622,9 +622,9 @@
       "html_url": "https://github.com/Thre4dripper/Sih-2023-Frontend",
       "description": "Frontend for sih 2023",
       "stargazers_count": 0,
-      "forks_count": 0,
+      "forks_count": 3,
       "language": null,
-      "fork": true,
+      "fork": false,
       "pushed_at": "2023-12-24T14:49:34Z"
     },
     {
@@ -745,7 +745,7 @@
       "forks_count": 0,
       "language": "Shell",
       "fork": false,
-      "pushed_at": "2026-10-22T14:45:27Z"
+      "pushed_at": "2026-10-26T04:59:03Z"
     },
     {
       "name": "tidefetch",
@@ -785,7 +785,7 @@
       "forks_count": 0,
       "language": "Astro",
       "fork": false,
-      "pushed_at": "2026-10-24T06:06:21Z"
+      "pushed_at": "2026-10-26T00:37:44Z"
     }
   ]
 }
