@@ -1,10 +1,10 @@
 {
-  "syncedAt": "2026-10-29T07:21:58.780Z",
+  "syncedAt": "2026-10-30T07:24:21.331Z",
   "user": {
     "login": "Thre4dripper",
     "avatar_url": "https://avatars.githubusercontent.com/u/82382156?v=4",
     "followers": 55,
-    "public_repos": 77
+    "public_repos": 78
   },
   "story": {
     "joinedYear": 2021,
@@ -13,8 +13,8 @@
       "year": 2021
     },
     "orgs": [],
-    "totalStars": 72,
-    "publicRepos": 77
+    "totalStars": 73,
+    "publicRepos": 78
   },
   "repos": [
     {
@@ -455,7 +455,7 @@
       "forks_count": 1,
       "language": "JavaScript",
       "fork": false,
-      "pushed_at": "2026-10-29T05:07:18Z"
+      "pushed_at": "2026-10-30T05:05:59Z"
     },
     {
       "name": "Canvas-ParticleText-WebApp",
@@ -761,7 +761,7 @@
       "name": "Infinity-Castle-ThreeJs",
       "html_url": "https://github.com/Thre4dripper/Infinity-Castle-ThreeJs",
       "description": "🏮 An infinite, self-assembling Japanese castle in your browser. Fly through it as a crow — procedural architecture, weather and sound, zero art assets. Pure Three.js. 無限城",
-      "stargazers_count": 15,
+      "stargazers_count": 16,
       "forks_count": 0,
       "language": "TypeScript",
       "fork": false,
@@ -785,7 +785,17 @@
       "forks_count": 0,
       "language": "Astro",
       "fork": false,
-      "pushed_at": "2026-10-28T07:09:55Z"
+      "pushed_at": "2026-10-29T23:35:49Z"
+    },
+    {
+      "name": "Chronoscape-ThreeJs",
+      "html_url": "https://github.com/Thre4dripper/Chronoscape-ThreeJs",
+      "description": "An illustrated atlas of the world's cities through time. Unfold hand-drawn maps of 36 historic cities, from Thebes to Edo, turn the ages, and watch temples and palaces rise from the paper in 3D. Built with React, three.js and Blender.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "Python",
+      "fork": false,
+      "pushed_at": "2026-10-29T13:57:03Z"
     }
   ]
 }
