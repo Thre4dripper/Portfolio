@@ -703,6 +703,9 @@ button{font-family:inherit;cursor:pointer}
   color:var(--washi);background:rgba(245,239,226,.08);border:1px solid rgba(245,239,226,.3);
   border-radius:999px;padding:9px 16px;backdrop-filter:blur(4px)}
 #skip:hover{background:var(--accent);color:var(--ink);border-color:var(--accent)}
+/* boring mode is a light page — the night-sky pill would vanish into it */
+body:has(#flat.open) #skip{color:var(--ink);background:rgba(245,239,226,.85);border-color:rgba(27,27,34,.35)}
+body:has(#flat.open) #skip:hover{background:var(--accent);border-color:var(--accent)}
 
 #rail{position:fixed;right:26px;top:50%;transform:translateY(-50%);z-index:5;
   display:flex;flex-direction:column;gap:12px;align-items:center}

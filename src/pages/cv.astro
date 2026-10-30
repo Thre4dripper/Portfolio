@@ -1,0 +1,7 @@
+---
+/* Boring mode as its own route — shareable, and the target of Back/Forward. */
+import Home from '../components/Home.astro';
+import { SITE } from '../data/portfolio';
+---
+
+<Home flat title={`CV — ${SITE.title}`} />

@@ -12,8 +12,9 @@ import type { BlogPost } from '../lib/types';
 
 interface Props {
   posts: BlogPost[];
+  open?: boolean;
 }
-const { posts } = Astro.props;
+const { posts, open = false } = Astro.props;
 
 const projects: { yr: string; title: string; body: string; href?: string }[] = [
   { yr: '2023', title: 'Medusa', body: 'AI-proctored examination portal with selective many-to-many WebRTC monitoring. Smart India Hackathon 2023 winner.' },
@@ -24,7 +25,7 @@ const projects: { yr: string; title: string; body: string; href?: string }[] = [
 ];
 ---
 
-<div id="flat" role="document">
+<div id="flat" class:list={{ open }} role="document">
   <div class="flat-wrap">
     <aside class="flat-side" aria-label="Summary and navigation">
       <div class="fs-name">{SITE.name}</div>

@@ -1,34 +1,5 @@
 ---
-import Base from '../layouts/Base.astro';
-import World from '../components/World.astro';
-import Overlays from '../components/Overlays.astro';
-import FlatMode from '../components/FlatMode.astro';
-import Edges from '../components/Edges.astro';
-import posts from '../data/blog.json';
-import github from '../data/github.json';
-import leet from '../data/leetcode.json';
-
-const ghStory = github.story;
+import Home from '../components/Home.astro';
 ---
 
-<Base>
-  <canvas id="sky" aria-hidden="true"></canvas>
-
-  <World posts={posts} ghStory={ghStory} leet={leet} />
-  <Edges />
-  <Overlays />
-  <FlatMode posts={posts} />
-
-  <!-- No JS? Show the plain version, hide the flight chrome. -->
-  <noscript>
-    <style>
-      #flat { display: block; }
-      #stage, #sky, #skip, #rail, #dock, #hint2, #crow, #bubble, #bot { display: none; }
-      html, body { overflow: auto; }
-    </style>
-  </noscript>
-
-  <script>
-    import '../scripts/main';
-  </script>
-</Base>
+<Home />

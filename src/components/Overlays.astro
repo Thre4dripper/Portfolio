@@ -2,13 +2,18 @@
 /* Fixed-position UI: HUD, chapter rail, skill dock, toast, and the little
    inhabitants of the sky — rocket co-pilot, robot pet, night train, satellite. */
 import { RAIL_ITEMS, railLabel, SITE } from '../data/portfolio';
+
+interface Props {
+  flat?: boolean;
+}
+const { flat = false } = Astro.props;
 ---
 
 <div id="hud-name">
   {SITE.name.toUpperCase()}<small>FULL STACK · AI · ANDROID</small>
 </div>
 
-<button id="skip">Skip to the point →</button>
+<button id="skip">{flat ? '← Back to the flight' : 'Skip to the point →'}</button>
 
 <nav id="rail" aria-label="Chapters">
   {RAIL_ITEMS.map((it) => <button data-t={railLabel(it)} data-z={it.zCam} aria-label={railLabel(it)} />)}

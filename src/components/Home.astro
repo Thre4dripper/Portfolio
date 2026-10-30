@@ -1,0 +1,44 @@
+---
+/* The whole one-page site. Rendered by two routes so each mode has its own
+   URL: `/` opens on the flight, `/cv` opens on boring mode. main.ts keeps the
+   URL in sync when the visitor toggles, so the browser's Back button works. */
+import Base from '../layouts/Base.astro';
+import World from './World.astro';
+import Overlays from './Overlays.astro';
+import FlatMode from './FlatMode.astro';
+import Edges from './Edges.astro';
+import posts from '../data/blog.json';
+import github from '../data/github.json';
+import leet from '../data/leetcode.json';
+
+interface Props {
+  /** Server-render with boring mode already open. */
+  flat?: boolean;
+  title?: string;
+}
+const { flat = false, title } = Astro.props;
+
+const ghStory = github.story;
+---
+
+<Base title={title}>
+  <canvas id="sky" aria-hidden="true"></canvas>
+
+  <World posts={posts} ghStory={ghStory} leet={leet} />
+  <Edges />
+  <Overlays flat={flat} />
+  <FlatMode posts={posts} open={flat} />
+
+  <!-- No JS? Show the plain version, hide the flight chrome. -->
+  <noscript>
+    <style>
+      #flat { display: block; }
+      #stage, #sky, #skip, #rail, #dock, #hint2, #crow, #bubble, #bot { display: none; }
+      html, body { overflow: auto; }
+    </style>
+  </noscript>
+
+  <script>
+    import '../scripts/main';
+  </script>
+</Base>

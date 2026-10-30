@@ -247,14 +247,26 @@ const pokers = edgeGroups.map((g) => [...g.querySelectorAll<HTMLElement>('.poke'
 const journeysEl = document.querySelector('.journeys');
 
 /* ================= boring mode ================= */
+/* each mode has its own route (`/` and `/cv`, both render this page), so
+   toggling pushes history instead of reloading and Back/Forward flip modes */
 const skipBtn = document.getElementById('skip')!;
-function setFlat(open: boolean) {
+const FLAT_PATH = '/cv';
+const FLIGHT_TITLE = SITE.title;
+const FLAT_TITLE = `CV — ${SITE.title}`;
+const isFlatPath = () => /^\/cv\/?$/.test(location.pathname);
+function setFlat(open: boolean, nav?: 'push' | 'replace') {
   flat.classList.toggle('open', open);
   skipBtn.textContent = open ? '← Back to the flight' : 'Skip to the point →';
+  document.title = open ? FLAT_TITLE : FLIGHT_TITLE;
+  if (nav && open !== isFlatPath()) {
+    const url = (open ? FLAT_PATH : '/') + location.search;
+    history[nav === 'push' ? 'pushState' : 'replaceState'](null, '', url);
+  }
 }
-skipBtn.onclick = () => setFlat(!flat.classList.contains('open'));
+skipBtn.onclick = () => setFlat(!flat.classList.contains('open'), 'push');
+addEventListener('popstate', () => setFlat(isFlatPath()));
 if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  setFlat(true);
+  setFlat(true, 'replace');
   document.getElementById('rm-note')!.hidden = false;
 }
 
