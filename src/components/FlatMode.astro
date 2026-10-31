@@ -67,7 +67,7 @@ const projects: { yr: string; title: string; body: string; href?: string }[] = [
     {
       EXPERIENCE.map((job) => (
         <div class="row">
-          <b>{job.when.split(' ')[0].slice(-3)} {job.when.match(/\d{4}/)?.[0]}</b>
+          <b>{/^[A-Z][a-z]{2}$/.test(job.when.split(' ')[0]) && job.when.split(' ')[0]} {job.when.match(/\d{4}/)?.[0]}</b>
           <p>
             <strong>{job.role} · {job.org}</strong> {job.where} · {job.when}
             <span class="bullets">{job.points.map((pt) => <span class="bullet">{pt}</span>)}</span>
