@@ -5,7 +5,7 @@
  * experience, education, projects, achievements, writing, skills, contact.
  */
 import {
-  NOTES, ALL_SKILLS, SITE, EXPERIENCE, EDUCATION, ACHIEVEMENTS,
+  ALL_SKILLS, SITE, EXPERIENCE, EDUCATION, ACHIEVEMENTS,
 } from '../data/portfolio';
 import movies from '../data/movies.json';
 import type { BlogPost } from '../lib/types';
@@ -39,7 +39,6 @@ const projects: { yr: string; title: string; body: string; href?: string }[] = [
         <a href="#s-ach">Achievements</a>
         <a href="#s-writing">Writing</a>
         <a href="#s-skills">Skills</a>
-        <a href="#s-notes">Field notes</a>
         <a href="#s-int">Interests</a>
         <a href="#s-hello">Say hello</a>
       </nav>
@@ -132,9 +131,6 @@ const projects: { yr: string; title: string; body: string; href?: string }[] = [
 
     <h3 id="s-skills">Skills</h3>
     <div class="skills">{ALL_SKILLS.map((s) => <span>{s}</span>)}</div>
-
-    <h3 id="s-notes">Field notes</h3>
-    <div class="notes-list">{NOTES.map((n) => <span>{n}</span>)}</div>
 
     <h3 id="s-int">Interests</h3>
     <div class="notes-list int-links">
