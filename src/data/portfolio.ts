@@ -57,7 +57,6 @@ export type TimelineItem =
   | { type: 'block' }
   | { type: 'journeys' }
   | { type: 'blog' }
-  | { type: 'repos' }
   | { type: 'end' };
 
 export const SPACING: Record<TimelineItem['type'], number> = {
@@ -67,8 +66,7 @@ export const SPACING: Record<TimelineItem['type'], number> = {
   fact: 560,
   block: 520,
   journeys: 1300,
-  blog: 1250,
-  repos: 1500,
+  blog: 1400,
   end: 0,
 };
 
@@ -163,7 +161,6 @@ const RAW_TIMELINE: TimelineItem[] = [
   },
   { type: 'journeys' },
   { type: 'blog' },
-  { type: 'repos' },
   { type: 'end' },
 ];
 
@@ -201,7 +198,7 @@ export const ALL_SKILLS: string[] = TIMELINE.flatMap((it) => (it.type === 'ch' ?
 export const RAIL_ITEMS = TIMELINE.filter(
   (it) =>
     it.type === 'intro' || it.type === 'ch' || it.type === 'journeys' ||
-    it.type === 'blog' || it.type === 'repos' || it.type === 'end',
+    it.type === 'blog' || it.type === 'end',
 );
 
 export function railLabel(it: PositionedItem): string {
@@ -209,7 +206,6 @@ export function railLabel(it: PositionedItem): string {
     case 'ch': return `${it.yr} · ${it.t}`;
     case 'journeys': return 'Journey log';
     case 'blog': return 'Field reports';
-    case 'repos': return 'Mission control';
     case 'end': return 'Today';
     default: return 'Start';
   }

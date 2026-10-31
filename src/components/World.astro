@@ -315,25 +315,6 @@ const satellites = (idx: number, zCam: number) => {
             </section>
           );
 
-        if (item.type === 'repos')
-          return (
-            <section class="node obsv" data-z={z} data-near="1" style={style} aria-label="Live GitHub repositories">
-              <div class="bn-eyebrow">
-                <span class="live-dot" />
-                GITHUB TELEMETRY · SYNCED DAILY
-              </div>
-              <h2>Mission Control</h2>
-              <p class="obsv-sub">Real repositories in real orbits — sized by stars, colored by language, refreshed every morning by the data worker.</p>
-              <div id="orbit-sys">
-                <div class="orbit-status" id="orbit-status">establishing uplink…</div>
-              </div>
-              <div class="obsv-stats" id="gh-stats" aria-live="polite" />
-              <a class="bn-all" href={SITE.github} target="_blank" rel="noopener">
-                Full archive → github.com/{SITE.githubUser}
-              </a>
-            </section>
-          );
-
         if (item.type === 'end')
           return (
             <div class="node finale" data-z={z} data-near="1" style={style}>

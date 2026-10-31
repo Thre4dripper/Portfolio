@@ -9,7 +9,7 @@ import {
   initEditorTabs, initRackPower, initStackWidget, initQueueWidget, initGraphBFS,
   initStore, initLan, initKaiConsole,
 } from './setpieces';
-import { loadGithub, initSkillPanel } from './github';
+import { initSkillPanel } from './github';
 
 /* ================= elements ================= */
 const stage = document.getElementById('stage')!;
@@ -368,7 +368,6 @@ function frame(t: number) {
      alive by the time it fills the screen */
   TIMELINE.forEach((it) => {
     const rel = cam - it.zCam;
-    if (it.type === 'repos' && rel > -2800) loadGithub();
     if (it.type === 'journeys' && rel > -1200) journeysEl?.classList.add('lit');
     if (it.type !== 'ch') return;
     if (rel > -320) collect(it.skills);
