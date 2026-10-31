@@ -315,6 +315,14 @@ chai.addEventListener('click', () => {
   setTimeout(() => chai.classList.remove('puff'), 1800);
 });
 
+/* in-page links to the CV flip modes instead of reloading the flight */
+document.addEventListener('click', (e) => {
+  const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[data-flat]');
+  if (!a || e.metaKey || e.ctrlKey || e.shiftKey) return;
+  e.preventDefault();
+  setFlat(true, 'push');
+});
+
 /* ================= era cursors — one old-school pointer per act ================= */
 const cur = (svg: string, x: number, y: number) =>
   `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">${svg}</svg>`)}") ${x} ${y}, auto`;
