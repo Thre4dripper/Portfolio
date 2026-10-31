@@ -1109,13 +1109,14 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
   display:none;padding:64px 24px 80px;scroll-behavior:smooth;cursor:auto}
 #flat.open{display:block}
 .flat-wrap{max-width:980px;margin:0 auto;display:grid;grid-template-columns:212px minmax(0,1fr);gap:48px}
-.flat-side{position:sticky;top:8px;align-self:start}
+.flat-side{position:sticky;top:8px;align-self:start;max-height:calc(100vh - 88px);overflow:hidden auto;
+  scrollbar-width:thin}
 .fs-name{font-family:var(--font-display);font-weight:800;font-size:21px;letter-spacing:-.01em}
 .fs-role{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.2em;color:#D8492B;
   text-transform:uppercase;margin-top:5px}
 .fs-sum{font-size:12.5px;line-height:1.55;color:var(--ink-soft);margin-top:12px}
 .fs-nav{display:flex;flex-direction:column;margin-top:22px;border-left:2px solid rgba(27,27,34,.12)}
-.fs-nav a{font-size:13.5px;color:var(--ink-soft);text-decoration:none;padding:5px 13px;
+.fs-nav a{font-size:13.5px;color:var(--ink-soft);text-decoration:none;padding:4px 13px;
   border-left:2px solid transparent;margin-left:-2px;transition:color .15s,border-color .15s}
 .fs-nav a:hover{color:#D8492B;border-left-color:#D8492B}
 .fs-links{margin-top:24px;display:flex;flex-direction:column;gap:7px}
@@ -1157,9 +1158,20 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
 .flat-in .skills span,.flat-in .notes-list span{font-family:var(--font-mono);font-size:12px;
   padding:5px 12px;border:1px solid rgba(27,27,34,.3);border-radius:999px}
 #flat .rm-note{margin-top:40px;font-size:13px;color:var(--ink-soft);font-style:italic}
-.int-links a{font-family:var(--font-mono);font-size:12px;padding:6px 13px;border:1px solid rgba(27,27,34,.3);
-  border-radius:999px;color:var(--ink);text-decoration:none;transition:all .15s}
-.int-links a:hover{background:#D8492B;border-color:#D8492B;color:var(--washi)}
+/* "off the clock" list — same quiet type as the rest of the CV */
+.fs-h{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft)}
+.fs-int{margin-top:20px}
+.int-list{display:flex;flex-direction:column;gap:5px;margin-top:8px}
+.int-link{display:flex;align-items:baseline;gap:6px;padding-right:4px;font-size:13.5px;color:#D8492B;text-decoration:none}
+.int-link small{font-family:var(--font-mono);font-size:10.5px;color:var(--ink-soft);white-space:nowrap}
+.int-link::after{content:"→";margin-left:auto;font-size:12px;opacity:.55;transition:transform .15s,opacity .15s}
+.int-link:hover::after{opacity:1;transform:translateX(2px)}
+.int-link:hover{text-decoration:underline}
+.int-top{display:none;margin-top:24px}
+@media (max-width:900px){
+  .int-top{display:block}
+  .int-top .int-list{max-width:320px}
+}
 
 /* ---------- tablet ---------- */
 @media (max-width:1180px){

@@ -8,6 +8,9 @@ import {
   ALL_SKILLS, SITE, EXPERIENCE, EDUCATION, ACHIEVEMENTS,
 } from '../data/portfolio';
 import movies from '../data/movies.json';
+import games from '../data/games.json';
+import anime from '../data/anime.json';
+import sketches from '../data/sketches.json';
 import type { BlogPost } from '../lib/types';
 
 interface Props {
@@ -24,6 +27,15 @@ const projects: { yr: string; title: string; body: string; href?: string }[] = [
   { yr: '2025', title: 'Home Server Lab', body: 'Enterprise-grade self-hosted services running 24/7 on Raspberry Pi.', href: 'https://github.com/Thre4dripper/Home-Server-Lab' },
   { yr: '2026', title: 'Chronoscape', body: 'Illustrated 3D atlas of 36 historic cities through the ages, in React and three.js.', href: 'https://github.com/Thre4dripper/Chronoscape-ThreeJs' },
 ];
+
+/* the interest pages — listed in the sidebar (desktop) or under the intro (phones) */
+const gameCount = games.series.reduce((n, s) => n + s.games.length, 0) + games.singles.length;
+const interests = [
+  { href: '/sketches', title: 'Sketchbook', sub: `${sketches.length} sketches` },
+  { href: '/movies', title: 'Movie log', sub: `${movies.length} films` },
+  { href: '/games', title: 'Game shelf', sub: `${gameCount} games` },
+  { href: '/anime', title: 'Anime log', sub: `${anime.length} shows` },
+];
 ---
 
 <div id="flat" class:list={{ open }} role="document">
@@ -39,9 +51,16 @@ const projects: { yr: string; title: string; body: string; href?: string }[] = [
         <a href="#s-ach">Achievements</a>
         <a href="#s-writing">Writing</a>
         <a href="#s-skills">Skills</a>
-        <a href="#s-int">Interests</a>
         <a href="#s-hello">Say hello</a>
       </nav>
+      <div class="fs-int">
+        <div class="fs-h">Off the clock</div>
+        <div class="int-list">
+          {interests.map((it) => (
+            <a class="int-link" href={it.href}>{it.title}<small>{it.sub}</small></a>
+          ))}
+        </div>
+      </div>
       <div class="fs-links">
         <a href={SITE.github}>GitHub ↗</a>
         <a href={SITE.linkedin}>LinkedIn ↗</a>
@@ -61,6 +80,14 @@ const projects: { yr: string; title: string; body: string; href?: string }[] = [
       <a href={SITE.linkedin}>LinkedIn</a>
       <a href={SITE.blog}>Blog</a>
       <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+    </div>
+    <div class="int-top">
+      <div class="fs-h">Off the clock</div>
+      <div class="int-list">
+        {interests.map((it) => (
+          <a class="int-link" href={it.href}>{it.title}<small>{it.sub}</small></a>
+        ))}
+      </div>
     </div>
 
     <h3 id="s-exp">Experience</h3>
@@ -131,14 +158,6 @@ const projects: { yr: string; title: string; body: string; href?: string }[] = [
 
     <h3 id="s-skills">Skills</h3>
     <div class="skills">{ALL_SKILLS.map((s) => <span>{s}</span>)}</div>
-
-    <h3 id="s-int">Interests</h3>
-    <div class="notes-list int-links">
-      <a href="/sketches">🖊 the sketchbook wall →</a>
-      <a href="/movies">🎬 {movies.length} movies logged →</a>
-      <a href="/games">🎮 the game shelf →</a>
-      <a href="/anime">⛩ the anime log →</a>
-    </div>
 
     <h3 id="s-hello">Say hello</h3>
     <div class="row">
