@@ -323,6 +323,8 @@ export const SITE = {
   blog: 'https://blogs.ijlalahmad.dev',
   blogRss: 'https://blogs.ijlalahmad.dev/rss.xml',
   email: 'ijlalahmad845@gmail.com',
+  /* the PDF résumé — a public Google Drive file, opened in Drive's viewer */
+  resume: 'https://drive.google.com/file/d/10NFsbp_rXq_5zaCOfOafZnahTD7aW0Ii/view',
   location: 'New Delhi, India',
   leetcode: 'thre4dripper',
   playstore: 'https://play.google.com/store/apps/details?id=com.ByteMechanics.matscape',
