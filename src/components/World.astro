@@ -5,8 +5,10 @@
  * Horizontal/vertical offsets are emitted as --dx/--dy custom properties in
  * viewport units — the CSS equivalent of the old innerWidth math.
  */
-import { TIMELINE, ERAS, NOTES, ALL_SKILLS, GATE_CAM, SITE, LINKEDIN_MILESTONES, HACKS } from '../data/portfolio';
-import type { BlogPost, GhStory, LeetStats } from '../lib/types';
+import { TIMELINE, ERAS, NOTES, GATE_CAM, SITE, LINKEDIN_MILESTONES, HACKS, EXPERIENCE } from '../data/portfolio';
+import type { BlogPost, GhRepo, GhStory, LeetStats } from '../lib/types';
+import github from '../data/github.json';
+import sketches from '../data/sketches.json';
 
 interface Props {
   posts: BlogPost[];
@@ -86,17 +88,46 @@ const ASCII_TREE = `        (8)
        / \\    /        look like this
      (4) (7)(13)`;
 
-/** Constellation points — deterministic pseudo-random layout, height grows with the list. */
-const points = ALL_SKILLS.map((s, i) => {
-  const gx = i % 5;
-  const gy = Math.floor(i / 5);
-  return {
-    s,
-    x: 70 + gx * 125 + Math.sin(i * 12.9898) * 26,
-    y: 58 + gy * 88 + Math.cos(i * 78.233) * 20,
-  };
-});
-const constH = 58 + (Math.ceil(ALL_SKILLS.length / 5) - 1) * 88 + 50;
+/* the desk monitor's git pane: the four most recently pushed repos, newest first */
+const LANG_COLORS: Record<string, string> = {
+  TypeScript: '#3178C6', JavaScript: '#F1E05A', Kotlin: '#A97BFF', 'C++': '#F34B7D',
+  HTML: '#E34C26', CSS: '#663399', Python: '#3572A5', Shell: '#89E051', Astro: '#FF5A03',
+  Java: '#B07219', C: '#8A8A8A', Go: '#00ADD8', Rust: '#DEA584', Dart: '#00B4AB',
+};
+const recentRepos = (github.repos as GhRepo[])
+  .filter((r) => !r.fork && r.name !== github.user.login)
+  .sort((a, b) => +new Date(b.pushed_at) - +new Date(a.pushed_at))
+  .slice(0, 4)
+  .map((r) => ({
+    ...r,
+    color: (r.language && LANG_COLORS[r.language]) || '#AEB8C8',
+    date: new Date(r.pushed_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }),
+  }));
+const sketchCover = sketches[0];
+
+/* the other monitor panes: language share across own repos, latest post, current role */
+const langCounts = new Map<string, number>();
+for (const r of github.repos as GhRepo[]) {
+  if (!r.fork && r.language) langCounts.set(r.language, (langCounts.get(r.language) ?? 0) + 1);
+}
+const langTotal = [...langCounts.values()].reduce((n, c) => n + c, 0) || 1;
+const topLangs = [...langCounts.entries()]
+  .sort((a, b) => b[1] - a[1])
+  .slice(0, 4)
+  .map(([name, n]) => ({ name, pct: Math.round((n / langTotal) * 100), color: LANG_COLORS[name] ?? '#AEB8C8' }));
+const otherPct = Math.max(0, 100 - topLangs.reduce((n, l) => n + l.pct, 0));
+const latestPost = posts[0];
+/* the same current-role entry the CV leads with */
+const nowJob = EXPERIENCE[0];
+
+/* a 15-unit-wide keyboard, row by row: [width, accent?] */
+const KBD_ROWS: [number, boolean?][][] = [
+  [[1, true], ...Array(12).fill([1]), [2]],
+  [[1.5], ...Array(12).fill([1]), [1.5]],
+  [[1.75], ...Array(11).fill([1]), [2.25, true]],
+  [[2.25], ...Array(10).fill([1]), [2.75]],
+  [[1.25], [1.25], [1.25], [6.25], [1.25], [1.25], [1.25], [1.25]],
+];
 
 /* Horizontal fan-out is emitted as sign + magnitude so CSS can scale the whole
    layout per breakpoint (--dxk): full on desktop, gentler on tablets where the
@@ -317,40 +348,199 @@ const satellites = (idx: number, zCam: number) => {
 
         if (item.type === 'end')
           return (
-            <div class="node finale" data-z={z} data-near="1" style={style}>
-              <h2>
-                Everything collected,
-                <br />
-                <em>one constellation.</em>
-              </h2>
-              <p>Each skill was picked up somewhere on this flight. Here's the whole sky.</p>
-              <svg id="constellation" viewBox={`0 0 640 ${constH}`} role="img" aria-label="Constellation of skills">
-                {points.slice(0, -1).map((p, i) => (
-                  <line
-                    class="c-line"
-                    x1={p.x}
-                    y1={p.y}
-                    x2={points[i + 1].x}
-                    y2={points[i + 1].y}
-                    style={`animation-delay:${(i * 0.1).toFixed(1)}s`}
-                  />
-                ))}
-                {points.map((p, i) => (
-                  <>
-                    <circle class="c-dot" cx={p.x} cy={p.y} r="3.4" style={`animation-delay:${(0.3 + i * 0.1).toFixed(1)}s`} />
-                    <text class="c-txt" x={p.x} y={p.y - 11} text-anchor="middle" style={`animation-delay:${(0.5 + i * 0.1).toFixed(1)}s`}>
-                      {p.s}
-                    </text>
-                  </>
-                ))}
-              </svg>
+            <section class="node desk" data-z={z} data-near="1" style={style} aria-label="The desk — contact and links">
+              <div class="bn-eyebrow">
+                ACT V · NOW · <span id="desk-time">late</span> IN NEW DELHI
+              </div>
+              <h2>And this is where it all happens.</h2>
+              <p class="desk-sub">The desk. Everything on it is clickable.</p>
+
+              <div class="desk-scene">
+                <div class="desk-glow" aria-hidden="true" />
+                <div class="desk-wall-clock" aria-hidden="true"><b data-clock>--:--</b><span>IST</span></div>
+
+                {/* the lamp — click to flick it */}
+                <button class="do do-lamp" id="desk-lamp" aria-label="Toggle the desk lamp" aria-pressed="true">
+                  <svg viewBox="0 0 140 220" aria-hidden="true">
+                    <defs>
+                      <linearGradient id="lamp-beam" gradientUnits="userSpaceOnUse" x1="116" y1="87" x2="250" y2="214">
+                        <stop offset="0" stop-color="#FFD98A" stop-opacity=".5" />
+                        <stop offset="1" stop-color="#FFD98A" stop-opacity="0" />
+                      </linearGradient>
+                      <radialGradient id="lamp-pool">
+                        <stop offset="0" stop-color="#FFD98A" stop-opacity=".45" />
+                        <stop offset="1" stop-color="#FFD98A" stop-opacity="0" />
+                      </radialGradient>
+                      <radialGradient id="lamp-bulb" cx=".5" cy=".4">
+                        <stop offset="0" stop-color="#FFFBEA" />
+                        <stop offset=".6" stop-color="#FFE2A8" />
+                        <stop offset="1" stop-color="#F2A93B" />
+                      </radialGradient>
+                      <linearGradient id="lamp-metal" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0" stop-color="#5A5366" />
+                        <stop offset="1" stop-color="#2A2530" />
+                      </linearGradient>
+                    </defs>
+
+                    {/* the light it throws: a beam across the desk and a pool where it lands */}
+                    <g class="lamp-light">
+                      <polygon points="96.5,103.8 136.3,70.4 338,220 146.8,220" fill="url(#lamp-beam)" />
+                      <ellipse cx="242" cy="223" rx="110" ry="12" fill="url(#lamp-pool)" />
+                    </g>
+
+                    {/* cable trailing off the back of the desk */}
+                    <path d="M14 212 C 2 214, -6 206, -14 214" fill="none" stroke="#17141C" stroke-width="2.5" stroke-linecap="round" />
+
+                    {/* weighted base with its switch */}
+                    <ellipse cx="40" cy="219" rx="34" ry="3" fill="#0C0A10" opacity=".8" />
+                    <path d="M10 218 Q10 202 40 200 Q70 202 70 218 Z" fill="url(#lamp-metal)" />
+                    <path d="M16 206 Q40 198 64 206" fill="none" stroke="#6C6478" stroke-width="1.2" opacity=".7" />
+                    <rect class="lamp-switch" x="52" y="203" width="8" height="4" rx="1.5" />
+
+                    {/* lower arm: twin rods and a spring, base pivot → elbow */}
+                    <g stroke="#5E576B" stroke-width="3.2" stroke-linecap="round">
+                      <line x1="37" y1="200" x2="27" y2="112" />
+                      <line x1="44" y1="200" x2="34" y2="112" />
+                    </g>
+                    <path d="M45 182 l-6 -4 l7 -4 l-7 -4 l7 -4 l-7 -4 l7 -4 l-7 -4 l7 -4 l-7 -4 l6 -4" fill="none" stroke="#B3ABBF" stroke-width="1.2" />
+                    <circle cx="40" cy="200" r="5" fill="#4A4454" stroke="#1E1B24" stroke-width="1.5" />
+
+                    {/* elbow */}
+                    <circle cx="31" cy="111" r="6.5" fill="#4A4454" stroke="#1E1B24" stroke-width="1.5" />
+                    <circle cx="31" cy="111" r="2" fill="#8A8296" />
+
+                    {/* upper arm: elbow → head */}
+                    <g stroke="#5E576B" stroke-width="3.2" stroke-linecap="round">
+                      <line x1="30" y1="107" x2="90" y2="55" />
+                      <line x1="34" y1="113" x2="94" y2="61" />
+                    </g>
+                    <path d="M44 106 l2 -7 l4 6 l2 -7 l4 6 l2 -7 l4 6 l2 -7 l4 6" fill="none" stroke="#B3ABBF" stroke-width="1.2" />
+
+                    {/* the head: a cone shade aimed down and to the right */}
+                    <g transform="translate(92 58) rotate(-40)">
+                      <rect x="-5" y="-9" width="10" height="9" rx="2" fill="#3E3848" />
+                      <path d="M-9 0 L9 0 L26 38 L-26 38 Z" fill="url(#lamp-metal)" />
+                      <path d="M-6 3 L-20 33" stroke="#7A7288" stroke-width="1.5" opacity=".6" />
+                      <ellipse class="lamp-bulb" cx="0" cy="38" rx="24" ry="5.5" />
+                      <ellipse cx="0" cy="38" rx="26" ry="6" fill="none" stroke="#1E1B24" stroke-width="2" />
+                    </g>
+                    <circle cx="92" cy="58" r="4.5" fill="#4A4454" stroke="#1E1B24" stroke-width="1.5" />
+                  </svg>
+                  <span class="do-tag">lamp</span>
+                </button>
+
+                {/* the sketchbook, propped open */}
+                <a class="do do-sketch" href="/sketches">
+                  <span class="sk-page">
+                    <img src={`/sketches/thumb/${sketchCover.id}.webp`} alt="" loading="lazy" decoding="async" />
+                  </span>
+                  <span class="do-tag">sketchbook →</span>
+                </a>
+
+                {/* the widescreen — a tmux session of what he's been up to */}
+                <div class="do-monitor">
+                  <div class="mon-screen">
+                    <div class="mon-bar"><i /><i /><i /><span>ijlal@desk — tmux</span></div>
+                    <div class="mon-panes">
+                      <section class="pane pane-log">
+                        <h3>git log --all</h3>
+                        <ul class="mon-log">
+                          {recentRepos.map((r) => (
+                            <li>
+                              <a href={r.html_url} target="_blank" rel="noopener">
+                                <i style={`--lc:${r.color}`} />
+                                <b>{r.name}</b>
+                                <span data-ago={r.pushed_at}>{r.date}</span>
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      </section>
+                      <section class="pane pane-langs">
+                        <h3>languages</h3>
+                        <div class="lang-bar">
+                          {topLangs.map((l) => <i style={`--lc:${l.color};flex:${l.pct}`} />)}
+                          {otherPct > 0 && <i style={`--lc:#3A3F52;flex:${otherPct}`} />}
+                        </div>
+                        <ul class="lang-key">
+                          {topLangs.map((l) => (
+                            <li><i style={`--lc:${l.color}`} />{l.name} <span>{l.pct}%</span></li>
+                          ))}
+                        </ul>
+                      </section>
+                      <section class="pane pane-now">
+                        <h3>whoami</h3>
+                        <b>{nowJob.role}</b>
+                        <span class="now-org">@ {nowJob.org.replace(/\s*\(.*\)$/, '')} · {nowJob.when}</span>
+                        <p>{nowJob.points[0]}</p>
+                      </section>
+                      {latestPost && (
+                        <a class="pane pane-post" href={latestPost.link} target="_blank" rel="noopener">
+                          <h3>latest post · {latestPost.date}</h3>
+                          <b>{latestPost.title}</b>
+                        </a>
+                      )}
+                    </div>
+                    <a class="mon-status" href={SITE.github} target="_blank" rel="noopener">
+                      <span class="ms-win">[desk] 0:git* 1:work 2:blog</span>
+                      <span>★ {github.story.totalStars} · {github.story.publicRepos} repos · {github.user.followers} followers · since {github.story.joinedYear}</span>
+                      <span class="ms-time">IST <b data-clock>--:--</b></span>
+                    </a>
+                  </div>
+                  <a class="sticky sticky-a" href={SITE.linkedin} target="_blank" rel="noopener">LinkedIn →</a>
+                  <a class="sticky sticky-b" href={SITE.blog} target="_blank" rel="noopener">the blog →</a>
+                  <a class="sticky sticky-c" href="/cv">the boring CV →</a>
+                  <span class="mon-stand" aria-hidden="true" />
+                </div>
+
+                {/* chai — the co-pilot has opinions */}
+                <button class="do do-chai" id="desk-chai" aria-label="Poke the chai">
+                  <span class="steam" aria-hidden="true"><i /><i /><i /></span>
+                  <svg viewBox="0 0 64 56" aria-hidden="true">
+                    <path d="M6 10 h40 v22 a20 20 0 0 1 -40 0 Z" fill="#F5EFE2" />
+                    <path d="M8 14 h36" stroke="#C98A4B" stroke-width="5" />
+                    <path d="M46 16 h6 a8 8 0 0 1 0 16 h-7" fill="none" stroke="#F5EFE2" stroke-width="5" />
+                    <ellipse cx="26" cy="54" rx="26" ry="2.5" fill="#120E14" />
+                  </svg>
+                  <span class="do-tag">chai</span>
+                </button>
+
+                {/* the home server */}
+                <a class="do do-pi" href="https://github.com/Thre4dripper/Home-Server-Lab" target="_blank" rel="noopener">
+                  <span class="pi-box">
+                    <span class="pi-leds"><i /><i /><i /></span>
+                    <span class="pi-name">pi@home</span>
+                  </span>
+                  <span class="do-tag">home server →</span>
+                </a>
+
+                {/* the desk itself, then what lies on it */}
+                <span class="desk-top" aria-hidden="true" />
+                <span class="desk-mat" aria-hidden="true" />
+                <span class="desk-kbd" aria-hidden="true">
+                  <span class="kbd-keys">
+                    {KBD_ROWS.map((row) => (
+                      <span class="kbd-row">{row.map(([w, hot]) => <i class={hot ? 'hot' : undefined} style={`flex:${w}`} />)}</span>
+                    ))}
+                  </span>
+                </span>
+                <span class="desk-mouse" aria-hidden="true" />
+                <a class="do do-phone" href={`mailto:${SITE.email}`}>
+                  <span class="ph-screen">
+                    <span class="ph-note">1 new message</span>
+                    <b>Say hello ✉</b>
+                  </span>
+                  <span class="do-tag">say hello</span>
+                </a>
+              </div>
+
               <div class="contact">
                 <a class="primary" href={`mailto:${SITE.email}`}>Say hello</a>
                 <a href={SITE.github}>GitHub</a>
                 <a href={SITE.linkedin}>LinkedIn</a>
                 <a href={SITE.blog}>Blog</a>
               </div>
-            </div>
+            </section>
           );
 
         /* chapter — a washi card by default, or a themed window frame */

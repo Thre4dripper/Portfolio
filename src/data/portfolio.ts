@@ -206,7 +206,7 @@ export function railLabel(it: PositionedItem): string {
     case 'ch': return `${it.yr} · ${it.t}`;
     case 'journeys': return 'Journey log';
     case 'blog': return 'Field reports';
-    case 'end': return 'Today';
+    case 'end': return 'The desk';
     default: return 'Start';
   }
 }
@@ -291,7 +291,14 @@ export const BUDDY = {
     'the grind era. he filled whole notebooks with trees.',
     'builder mode — this is where shipping became a habit.',
     'worldmaker era. he builds places, not just pages.',
-    'final act — live telemetry ahead. he replies fast, promise.',
+    'final act — the desk is up ahead. he replies fast, promise.',
+  ],
+  /* poking the chai on the desk */
+  chai: [
+    'that’s cup four tonight. nobody is counting. i am counting.',
+    'chai, not coffee. we’ve been over this.',
+    'careful — that one’s been “cooling” since the last deploy.',
+    'refill requested. request queued behind three migrations.',
   ],
 };
 

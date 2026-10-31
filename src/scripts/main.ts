@@ -270,6 +270,51 @@ if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
   document.getElementById('rm-note')!.hidden = false;
 }
 
+/* ================= the desk (finale) ================= */
+const desk = document.querySelector('.desk')!;
+/* the clocks and eyebrow keep his time, not the visitor's */
+const deskClocks = document.querySelectorAll<HTMLElement>('[data-clock]');
+const deskTime = document.getElementById('desk-time')!;
+function tickDesk() {
+  const now = new Date();
+  const hhmm = now.toLocaleTimeString('en-GB', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit' });
+  deskClocks.forEach((c) => (c.textContent = hhmm));
+  const h = +now.toLocaleString('en-GB', { timeZone: 'Asia/Kolkata', hour: 'numeric', hour12: false });
+  deskTime.textContent =
+    h < 5 ? 'way past midnight' : h < 12 ? 'morning' : h < 17 ? 'afternoon' : h < 21 ? 'evening' : 'late night';
+}
+tickDesk();
+setInterval(tickDesk, 30_000);
+
+/* the monitor's push dates read better as "2d ago" — the data syncs daily */
+document.querySelectorAll<HTMLElement>('.mon-log [data-ago]').forEach((el) => {
+  const days = Math.floor((Date.now() - Date.parse(el.dataset.ago!)) / 864e5);
+  el.textContent = days <= 0 ? 'today' : days === 1 ? 'yesterday' : days < 30 ? `${days}d ago` : el.textContent;
+});
+
+const lamp = document.getElementById('desk-lamp')!;
+lamp.addEventListener('click', () => {
+  const dark = desk.classList.toggle('dark');
+  lamp.setAttribute('aria-pressed', String(!dark));
+});
+
+/* someone is always typing — but only while the desk is on screen */
+const keys = [...document.querySelectorAll<HTMLElement>('.kbd-keys i')];
+setInterval(() => {
+  if (!desk.classList.contains('on')) return;
+  const k = keys[(Math.random() * keys.length) | 0];
+  k.classList.add('down');
+  setTimeout(() => k.classList.remove('down'), 120);
+}, 160);
+
+const chai = document.getElementById('desk-chai')!;
+let chaiIdx = 0;
+chai.addEventListener('click', () => {
+  say(BUDDY.chai[chaiIdx++ % BUDDY.chai.length], 3200);
+  chai.classList.add('puff');
+  setTimeout(() => chai.classList.remove('puff'), 1800);
+});
+
 /* ================= era cursors — one old-school pointer per act ================= */
 const cur = (svg: string, x: number, y: number) =>
   `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">${svg}</svg>`)}") ${x} ${y}, auto`;
@@ -295,7 +340,6 @@ const MAX_BLUR = coarse || (navigator.hardwareConcurrency ?? 8) <= 4 ? 3.5 : 6;
 
 /* ================= main loop ================= */
 const hint2 = document.getElementById('hint2')!;
-const finale = document.querySelector('.finale')!;
 let litDone = false;
 
 function frame(t: number) {
@@ -387,7 +431,7 @@ function frame(t: number) {
   }
   if (!litDone && cam > MAXZ - 600) {
     litDone = true;
-    finale.classList.add('lit');
+    desk.classList.add('lit');
   }
 
   /* rocket motion */

@@ -656,20 +656,207 @@ button{font-family:inherit;cursor:pointer}
   animation:blink 2.2s infinite}
 @keyframes blink{0%,92%,100%{opacity:1}96%{opacity:.25}}
 
-/* ---------- finale ---------- */
-.finale{width:min(92vw,720px);text-align:center}
-.finale h2{font-family:var(--font-display);font-weight:800;font-size:clamp(30px,5.4vw,52px);letter-spacing:-.02em}
-.finale h2 em{font-style:normal;color:var(--accent)}
-.finale p{color:var(--moon);margin-top:12px;font-size:16px}
-/* the constellation gains a row per five skills, so it has to be capped by
-   viewport height or the finale's text and contact links fall off screen */
-.finale svg{width:100%;max-width:640px;height:auto;max-height:52vh;margin-top:10px}
-.finale .c-line{stroke:rgba(174,184,200,.28);stroke-width:1;stroke-dasharray:200;stroke-dashoffset:200}
-.finale .c-dot{fill:var(--accent);opacity:0}
-.finale .c-txt{fill:var(--moon);font-family:var(--font-mono);font-size:10.5px;opacity:0}
-.finale.lit .c-line{animation:draw 1.4s ease forwards}
-.finale.lit .c-dot{animation:pop .5s ease forwards}
-.finale.lit .c-txt{animation:fadein .8s ease forwards}
+/* ---------- finale: the midnight desk ----------
+   Drawn front-on: everything stands on one desk line, the keyboard and phone
+   lie on the surface in front. Object positions are % of the scene, so the
+   whole desk scales as one picture; the phone layout re-places them below. */
+.desk{width:min(94vw,860px,calc((100vh - 250px) * 1.78));text-align:center}
+.desk h2{font-family:var(--font-display);font-weight:800;font-size:clamp(24px,4vw,40px);
+  letter-spacing:-.01em;margin:6px 0 2px}
+.desk-sub{color:var(--moon);font-size:14.5px}
+.desk .bn-eyebrow{display:block;text-wrap:balance}
+.desk-scene{position:relative;width:100%;aspect-ratio:16/9;margin-top:14px;text-align:left;
+  --line:74%}
+.desk-scene>*{position:absolute}
+.desk-glow{inset:-25% -10% -5% -25%;pointer-events:none;opacity:0;transition:opacity .5s;
+  background:radial-gradient(closest-side at 30% 42%,rgba(255,198,110,.3),rgba(255,198,110,.1) 55%,transparent)}
+.desk.lit .desk-glow{opacity:1}
+.desk.dark .desk-glow{opacity:0}
+.desk.dark :is(.do-lamp,.do-sketch,.do-chai,.desk-top,.desk-mat,.desk-kbd,.desk-mouse,.sticky){filter:brightness(.5)}
+.desk-scene :is(.do-lamp,.do-sketch,.do-chai,.desk-top,.desk-mat,.desk-kbd,.desk-mouse,.sticky){transition:filter .4s}
+
+/* every object: a link or button with a label that shows on hover/focus */
+.do{display:block;padding:0;border:0;background:none;color:inherit;text-decoration:none;cursor:pointer;
+  transition:transform .25s}
+.do:hover,.do:focus-visible{transform:translateY(-4px)}
+.do-tag{position:absolute;left:50%;bottom:calc(100% + 6px);transform:translateX(-50%);white-space:nowrap;
+  font-family:var(--font-mono);font-size:10.5px;letter-spacing:.08em;color:var(--ink);background:var(--accent);
+  padding:3px 8px;border-radius:999px;opacity:0;transition:opacity .2s;pointer-events:none}
+.do:hover .do-tag,.do:focus-visible .do-tag{opacity:1}
+@media (pointer:coarse){.do-tag{opacity:.92;font-size:9px;padding:2px 6px}}
+
+.desk-wall-clock{right:3%;top:4%;display:flex;align-items:baseline;gap:5px;font-family:var(--font-mono);
+  color:#FF6B5B;background:#120E14;border:1px solid rgba(245,239,226,.12);border-radius:6px;padding:4px 9px}
+.desk-wall-clock b{font-size:15px;font-weight:600;letter-spacing:.06em;text-shadow:0 0 8px rgba(255,107,91,.6)}
+.desk-wall-clock span{font-size:9px;color:var(--moon)}
+
+/* above the sketchbook, so the beam falls across it */
+.do-lamp{z-index:1;left:0;bottom:calc(100% - var(--line));width:12.5%}
+.do-lamp:hover,.do-lamp:focus-visible{transform:none}
+.do-lamp svg{display:block;width:100%;height:auto;overflow:visible}
+.lamp-light{pointer-events:none;opacity:0;transition:opacity .35s}
+/* it flickers on when you arrive, and again every time it's switched back on */
+.desk.lit:not(.dark) .lamp-light{animation:lampon .7s ease-out both}
+@keyframes lampon{0%{opacity:0}12%{opacity:.9}20%{opacity:.15}34%{opacity:1}44%{opacity:.4}100%{opacity:1}}
+.lamp-bulb{fill:url(#lamp-bulb);filter:drop-shadow(0 0 8px #FFC66E);transition:filter .3s}
+.desk.dark .lamp-bulb{fill:#4A4250;filter:none}
+.lamp-switch{fill:var(--accent);transition:fill .2s}
+.do-lamp:hover .lamp-switch,.do-lamp:focus-visible .lamp-switch{fill:#FFFBEA;filter:drop-shadow(0 0 3px var(--accent))}
+.desk.dark .lamp-switch{fill:#4A4250}
+.do-lamp:active .lamp-switch{transform:translateY(1px)}
+
+.do-sketch{left:12.5%;bottom:calc(100% - var(--line));width:10.5%;transform-origin:50% 100%;rotate:-6deg}
+.sk-page{display:block;aspect-ratio:1400/1978;background:var(--washi);padding:6%;
+  box-shadow:4px 0 0 #D9CFBA,8px 2px 0 #BFB49D,0 14px 30px rgba(0,0,0,.5)}
+.sk-page img{display:block;width:100%;height:100%;object-fit:cover;mix-blend-mode:multiply}
+
+.do-monitor{left:24.5%;width:51%;top:9%;bottom:calc(100% - var(--line));display:flex;flex-direction:column;
+  align-items:center;container-type:inline-size}
+.mon-screen{position:relative;flex:1;min-height:0;width:100%;display:flex;flex-direction:column;background:#06080F;
+  border:clamp(5px,1.6cqw,10px) solid #1C1A22;border-bottom-width:clamp(9px,3cqw,18px);border-radius:10px;overflow:hidden;
+  box-shadow:0 0 0 1px rgba(245,239,226,.1),0 0 60px rgba(127,180,255,.16),0 22px 50px rgba(0,0,0,.55)}
+/* the bezel's little power light */
+.mon-screen::after{content:"";position:absolute;right:3%;bottom:calc(-1 * clamp(6px,2cqw,12px));width:4px;height:4px;
+  border-radius:50%;background:#7DFFB0;box-shadow:0 0 6px #7DFFB0}
+.mon-stand{position:relative;width:14%;height:clamp(12px,6cqw,34px);background:linear-gradient(#2A2530,#1A1720);
+  clip-path:polygon(40% 0,60% 0,66% 76%,100% 80%,100% 100%,0 100%,0 80%,34% 76%)}
+.mon-bar{display:flex;align-items:center;gap:5px;padding:5px 9px;background:#141826;
+  font-family:var(--font-mono);font-size:clamp(8px,1.9cqw,10.5px);color:var(--moon)}
+.mon-bar i{width:7px;height:7px;border-radius:50%;background:#3A3F52}
+.mon-bar i:first-child{background:#FF5F57}
+.mon-bar span{margin:0 auto;padding-right:30px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* tmux panes: git log down the left, three small panes stacked on the right */
+.mon-panes{flex:1;min-height:0;display:grid;grid-template-columns:1.35fr 1fr;grid-template-rows:auto auto 1fr;
+  gap:1px;background:#1A2032;font-family:var(--font-mono);font-size:clamp(8px,2.05cqw,11.5px);color:#C9D3E6}
+.pane{background:#06080F;padding:6px 9px;min-width:0;min-height:0;overflow:hidden;opacity:0}
+.desk.lit .pane{animation:fadein .45s ease forwards}
+.desk.lit .pane-langs{animation-delay:.3s}
+.desk.lit .pane-now{animation-delay:.55s}
+.desk.lit .pane-post{animation-delay:.8s}
+.pane h3{font-size:.82em;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:#56627A;margin:0 0 5px}
+.pane h3::before{content:"── "}
+.pane-log{grid-row:1/4;display:flex;flex-direction:column}
+.mon-log{list-style:none;margin:0;padding:0;flex:1;display:flex;flex-direction:column;justify-content:space-around}
+.mon-log a{display:flex;align-items:center;gap:7px;padding:4px 5px;border-radius:5px;text-decoration:none;color:inherit}
+.mon-log a:hover,.mon-log a:focus-visible{background:rgba(127,180,255,.12);color:#fff}
+.mon-log i,.lang-key i{flex:none;width:7px;height:7px;border-radius:50%;background:var(--lc)}
+.mon-log b{font-weight:500;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mon-log span{flex:none;color:#6E7A92;font-size:.88em}
+.lang-bar{display:flex;height:7px;border-radius:4px;overflow:hidden;gap:1px}
+.lang-bar i{background:var(--lc)}
+.lang-key{list-style:none;margin:6px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:3px 8px;font-size:.88em}
+.lang-key li{display:flex;align-items:center;gap:5px;white-space:nowrap;overflow:hidden}
+.lang-key span{color:#6E7A92}
+.pane-now b{display:block;font-weight:600;color:var(--accent)}
+.now-org{display:block;color:#6E7A92;font-size:.88em;margin-top:1px}
+.pane-now p{margin-top:4px;line-height:1.4;font-size:.9em;display:-webkit-box;-webkit-box-orient:vertical;
+  -webkit-line-clamp:2;overflow:hidden}
+.pane-post{display:block;text-decoration:none;color:inherit}
+.pane-post b{font-weight:500;line-height:1.4;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
+.pane-post:hover b,.pane-post:focus-visible b{color:#fff;text-decoration:underline}
+/* the tmux status line, in the era accent */
+.mon-status{display:flex;align-items:center;gap:10px;padding:3px 8px;background:var(--accent);color:var(--ink);
+  text-decoration:none;font-family:var(--font-mono);font-size:clamp(7.5px,1.75cqw,10px);white-space:nowrap;overflow:hidden}
+.mon-status span:nth-child(2){flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;text-align:center}
+.mon-status:hover span:nth-child(2){text-decoration:underline}
+.ms-win{font-weight:600}
+
+/* post-its stuck to the bezel */
+.sticky{position:absolute;z-index:1;font-family:var(--font-mono);font-size:clamp(9px,2.7cqw,11.5px);font-weight:600;
+  color:#3A2A10;background:#FFE58A;padding:6px 9px 8px;text-decoration:none;white-space:nowrap;
+  box-shadow:0 6px 14px rgba(0,0,0,.4);transition:transform .2s}
+.sticky:hover,.sticky:focus-visible{transform:rotate(0deg) scale(1.08)}
+.sticky-a{left:-6%;top:-4%;rotate:-7deg}
+.sticky-b{right:-5%;top:-6%;rotate:6deg;background:#FFB8C9}
+.sticky-c{right:30%;top:-7%;rotate:-3deg;background:#B8F0D8}
+
+.do-chai{left:78%;bottom:calc(100% - var(--line));width:7.5%}
+.do-chai svg{display:block;width:100%;height:auto;overflow:visible}
+.steam{position:absolute;left:8%;right:28%;bottom:92%;height:120%;display:flex;justify-content:space-around;pointer-events:none}
+.steam i{width:3px;height:100%;border-radius:3px;opacity:0;
+  background:linear-gradient(transparent,rgba(245,239,226,.55),transparent);animation:steam 3.2s ease-in-out infinite}
+.steam i:nth-child(2){animation-delay:1s}
+.steam i:nth-child(3){animation-delay:2.1s}
+@keyframes steam{0%{opacity:0;transform:translateY(30%) scaleX(1)}40%{opacity:.9}
+  100%{opacity:0;transform:translateY(-30%) translateX(4px) scaleX(2.2)}}
+.do-chai.puff .steam i{animation-duration:.9s}
+
+.do-pi{left:87.5%;bottom:calc(100% - var(--line));width:10.5%}
+.pi-box{display:flex;flex-direction:column;justify-content:space-between;aspect-ratio:1.5;padding:12% 10%;
+  background:linear-gradient(#1F7A4D,#145C39);border-radius:5px;border-top:3px solid #2C9C64;
+  box-shadow:0 10px 24px rgba(0,0,0,.45)}
+.pi-leds{display:flex;gap:5px}
+.pi-leds i{width:6px;height:6px;border-radius:50%;background:#FF5B5B;box-shadow:0 0 6px #FF5B5B;
+  animation:blink 1.4s infinite}
+.pi-leds i:nth-child(2){background:#7DFFB0;box-shadow:0 0 6px #7DFFB0;animation-duration:.7s}
+.pi-leds i:nth-child(3){background:#7FB4FF;box-shadow:0 0 6px #7FB4FF;animation-duration:2.3s}
+.pi-name{font-family:var(--font-mono);font-size:9px;color:rgba(245,239,226,.8)}
+
+.desk-top{left:-3%;right:-3%;top:var(--line);bottom:0;border-radius:4px 4px 10px 10px;
+  background:linear-gradient(#5A3A26 0 3%,#3E2719 3% 80%,#24160E 80%);
+  box-shadow:0 30px 60px rgba(0,0,0,.5)}
+/* desk mat, keyboard and mouse lie flat — tilted back so they read as lying down */
+.desk-mat{left:27%;width:52%;top:calc(var(--line) + 3%);height:17%;border-radius:10px;
+  background:#16131B;box-shadow:inset 0 0 0 2px #16131B,inset 0 0 0 3px rgba(255,198,110,.25),0 4px 10px rgba(0,0,0,.35);
+  transform:perspective(700px) rotateX(38deg);transform-origin:50% 100%}
+.desk-kbd{left:30.5%;width:34%;top:calc(var(--line) + 4.5%);height:14%;padding:.6% .8%;border-radius:8px;
+  background:linear-gradient(#34303C,#24212B);
+  box-shadow:0 2px 0 #3E3947 inset,0 5px 0 #15131A,0 10px 16px rgba(0,0,0,.45),0 0 18px -4px var(--accent);
+  transform:perspective(700px) rotateX(38deg);transform-origin:50% 100%}
+.kbd-keys{display:flex;flex-direction:column;gap:5%;height:100%}
+.kbd-row{flex:1;display:flex;gap:1.1%}
+.kbd-row i{border-radius:2px;background:linear-gradient(#4A4554,#38343F);box-shadow:0 1.5px 0 #1A1820;
+  transition:transform .08s,background .08s}
+.kbd-row i.hot{background:linear-gradient(var(--accent),var(--accent-deep))}
+.kbd-row i.down{transform:translateY(1px);background:var(--accent);box-shadow:0 0 6px var(--accent)}
+.desk-mouse{left:68.5%;width:3.6%;top:calc(var(--line) + 6.5%);aspect-ratio:.62;
+  border-radius:50% 50% 46% 46% / 58% 58% 42% 42%;background:linear-gradient(105deg,#46414F,#2A2630 70%);
+  box-shadow:0 4px 8px rgba(0,0,0,.5),0 0 12px -3px var(--accent);
+  transform:perspective(700px) rotateX(30deg);transform-origin:50% 100%}
+.desk-mouse::before{content:"";position:absolute;left:50%;top:0;height:38%;width:1px;background:#17151C}
+.desk-mouse::after{content:"";position:absolute;left:50%;top:13%;width:16%;height:16%;translate:-50% 0;
+  border-radius:3px;background:var(--accent)}
+.do-phone{left:8%;top:calc(var(--line) + 5%);width:15%;rotate:6deg}
+.ph-screen{display:flex;flex-direction:column;justify-content:center;gap:2px;aspect-ratio:2.1;padding:0 10%;
+  background:#0D1424;border:4px solid #18161D;border-radius:9px;text-align:left;
+  box-shadow:0 0 22px rgba(255,198,110,.35),0 8px 18px rgba(0,0,0,.5);animation:buzz 6s ease-in-out infinite}
+.ph-note{font-family:var(--font-mono);font-size:8.5px;color:var(--moon)}
+.ph-screen b{font-family:var(--font-display);font-size:clamp(11px,1.6vw,15px);color:var(--accent)}
+.do-phone:hover .ph-screen{animation:none;background:var(--accent)}
+.do-phone:hover .ph-screen b,.do-phone:hover .ph-note{color:var(--ink)}
+@keyframes buzz{0%,88%,100%{transform:none}90%,94%,98%{transform:translateX(-2px)}92%,96%{transform:translateX(2px)}}
+
+.desk .contact{margin-top:18px}
+/* the skill dock has said its piece by now — it would sit on the desk's corner */
+#dock{transition:opacity .4s}
+body:has(.desk.on) #dock{opacity:0;pointer-events:none}
+/* phones: the widescreen spans the top, keyboard and mouse on the mat below
+   it, then a row of sketchbook, chai, phone and Pi; lamp and clock retire */
+@media (max-width:640px){
+  .desk{width:min(88vw,420px)}
+  .desk-scene{aspect-ratio:1/1.3;--line:50%}
+  .do-lamp,.desk-wall-clock{display:none}
+  .desk-glow{opacity:1;background:radial-gradient(ellipse 60% 40% at 50% 25%,rgba(255,198,110,.22),transparent 75%)}
+  .do-monitor{left:0;width:100%;top:3%}
+  .mon-panes{grid-template-columns:1.2fr 1fr;grid-template-rows:auto 1fr}
+  .pane-log{grid-row:1/3}
+  .pane-post,.ms-win,.mon-log li:nth-child(4){display:none}
+  .lang-key{grid-template-columns:1fr}
+  .lang-key li:nth-child(n+4){display:none}
+  .sticky-a{left:2%;top:-5%}
+  .sticky-b{right:2%;top:-5%}
+  .desk-mat{left:2%;width:96%;top:calc(var(--line) + 3%);height:15%}
+  .desk-kbd{left:6%;width:70%;top:calc(var(--line) + 4%);height:12.5%}
+  .desk-mouse{left:82%;width:7.5%;top:calc(var(--line) + 5.5%)}
+  .do-sketch,.do-chai,.do-phone,.do-pi{z-index:1;bottom:auto}
+  .do-sketch{left:4%;top:calc(var(--line) + 23%);width:15%;rotate:-9deg}
+  .do-chai{left:24%;top:calc(var(--line) + 30%);width:12%}
+  .do-phone{left:41%;top:calc(var(--line) + 27%);width:36%;rotate:-4deg}
+  .do-pi{left:81%;top:calc(var(--line) + 29%);width:16%}
+  .pi-name{display:none}
+  .ph-screen b{font-size:14px}
+}
 @keyframes draw{to{stroke-dashoffset:0}}
 @keyframes pop{0%{opacity:0;transform:scale(.2)}70%{transform:scale(1.5)}100%{opacity:1;transform:scale(1)}}
 @keyframes fadein{to{opacity:1}}
@@ -1056,13 +1243,8 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
   #skillpanel{top:auto;bottom:0;left:0;right:0;width:auto;max-height:52vh;overflow-y:auto;
     transform:none;border-radius:16px 16px 0 0;border-left:none;border-top:5px solid var(--accent-deep);
     animation:sheetup .3s cubic-bezier(.2,.9,.3,1.05)}
-  /* the constellation grows a row per five skills — cap it so the finale's
-     text and contact links stay on screen */
-  .finale{width:min(92vw,420px)}
-  .finale h2{font-size:26px}
-  .finale p{font-size:14px;margin-top:8px}
-  .finale svg{max-height:38vh;margin-top:6px}
-  .finale .c-txt{font-size:9px}
+  .desk h2{font-size:24px}
+  .desk-sub{font-size:13px}
   .contact{gap:8px;margin-top:16px}
   .contact a{font-size:12px;padding:9px 15px}
   .jmap{min-width:660px} /* let the transit map scroll rather than crush */
@@ -1094,8 +1276,8 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
   .agent-log{gap:6px;margin-top:8px}
   .agent-log .msg{font-size:11px;padding:6px 10px;line-height:1.45}
   #dock .tags{max-height:26px}
-  .finale svg{max-height:30vh}
-  .finale h2{font-size:22px}
+  .desk h2{font-size:20px}
+  .desk-sub{display:none}
   /* two reports is the most that fits; the rest are one tap away */
   .postcards .postcard:nth-child(n+3){display:none}
   .postcard{padding:10px 12px 9px}
@@ -1108,15 +1290,17 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
   #dock,#hint2{display:none}
   #buddy{width:36px;bottom:58px}
   #bubble{top:52px;max-width:min(70vw,280px)}
-  /* landscape has almost no vertical room: trim the finale to its essentials */
-  .finale svg{max-height:26vh}
-  .finale h2{font-size:19px}
-  .finale p{display:none}
+  /* landscape has almost no vertical room: trim the desk to its essentials */
+  .desk{width:min(80vw,calc((100vh - 130px) * 1.78))}
+  .desk .bn-eyebrow,.desk-sub{display:none}
+  .desk h2{font-size:17px}
+  .desk-scene{margin-top:6px}
+  .desk .contact{margin-top:8px}
   .card p{font-size:12.5px}
   .minios{min-height:250px}
   /* nothing fits in 320px of height — let a card scroll inside itself rather
      than run off both edges (pan-y so the flight drag still works elsewhere) */
   /* the tall scenes aren't .card, so they need the same guard */
-  .card,.blognode,.journeys,.finale{padding:12px 14px 10px;max-height:92vh;
+  .card,.blognode,.journeys{padding:12px 14px 10px;max-height:92vh;
     overflow-y:auto;touch-action:pan-y}
 }
