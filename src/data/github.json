@@ -1,10 +1,10 @@
 {
-  "syncedAt": "2026-09-29T07:07:38.429Z",
+  "syncedAt": "2026-11-01T07:44:53.506Z",
   "user": {
     "login": "Thre4dripper",
     "avatar_url": "https://avatars.githubusercontent.com/u/82382156?v=4",
     "followers": 55,
-    "public_repos": 77
+    "public_repos": 78
   },
   "story": {
     "joinedYear": 2021,
@@ -13,8 +13,8 @@
       "year": 2021
     },
     "orgs": [],
-    "totalStars": 70,
-    "publicRepos": 77
+    "totalStars": 73,
+    "publicRepos": 78
   },
   "repos": [
     {
@@ -295,7 +295,7 @@
       "forks_count": 0,
       "language": "Java",
       "fork": false,
-      "pushed_at": "2026-09-15T04:19:40Z"
+      "pushed_at": "2026-10-15T04:03:12Z"
     },
     {
       "name": "SpiritLevel-AndroidApp",
@@ -455,7 +455,7 @@
       "forks_count": 1,
       "language": "JavaScript",
       "fork": false,
-      "pushed_at": "2026-09-29T05:07:36Z"
+      "pushed_at": "2026-11-01T05:19:21Z"
     },
     {
       "name": "Canvas-ParticleText-WebApp",
@@ -512,9 +512,9 @@
       "html_url": "https://github.com/Thre4dripper/Computer-Networks-Mini-Projects",
       "description": "A repository for the team assignments given for socket cross platform programming.",
       "stargazers_count": 0,
-      "forks_count": 0,
+      "forks_count": 2,
       "language": "Rust",
-      "fork": true,
+      "fork": false,
       "pushed_at": "2025-10-06T06:15:11Z"
     },
     {
@@ -612,7 +612,7 @@
       "html_url": "https://github.com/Thre4dripper/Sih-2023-Backend",
       "description": null,
       "stargazers_count": 1,
-      "forks_count": 2,
+      "forks_count": 1,
       "language": "TypeScript",
       "fork": false,
       "pushed_at": "2025-03-28T16:47:47Z"
@@ -622,9 +622,9 @@
       "html_url": "https://github.com/Thre4dripper/Sih-2023-Frontend",
       "description": "Frontend for sih 2023",
       "stargazers_count": 0,
-      "forks_count": 0,
+      "forks_count": 3,
       "language": null,
-      "fork": true,
+      "fork": false,
       "pushed_at": "2023-12-24T14:49:34Z"
     },
     {
@@ -635,7 +635,7 @@
       "forks_count": 5,
       "language": "TypeScript",
       "fork": false,
-      "pushed_at": "2026-09-25T05:47:22Z"
+      "pushed_at": "2026-10-27T09:09:37Z"
     },
     {
       "name": "express-master-controller",
@@ -725,7 +725,7 @@
       "forks_count": 0,
       "language": "TypeScript",
       "fork": false,
-      "pushed_at": "2026-09-28T03:56:02Z"
+      "pushed_at": "2026-10-12T10:04:49Z"
     },
     {
       "name": "Reusable-Atomic-Workflows",
@@ -741,31 +741,31 @@
       "name": "Home-Server-Lab",
       "html_url": "https://github.com/Thre4dripper/Home-Server-Lab",
       "description": "🏠 A comprehensive collection of self-hosted services for home labs - featuring enterprise-grade applications optimized for Raspberry Pi and single-board computers. Deploy your own private cloud with Docker containers for development, media, file sharing, monitoring, and automation.",
-      "stargazers_count": 2,
+      "stargazers_count": 3,
       "forks_count": 0,
       "language": "Shell",
       "fork": false,
-      "pushed_at": "2026-09-28T05:40:01Z"
+      "pushed_at": "2026-10-28T13:28:26Z"
     },
     {
       "name": "tidefetch",
       "html_url": "https://github.com/Thre4dripper/tidefetch",
       "description": "Tidefetch is a keyboard-first terminal UI for the aria2 download engine, built for people who live in a shell. The same binary also serves a self-hosted web UI, so headless servers and homelabs get a browser dashboard on demand.",
-      "stargazers_count": 1,
+      "stargazers_count": 2,
       "forks_count": 0,
       "language": "Go",
       "fork": false,
-      "pushed_at": "2026-09-27T18:53:21Z"
+      "pushed_at": "2026-10-18T17:28:37Z"
     },
     {
       "name": "Infinity-Castle-ThreeJs",
       "html_url": "https://github.com/Thre4dripper/Infinity-Castle-ThreeJs",
       "description": "🏮 An infinite, self-assembling Japanese castle in your browser. Fly through it as a crow — procedural architecture, weather and sound, zero art assets. Pure Three.js. 無限城",
-      "stargazers_count": 15,
+      "stargazers_count": 16,
       "forks_count": 0,
       "language": "TypeScript",
       "fork": false,
-      "pushed_at": "2026-09-28T06:17:43Z"
+      "pushed_at": "2026-10-20T21:49:57Z"
     },
     {
       "name": "homebrew-tap",
@@ -775,7 +775,7 @@
       "forks_count": 0,
       "language": "Ruby",
       "fork": false,
-      "pushed_at": "2026-09-27T18:40:40Z"
+      "pushed_at": "2026-10-03T02:32:42Z"
     },
     {
       "name": "Portfolio",
@@ -785,7 +785,17 @@
       "forks_count": 0,
       "language": "Astro",
       "fork": false,
-      "pushed_at": "2026-09-28T07:10:29Z"
+      "pushed_at": "2026-10-31T08:54:44Z"
+    },
+    {
+      "name": "Chronoscape-ThreeJs",
+      "html_url": "https://github.com/Thre4dripper/Chronoscape-ThreeJs",
+      "description": "An illustrated atlas of the world's cities through time. Unfold hand-drawn maps of 36 historic cities, from Thebes to Edo, turn the ages, and watch temples and palaces rise from the paper in 3D. Built with React, three.js and Blender.",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "Python",
+      "fork": false,
+      "pushed_at": "2026-10-31T13:28:39Z"
     }
   ]
 }

@@ -57,7 +57,6 @@ export type TimelineItem =
   | { type: 'block' }
   | { type: 'journeys' }
   | { type: 'blog' }
-  | { type: 'repos' }
   | { type: 'end' };
 
 export const SPACING: Record<TimelineItem['type'], number> = {
@@ -67,8 +66,7 @@ export const SPACING: Record<TimelineItem['type'], number> = {
   fact: 560,
   block: 520,
   journeys: 1300,
-  blog: 1250,
-  repos: 1500,
+  blog: 1400,
   end: 0,
 };
 
@@ -163,7 +161,6 @@ const RAW_TIMELINE: TimelineItem[] = [
   },
   { type: 'journeys' },
   { type: 'blog' },
-  { type: 'repos' },
   { type: 'end' },
 ];
 
@@ -201,7 +198,7 @@ export const ALL_SKILLS: string[] = TIMELINE.flatMap((it) => (it.type === 'ch' ?
 export const RAIL_ITEMS = TIMELINE.filter(
   (it) =>
     it.type === 'intro' || it.type === 'ch' || it.type === 'journeys' ||
-    it.type === 'blog' || it.type === 'repos' || it.type === 'end',
+    it.type === 'blog' || it.type === 'end',
 );
 
 export function railLabel(it: PositionedItem): string {
@@ -209,8 +206,7 @@ export function railLabel(it: PositionedItem): string {
     case 'ch': return `${it.yr} · ${it.t}`;
     case 'journeys': return 'Journey log';
     case 'blog': return 'Field reports';
-    case 'repos': return 'Mission control';
-    case 'end': return 'Today';
+    case 'end': return 'The desk';
     default: return 'Start';
   }
 }
@@ -295,7 +291,14 @@ export const BUDDY = {
     'the grind era. he filled whole notebooks with trees.',
     'builder mode — this is where shipping became a habit.',
     'worldmaker era. he builds places, not just pages.',
-    'final act — live telemetry ahead. he replies fast, promise.',
+    'final act — the desk is up ahead. he replies fast, promise.',
+  ],
+  /* poking the chai on the desk */
+  chai: [
+    'that’s cup four tonight. nobody is counting. i am counting.',
+    'chai, not coffee. we’ve been over this.',
+    'careful — that one’s been “cooling” since the last deploy.',
+    'refill requested. request queued behind three migrations.',
   ],
 };
 
@@ -320,6 +323,8 @@ export const SITE = {
   blog: 'https://blogs.ijlalahmad.dev',
   blogRss: 'https://blogs.ijlalahmad.dev/rss.xml',
   email: 'ijlalahmad845@gmail.com',
+  /* the PDF résumé — a public Google Drive file, opened in Drive's viewer */
+  resume: 'https://drive.google.com/file/d/10NFsbp_rXq_5zaCOfOafZnahTD7aW0Ii/view',
   location: 'New Delhi, India',
   leetcode: 'thre4dripper',
   playstore: 'https://play.google.com/store/apps/details?id=com.ByteMechanics.matscape',

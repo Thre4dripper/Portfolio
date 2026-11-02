@@ -9,7 +9,7 @@ import {
   initEditorTabs, initRackPower, initStackWidget, initQueueWidget, initGraphBFS,
   initStore, initLan, initKaiConsole,
 } from './setpieces';
-import { loadGithub, initSkillPanel } from './github';
+import { initSkillPanel } from './github';
 
 /* ================= elements ================= */
 const stage = document.getElementById('stage')!;
@@ -247,16 +247,81 @@ const pokers = edgeGroups.map((g) => [...g.querySelectorAll<HTMLElement>('.poke'
 const journeysEl = document.querySelector('.journeys');
 
 /* ================= boring mode ================= */
+/* each mode has its own route (`/` and `/cv`, both render this page), so
+   toggling pushes history instead of reloading and Back/Forward flip modes */
 const skipBtn = document.getElementById('skip')!;
-function setFlat(open: boolean) {
+const FLAT_PATH = '/cv';
+const FLIGHT_TITLE = SITE.title;
+const FLAT_TITLE = `CV — ${SITE.title}`;
+const isFlatPath = () => /^\/cv\/?$/.test(location.pathname);
+function setFlat(open: boolean, nav?: 'push' | 'replace') {
   flat.classList.toggle('open', open);
   skipBtn.textContent = open ? '← Back to the flight' : 'Skip to the point →';
+  document.title = open ? FLAT_TITLE : FLIGHT_TITLE;
+  if (nav && open !== isFlatPath()) {
+    const url = (open ? FLAT_PATH : '/') + location.search;
+    history[nav === 'push' ? 'pushState' : 'replaceState'](null, '', url);
+  }
 }
-skipBtn.onclick = () => setFlat(!flat.classList.contains('open'));
+skipBtn.onclick = () => setFlat(!flat.classList.contains('open'), 'push');
+addEventListener('popstate', () => setFlat(isFlatPath()));
 if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  setFlat(true);
+  setFlat(true, 'replace');
   document.getElementById('rm-note')!.hidden = false;
 }
+
+/* ================= the desk (finale) ================= */
+const desk = document.querySelector('.desk')!;
+/* the clocks and eyebrow keep his time, not the visitor's */
+const deskClocks = document.querySelectorAll<HTMLElement>('[data-clock]');
+const deskTime = document.getElementById('desk-time')!;
+function tickDesk() {
+  const now = new Date();
+  const hhmm = now.toLocaleTimeString('en-GB', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit' });
+  deskClocks.forEach((c) => (c.textContent = hhmm));
+  const h = +now.toLocaleString('en-GB', { timeZone: 'Asia/Kolkata', hour: 'numeric', hour12: false });
+  deskTime.textContent =
+    h < 5 ? 'way past midnight' : h < 12 ? 'morning' : h < 17 ? 'afternoon' : h < 21 ? 'evening' : 'late night';
+}
+tickDesk();
+setInterval(tickDesk, 30_000);
+
+/* the monitor's push dates read better as "2d ago" — the data syncs daily */
+document.querySelectorAll<HTMLElement>('.mon-log [data-ago]').forEach((el) => {
+  const days = Math.floor((Date.now() - Date.parse(el.dataset.ago!)) / 864e5);
+  el.textContent = days <= 0 ? 'today' : days === 1 ? 'yesterday' : days < 30 ? `${days}d ago` : el.textContent;
+});
+
+const lamp = document.getElementById('desk-lamp')!;
+lamp.addEventListener('click', () => {
+  const dark = desk.classList.toggle('dark');
+  lamp.setAttribute('aria-pressed', String(!dark));
+});
+
+/* someone is always typing — but only while the desk is on screen */
+const keys = [...document.querySelectorAll<HTMLElement>('.kbd-keys i')];
+setInterval(() => {
+  if (!desk.classList.contains('on')) return;
+  const k = keys[(Math.random() * keys.length) | 0];
+  k.classList.add('down');
+  setTimeout(() => k.classList.remove('down'), 120);
+}, 160);
+
+const chai = document.getElementById('desk-chai')!;
+let chaiIdx = 0;
+chai.addEventListener('click', () => {
+  say(BUDDY.chai[chaiIdx++ % BUDDY.chai.length], 3200);
+  chai.classList.add('puff');
+  setTimeout(() => chai.classList.remove('puff'), 1800);
+});
+
+/* in-page links to the CV flip modes instead of reloading the flight */
+document.addEventListener('click', (e) => {
+  const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[data-flat]');
+  if (!a || e.metaKey || e.ctrlKey || e.shiftKey) return;
+  e.preventDefault();
+  setFlat(true, 'push');
+});
 
 /* ================= era cursors — one old-school pointer per act ================= */
 const cur = (svg: string, x: number, y: number) =>
@@ -283,7 +348,6 @@ const MAX_BLUR = coarse || (navigator.hardwareConcurrency ?? 8) <= 4 ? 3.5 : 6;
 
 /* ================= main loop ================= */
 const hint2 = document.getElementById('hint2')!;
-const finale = document.querySelector('.finale')!;
 let litDone = false;
 
 function frame(t: number) {
@@ -356,7 +420,6 @@ function frame(t: number) {
      alive by the time it fills the screen */
   TIMELINE.forEach((it) => {
     const rel = cam - it.zCam;
-    if (it.type === 'repos' && rel > -2800) loadGithub();
     if (it.type === 'journeys' && rel > -1200) journeysEl?.classList.add('lit');
     if (it.type !== 'ch') return;
     if (rel > -320) collect(it.skills);
@@ -376,7 +439,7 @@ function frame(t: number) {
   }
   if (!litDone && cam > MAXZ - 600) {
     litDone = true;
-    finale.classList.add('lit');
+    desk.classList.add('lit');
   }
 
   /* rocket motion */
