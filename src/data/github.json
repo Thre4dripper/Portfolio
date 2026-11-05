@@ -1,5 +1,5 @@
 {
-  "syncedAt": "2026-11-04T13:16:10.042Z",
+  "syncedAt": "2026-11-05T08:03:59.921Z",
   "user": {
     "login": "Thre4dripper",
     "avatar_url": "https://avatars.githubusercontent.com/u/82382156?v=4",
@@ -13,7 +13,7 @@
       "year": 2021
     },
     "orgs": [],
-    "totalStars": 79,
+    "totalStars": 82,
     "publicRepos": 78
   },
   "repos": [
@@ -455,7 +455,7 @@
       "forks_count": 1,
       "language": "JavaScript",
       "fork": false,
-      "pushed_at": "2026-11-04T09:07:04Z"
+      "pushed_at": "2026-11-05T05:57:12Z"
     },
     {
       "name": "Canvas-ParticleText-WebApp",
@@ -631,7 +631,7 @@
       "name": "NodeTs-Express-Service-Based-Template",
       "html_url": "https://github.com/Thre4dripper/NodeTs-Express-Service-Based-Template",
       "description": "Node + Typescript + Express + Sequelize + Mongoose + Validations + Socket + CronJobs + gRpc + Redis + Docker + Swagger + Service Based Template",
-      "stargazers_count": 9,
+      "stargazers_count": 10,
       "forks_count": 5,
       "language": "TypeScript",
       "fork": false,
@@ -741,11 +741,11 @@
       "name": "Home-Server-Lab",
       "html_url": "https://github.com/Thre4dripper/Home-Server-Lab",
       "description": "🏠 A comprehensive collection of self-hosted services for home labs - featuring enterprise-grade applications optimized for Raspberry Pi and single-board computers. Deploy your own private cloud with Docker containers for development, media, file sharing, monitoring, and automation.",
-      "stargazers_count": 3,
+      "stargazers_count": 4,
       "forks_count": 0,
       "language": "Shell",
       "fork": false,
-      "pushed_at": "2026-11-04T13:00:37Z"
+      "pushed_at": "2026-11-05T07:19:23Z"
     },
     {
       "name": "tidefetch",
@@ -761,11 +761,11 @@
       "name": "Infinity-Castle-ThreeJs",
       "html_url": "https://github.com/Thre4dripper/Infinity-Castle-ThreeJs",
       "description": "🏮 An infinite, self-assembling Japanese castle in your browser. Fly through it as a crow — procedural architecture, weather and sound, zero art assets. Pure Three.js. 無限城",
-      "stargazers_count": 22,
-      "forks_count": 1,
+      "stargazers_count": 23,
+      "forks_count": 2,
       "language": "TypeScript",
       "fork": false,
-      "pushed_at": "2026-10-20T21:49:57Z"
+      "pushed_at": "2026-11-05T06:08:00Z"
     },
     {
       "name": "homebrew-tap",
@@ -785,7 +785,7 @@
       "forks_count": 0,
       "language": "Astro",
       "fork": false,
-      "pushed_at": "2026-11-04T13:15:38Z"
+      "pushed_at": "2026-11-04T13:16:13Z"
     },
     {
       "name": "Chronoscape-ThreeJs",
@@ -795,7 +795,7 @@
       "forks_count": 0,
       "language": "Python",
       "fork": false,
-      "pushed_at": "2026-11-02T03:07:28Z"
+      "pushed_at": "2026-11-04T15:55:46Z"
     }
   ]
 }
