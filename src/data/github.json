@@ -1,5 +1,5 @@
 {
-  "syncedAt": "2026-11-08T07:37:57.914Z",
+  "syncedAt": "2026-11-09T08:16:44.804Z",
   "user": {
     "login": "Thre4dripper",
     "avatar_url": "https://avatars.githubusercontent.com/u/82382156?v=4",
@@ -13,7 +13,7 @@
       "year": 2021
     },
     "orgs": [],
-    "totalStars": 84,
+    "totalStars": 90,
     "publicRepos": 78
   },
   "repos": [
@@ -455,7 +455,7 @@
       "forks_count": 1,
       "language": "JavaScript",
       "fork": false,
-      "pushed_at": "2026-11-08T05:23:54Z"
+      "pushed_at": "2026-11-09T05:33:58Z"
     },
     {
       "name": "Canvas-ParticleText-WebApp",
@@ -751,7 +751,7 @@
       "name": "tidefetch",
       "html_url": "https://github.com/Thre4dripper/tidefetch",
       "description": "Tidefetch is a keyboard-first terminal UI for the aria2 download engine, built for people who live in a shell. The same binary also serves a self-hosted web UI, so headless servers and homelabs get a browser dashboard on demand.",
-      "stargazers_count": 2,
+      "stargazers_count": 7,
       "forks_count": 0,
       "language": "Go",
       "fork": false,
@@ -761,11 +761,11 @@
       "name": "Infinity-Castle-ThreeJs",
       "html_url": "https://github.com/Thre4dripper/Infinity-Castle-ThreeJs",
       "description": "🏮 An infinite, self-assembling Japanese castle in your browser. Fly through it as a crow — procedural architecture, weather and sound, zero art assets. Pure Three.js. 無限城",
-      "stargazers_count": 23,
+      "stargazers_count": 24,
       "forks_count": 2,
       "language": "TypeScript",
       "fork": false,
-      "pushed_at": "2026-11-06T11:57:39Z"
+      "pushed_at": "2026-11-09T06:21:22Z"
     },
     {
       "name": "homebrew-tap",
@@ -785,7 +785,7 @@
       "forks_count": 0,
       "language": "Astro",
       "fork": false,
-      "pushed_at": "2026-11-07T07:27:39Z"
+      "pushed_at": "2026-11-09T00:36:38Z"
     },
     {
       "name": "Chronoscape-ThreeJs",
