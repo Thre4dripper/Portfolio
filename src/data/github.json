@@ -1,5 +1,5 @@
 {
-  "syncedAt": "2026-11-11T07:55:34.345Z",
+  "syncedAt": "2026-11-12T08:33:49.102Z",
   "user": {
     "login": "Thre4dripper",
     "avatar_url": "https://avatars.githubusercontent.com/u/82382156?v=4",
@@ -13,7 +13,7 @@
       "year": 2021
     },
     "orgs": [],
-    "totalStars": 91,
+    "totalStars": 92,
     "publicRepos": 78
   },
   "repos": [
@@ -455,7 +455,7 @@
       "forks_count": 1,
       "language": "JavaScript",
       "fork": false,
-      "pushed_at": "2026-11-11T05:30:50Z"
+      "pushed_at": "2026-11-12T06:35:41Z"
     },
     {
       "name": "Canvas-ParticleText-WebApp",
@@ -745,7 +745,7 @@
       "forks_count": 0,
       "language": "Shell",
       "fork": false,
-      "pushed_at": "2026-11-07T12:55:53Z"
+      "pushed_at": "2026-11-11T21:51:10Z"
     },
     {
       "name": "tidefetch",
@@ -761,7 +761,7 @@
       "name": "Infinity-Castle-ThreeJs",
       "html_url": "https://github.com/Thre4dripper/Infinity-Castle-ThreeJs",
       "description": "🏮 An infinite, self-assembling Japanese castle in your browser. Fly through it as a crow — procedural architecture, weather and sound, zero art assets. Pure Three.js. 無限城",
-      "stargazers_count": 24,
+      "stargazers_count": 25,
       "forks_count": 2,
       "language": "TypeScript",
       "fork": false,
@@ -785,7 +785,7 @@
       "forks_count": 0,
       "language": "Astro",
       "fork": false,
-      "pushed_at": "2026-11-10T08:35:12Z"
+      "pushed_at": "2026-11-11T07:55:37Z"
     },
     {
       "name": "Chronoscape-ThreeJs",
@@ -795,7 +795,7 @@
       "forks_count": 0,
       "language": "Python",
       "fork": false,
-      "pushed_at": "2026-11-07T15:29:51Z"
+      "pushed_at": "2026-11-11T15:56:11Z"
     }
   ]
 }
