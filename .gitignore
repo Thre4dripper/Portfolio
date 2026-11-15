@@ -9,3 +9,4 @@ Resume.pdf
 .DS_Store
 npm-debug.log*
 content/
+.claude/
