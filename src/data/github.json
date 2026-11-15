@@ -1,10 +1,10 @@
 {
-  "syncedAt": "2026-11-14T07:45:06.860Z",
+  "syncedAt": "2026-11-15T08:01:52.594Z",
   "user": {
     "login": "Thre4dripper",
     "avatar_url": "https://avatars.githubusercontent.com/u/82382156?v=4",
     "followers": 55,
-    "public_repos": 78
+    "public_repos": 77
   },
   "story": {
     "joinedYear": 2021,
@@ -13,8 +13,8 @@
       "year": 2021
     },
     "orgs": [],
-    "totalStars": 92,
-    "publicRepos": 78
+    "totalStars": 93,
+    "publicRepos": 77
   },
   "repos": [
     {
@@ -106,16 +106,6 @@
       "language": "Java",
       "fork": false,
       "pushed_at": "2021-05-08T10:57:05Z"
-    },
-    {
-      "name": "MatrixCalculator-AndroidApp",
-      "html_url": "https://github.com/Thre4dripper/MatrixCalculator-AndroidApp",
-      "description": null,
-      "stargazers_count": 0,
-      "forks_count": 0,
-      "language": "Java",
-      "fork": false,
-      "pushed_at": "2022-06-01T18:51:00Z"
     },
     {
       "name": "A.P.nthFormulas-Cplusplus",
@@ -295,7 +285,7 @@
       "forks_count": 0,
       "language": "Java",
       "fork": false,
-      "pushed_at": "2026-11-13T23:13:27Z"
+      "pushed_at": "2026-11-14T23:04:10Z"
     },
     {
       "name": "SpiritLevel-AndroidApp",
@@ -455,7 +445,7 @@
       "forks_count": 1,
       "language": "JavaScript",
       "fork": false,
-      "pushed_at": "2026-11-14T05:43:15Z"
+      "pushed_at": "2026-11-15T05:43:38Z"
     },
     {
       "name": "Canvas-ParticleText-WebApp",
@@ -745,17 +735,17 @@
       "forks_count": 0,
       "language": "Shell",
       "fork": false,
-      "pushed_at": "2026-11-13T19:11:48Z"
+      "pushed_at": "2026-11-14T16:14:01Z"
     },
     {
       "name": "tidefetch",
       "html_url": "https://github.com/Thre4dripper/tidefetch",
       "description": "Tidefetch is a keyboard-first terminal UI for the aria2 download engine, built for people who live in a shell. The same binary also serves a self-hosted web UI, so headless servers and homelabs get a browser dashboard on demand.",
-      "stargazers_count": 8,
+      "stargazers_count": 9,
       "forks_count": 0,
       "language": "Go",
       "fork": false,
-      "pushed_at": "2026-10-18T17:28:37Z"
+      "pushed_at": "2026-11-14T16:15:43Z"
     },
     {
       "name": "Infinity-Castle-ThreeJs",
@@ -765,7 +755,7 @@
       "forks_count": 2,
       "language": "TypeScript",
       "fork": false,
-      "pushed_at": "2026-11-09T06:21:22Z"
+      "pushed_at": "2026-11-15T00:32:32Z"
     },
     {
       "name": "homebrew-tap",
@@ -785,7 +775,7 @@
       "forks_count": 0,
       "language": "Astro",
       "fork": false,
-      "pushed_at": "2026-11-14T03:08:56Z"
+      "pushed_at": "2026-11-15T00:34:30Z"
     },
     {
       "name": "Chronoscape-ThreeJs",
@@ -795,7 +785,7 @@
       "forks_count": 0,
       "language": "Python",
       "fork": false,
-      "pushed_at": "2026-11-11T15:56:11Z"
+      "pushed_at": "2026-11-14T16:13:12Z"
     }
   ]
 }
