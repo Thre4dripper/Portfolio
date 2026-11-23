@@ -17,13 +17,13 @@
     "sync:data": "node --env-file-if-exists=.env scripts/sync-data.mjs"
   },
   "dependencies": {
-    "@astrojs/sitemap": "^3.7.4",
+    "@astrojs/sitemap": "^3.7.6",
     "@fontsource-variable/instrument-sans": "^5.2.5",
     "@fontsource-variable/jetbrains-mono": "^5.2.5",
     "@fontsource-variable/syne": "^5.2.5",
-    "@tailwindcss/vite": "^4.3.4",
-    "astro": "^7.4.7",
-    "tailwindcss": "^4.3.4"
+    "@tailwindcss/vite": "^4.3.5",
+    "astro": "^7.4.13",
+    "tailwindcss": "^4.3.5"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
